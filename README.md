@@ -41,16 +41,17 @@ This app allows users to input personal details, education history, skills, cour
 
 1. Clone the repository:
 
-      git clone https://github.com/faru-azadeh/resume-app.git
-      cd resume-app
+        git clone https://github.com/faru-azadeh/resume-app.git
+
+        cd resume-app
 
 2. Install dependencies:
 
-      npm install
+        npm install
 
 3. Start the development server:
 
-      npm run dev
+        npm run dev
 
 4. Configure your Supabase keys in /src/services/supabaseClient.ts
 
