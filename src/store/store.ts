@@ -1,6 +1,6 @@
 // src/store/store.ts
-import { configureStore } from '@reduxjs/toolkit';
-import personalInfoReducer from './personalInfoSlice';
+import { configureStore } from "@reduxjs/toolkit";
+import personalInfoReducer from "./personalInfoSlice";
 
 export const store = configureStore({
   reducer: {

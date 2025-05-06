@@ -1,12 +1,15 @@
-
-
 // src/App.tsx
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import PersonalInfo from './pages/PersonalInfo';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import PersonalInfo from "./pages/PersonalInfo";
 
 import "./App.css";
-import Skils from './pages/Skils';
+import Skils from "./pages/Skils";
 
 const App: React.FC = () => {
   return (
@@ -21,4 +24,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-

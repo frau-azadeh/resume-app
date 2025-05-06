@@ -1,7 +1,6 @@
 // src/store/personalInfoSlice.ts
-import { createSlice } from '@reduxjs/toolkit';
-import type { PayloadAction } from '@reduxjs/toolkit';
-
+import { createSlice } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface PersonalInfoState {
   firstName: string;
@@ -12,15 +11,15 @@ interface PersonalInfoState {
 }
 
 const initialState: PersonalInfoState = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  phone: '',
-  address: '',
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  address: "",
 };
 
 const personalInfoSlice = createSlice({
-  name: 'personalInfo',
+  name: "personalInfo",
   initialState,
   reducers: {
     setPersonalInfo: (state, action: PayloadAction<PersonalInfoState>) => {
