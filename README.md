@@ -8,7 +8,6 @@ This app allows users to input personal details, education history, skills, cour
 
 ## 🚀 Tech Stack
 
-
 ⚛️ React (TypeScript) – UI framework
 
 🎨 Tailwind CSS – Styling
@@ -25,41 +24,41 @@ This app allows users to input personal details, education history, skills, cour
 
 ## 🏗️ Features
 
-✅ Multi-step form  
+✅ Multi-step form
 
-✅ Personal info, education, skills, courses, awards 
+✅ Personal info, education, skills, courses, awards
 
-✅ Form validation 
+✅ Form validation
 
-✅ Data persistence in Supabase  
+✅ Data persistence in Supabase
 
-✅ Modern responsive UI  
+✅ Modern responsive UI
 
 ---
 
 ## 💻 Getting Started
 
-1. Clone the repository:
+1.  Clone the repository:
 
         git clone https://github.com/faru-azadeh/resume-app.git
 
         cd resume-app
 
-2. Install dependencies:
+2.  Install dependencies:
 
         npm install
 
-3. Start the development server:
+3.  Start the development server:
 
         npm run dev
 
-4. Configure your Supabase keys in /src/services/supabaseClient.ts
+4.  Configure your Supabase keys in /src/services/supabaseClient.ts
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are warmly welcomed! 
+Contributions are warmly welcomed!
 
 Feel free to fork this repo, create a feature branch, and submit a pull request.
 
@@ -68,4 +67,3 @@ Feel free to fork this repo, create a feature branch, and submit a pull request.
 ## 🌻Developed by
 
 Azadeh Sharifi Soltani
-

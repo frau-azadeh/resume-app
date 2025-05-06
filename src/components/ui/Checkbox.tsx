@@ -1,10 +1,11 @@
 // src/components/ui/Checkbox.tsx
-import type { InputHTMLAttributes } from 'react';
-import { forwardRef } from 'react';
-import type { FieldError } from 'react-hook-form';
-import { cn } from '../../lib/utils';
+import type { InputHTMLAttributes } from "react";
+import { forwardRef } from "react";
+import type { FieldError } from "react-hook-form";
+import { cn } from "../../lib/utils";
 
-interface CheckboxProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> {
+interface CheckboxProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "type"> {
   label?: string;
   error?: string | FieldError;
   helperText?: string;
@@ -19,9 +20,9 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
             type="checkbox"
             ref={ref}
             className={cn(
-              'h-4 w-4 rounded border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none',
-              error && 'border-red-500 focus:ring-red-500',
-              className
+              "h-4 w-4 rounded border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none",
+              error && "border-red-500 focus:ring-red-500",
+              className,
             )}
             {...props}
           />
@@ -32,14 +33,14 @@ const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(
         )}
         {error && (
           <p className="text-xs text-red-600">
-            {typeof error === 'string' ? error : error.message}
+            {typeof error === "string" ? error : error.message}
           </p>
         )}
       </div>
     );
-  }
+  },
 );
 
-Checkbox.displayName = 'Checkbox';
+Checkbox.displayName = "Checkbox";
 
 export default Checkbox;
