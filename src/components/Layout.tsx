@@ -46,7 +46,9 @@ const Layout: React.FC<LayoutProps> = () => {
                     <img className="size-8" src="/resume.jpg" alt="لوگو" />
                   </div>
                   <div className="hidden md:flex md:items-center">
-                    <span className="text-white text-lg font-bold ml-4">داشبورد</span>
+                    <span className="text-white text-lg font-bold ml-4">
+                      داشبورد
+                    </span>
                     <div className="flex gap-2">
                       {tabs.map((tab) => (
                         <button
@@ -56,7 +58,7 @@ const Layout: React.FC<LayoutProps> = () => {
                             activeTab === tab.id
                               ? "bg-blue-600 text-white"
                               : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                            "px-3 py-2 rounded-md text-sm font-medium"
+                            "px-3 py-2 rounded-md text-sm font-medium",
                           )}
                         >
                           {tab.label}
@@ -92,7 +94,7 @@ const Layout: React.FC<LayoutProps> = () => {
                             <span
                               className={classNames(
                                 active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                                "block px-4 py-2 text-sm text-gray-700 cursor-pointer",
                               )}
                             >
                               پروفایل شما
@@ -104,7 +106,7 @@ const Layout: React.FC<LayoutProps> = () => {
                             <span
                               className={classNames(
                                 active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                                "block px-4 py-2 text-sm text-gray-700 cursor-pointer",
                               )}
                             >
                               تنظیمات
@@ -116,7 +118,7 @@ const Layout: React.FC<LayoutProps> = () => {
                             <span
                               className={classNames(
                                 active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700 cursor-pointer"
+                                "block px-4 py-2 text-sm text-gray-700 cursor-pointer",
                               )}
                             >
                               خروج
@@ -141,22 +143,21 @@ const Layout: React.FC<LayoutProps> = () => {
             </div>
 
             <Disclosure.Panel className="md:hidden px-2 pt-2 pb-3 space-y-1">
-  {tabs.map((tab) => (
-    <button
-      key={tab.id}
-      onClick={() => setActiveTab(tab.id)}
-      className={classNames(
-        activeTab === tab.id
-          ? "bg-blue-600 text-white"
-          : "text-gray-300 hover:bg-gray-700 hover:text-white",
-        "block w-full text-right px-3 py-2 rounded-md text-base font-medium"
-      )}
-    >
-      {tab.label}
-    </button>
-  ))}
-</Disclosure.Panel>
-
+              {tabs.map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={classNames(
+                    activeTab === tab.id
+                      ? "bg-blue-600 text-white"
+                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                    "block w-full text-right px-3 py-2 rounded-md text-base font-medium",
+                  )}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </Disclosure.Panel>
           </>
         )}
       </Disclosure>
