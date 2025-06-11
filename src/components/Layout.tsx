@@ -16,8 +16,6 @@ import { useAppDispatch, useAppSelector } from "../store/hooks"; // 🟢 تغی�
 import { setActiveTab } from "../store/slices/tabSlice"; // 🟢 تغییر با Redux
 import SkillForm from "../pages/SkillForm";
 
-
-
 const user = {
   name: "علی رضایی",
   email: "ali@example.com",
