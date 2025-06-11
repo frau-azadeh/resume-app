@@ -8,9 +8,13 @@ import {
   MenuItems,
 } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import React, { useState } from "react";
+import React from "react";
 import PersonalInfo from "../pages/PersonalInfo";
 import EducationHistory from "../pages/EducationHistory";
+import WorkInfo from "../pages/WorkInfo";
+import { useAppDispatch, useAppSelector } from "../store/hooks"; // 🟢 تغییر با Redux
+import { setActiveTab } from "../store/slices/tabSlice"; // 🟢 تغییر با Redux
+import SkillForm from "../pages/SkillForm";
 
 interface LayoutProps {}
 
@@ -20,11 +24,11 @@ const user = {
   imageUrl: "https://i.pravatar.cc/100",
 };
 
-// تب‌های داخلی داشبورد
 const tabs = [
   { id: "personal-info", label: "اطلاعات فردی" },
   { id: "education", label: "سوابق تحصیلی" },
   { id: "work-experience", label: "سوابق کاری" },
+  { id: "skill", label: "مهارت ها" },
 ];
 
 function classNames(...classes: string[]) {
@@ -32,7 +36,8 @@ function classNames(...classes: string[]) {
 }
 
 const Layout: React.FC<LayoutProps> = () => {
-  const [activeTab, setActiveTab] = useState("personal-info");
+  const dispatch = useAppDispatch(); // 🟢 تغییر با Redux
+  const activeTab = useAppSelector((state) => state.tab.activeTab); // 🟢 تغییر با Redux
 
   return (
     <div className="min-h-full" dir="rtl">
@@ -53,7 +58,7 @@ const Layout: React.FC<LayoutProps> = () => {
                       {tabs.map((tab) => (
                         <button
                           key={tab.id}
-                          onClick={() => setActiveTab(tab.id)}
+                          onClick={() => dispatch(setActiveTab(tab.id))} // 🟢 تغییر با Redux
                           className={classNames(
                             activeTab === tab.id
                               ? "bg-blue-600 text-white"
@@ -146,7 +151,7 @@ const Layout: React.FC<LayoutProps> = () => {
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
+                  onClick={() => dispatch(setActiveTab(tab.id))} // 🟢 تغییر با Redux
                   className={classNames(
                     activeTab === tab.id
                       ? "bg-blue-600 text-white"
@@ -167,6 +172,8 @@ const Layout: React.FC<LayoutProps> = () => {
           <div className="rounded-lg border-2 border-dashed border-gray-200 p-6 bg-white shadow">
             {activeTab === "personal-info" && <PersonalInfo />}
             {activeTab === "education" && <EducationHistory />}
+            {activeTab === "work-experience" && <WorkInfo />}
+            {activeTab === "skill" && <SkillForm />}
             {/* بقیه تب‌ها رو هم اینجا لود کن بعداً */}
           </div>
         </div>
