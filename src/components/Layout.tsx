@@ -16,7 +16,7 @@ import { useAppDispatch, useAppSelector } from "../store/hooks"; // 🟢 تغی�
 import { setActiveTab } from "../store/slices/tabSlice"; // 🟢 تغییر با Redux
 import SkillForm from "../pages/SkillForm";
 
-interface LayoutProps {}
+
 
 const user = {
   name: "علی رضایی",
@@ -35,7 +35,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Layout: React.FC<LayoutProps> = () => {
+const Layout: React.FC = () => {
   const dispatch = useAppDispatch(); // 🟢 تغییر با Redux
   const activeTab = useAppSelector((state) => state.tab.activeTab); // 🟢 تغییر با Redux
 
