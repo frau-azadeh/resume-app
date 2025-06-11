@@ -54,18 +54,27 @@ const tabsOrder = ["personal-info", "education", "work-experience", "skill"];
 
 const SkillForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const skillListInStore = useSelector((state: RootState) => state.skill.skillList);
-  const skillFormInStore = useSelector((state: RootState) => state.skill.skillForm);
+  const skillListInStore = useSelector(
+    (state: RootState) => state.skill.skillList,
+  );
+  const skillFormInStore = useSelector(
+    (state: RootState) => state.skill.skillForm,
+  );
   const activeTab = useSelector((state: RootState) => state.tab.activeTab);
 
-  const { register, handleSubmit, reset, setValue, getValues, watch } = useForm<SkillFormData>({
-    defaultValues: defaultFormValues,
-  });
+  const { register, handleSubmit, reset, setValue, getValues, watch } =
+    useForm<SkillFormData>({
+      defaultValues: defaultFormValues,
+    });
 
   const [skillList, setSkillListLocal] = useState<SkillFormData[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [languageSkill, setLanguageSkill] = useState<LanguageSkill | null>(null);
-  const [managerialSkills, setManagerialSkills] = useState<ManagerialSkill[]>([]);
+  const [languageSkill, setLanguageSkill] = useState<LanguageSkill | null>(
+    null,
+  );
+  const [managerialSkills, setManagerialSkills] = useState<ManagerialSkill[]>(
+    [],
+  );
 
   useEffect(() => {
     setSkillListLocal(skillListInStore || []);
@@ -115,16 +124,17 @@ const SkillForm: React.FC = () => {
     const currentIndex = tabsOrder.indexOf(activeTab);
     if (currentIndex === -1) return;
 
-    const nextIndex = dir === "next"
-      ? Math.min(currentIndex + 1, tabsOrder.length - 1)
-      : Math.max(currentIndex - 1, 0);
+    const nextIndex =
+      dir === "next"
+        ? Math.min(currentIndex + 1, tabsOrder.length - 1)
+        : Math.max(currentIndex - 1, 0);
 
     dispatch(setActiveTab(tabsOrder[nextIndex]));
   };
 
   const renderStars = (
     currentValue: number,
-    onChange: (level: number) => void
+    onChange: (level: number) => void,
   ) => (
     <div className="flex gap-1">
       {[1, 2, 3, 4, 5].map((star) => (
@@ -154,7 +164,7 @@ const SkillForm: React.FC = () => {
 
   const setManagerialLevel = (skill: string, level: number) => {
     setManagerialSkills((prev) =>
-      prev.map((s) => (s.name === skill ? { ...s, level } : s))
+      prev.map((s) => (s.name === skill ? { ...s, level } : s)),
     );
   };
 
@@ -162,8 +172,14 @@ const SkillForm: React.FC = () => {
     <div className="max-w-2xl mx-auto bg-white p-6 rounded shadow" dir="rtl">
       <h2 className="text-xl font-bold text-center mb-4">مهارت‌ها</h2>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-4">
-        <Input label="نام مهارت" {...register("name", { required: "نام مهارت الزامی است" })} />
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid grid-cols-1 gap-4"
+      >
+        <Input
+          label="نام مهارت"
+          {...register("name", { required: "نام مهارت الزامی است" })}
+        />
 
         <div>
           <label className="text-sm font-medium mb-1 block">میزان تسلط</label>
@@ -171,20 +187,34 @@ const SkillForm: React.FC = () => {
         </div>
 
         <div className="text-center">
-          <Button type="submit">{editingIndex !== null ? "ویرایش مهارت" : "افزودن مهارت"}</Button>
+          <Button type="submit">
+            {editingIndex !== null ? "ویرایش مهارت" : "افزودن مهارت"}
+          </Button>
         </div>
       </form>
 
       <div className="mt-8">
         <h3 className="text-lg font-semibold mb-2">زبان خارجی</h3>
-        <Input label="نام زبان" onChange={(e) => setLanguageSkill({ ...languageSkill, language: e.target.value } as LanguageSkill)} />
-        {['reading', 'writing', 'speaking', 'comprehension'].map((skill) => (
+        <Input
+          label="نام زبان"
+          onChange={(e) =>
+            setLanguageSkill({
+              ...languageSkill,
+              language: e.target.value,
+            } as LanguageSkill)
+          }
+        />
+        {["reading", "writing", "speaking", "comprehension"].map((skill) => (
           <div key={skill} className="mt-2">
             <label className="block font-medium">{skill}</label>
-            <select onChange={(e) => setLanguageSkill({
-              ...languageSkill,
-              [skill]: e.target.value as Proficiency
-            } as LanguageSkill)}>
+            <select
+              onChange={(e) =>
+                setLanguageSkill({
+                  ...languageSkill,
+                  [skill]: e.target.value as Proficiency,
+                } as LanguageSkill)
+              }
+            >
               <option value="ضعیف">ضعیف</option>
               <option value="متوسط">متوسط</option>
               <option value="عالی">عالی</option>
@@ -194,7 +224,9 @@ const SkillForm: React.FC = () => {
       </div>
 
       <div className="mt-8">
-        <h3 className="text-lg font-semibold mb-2">مهارت‌های مدیریتی (حداکثر ۳ مورد)</h3>
+        <h3 className="text-lg font-semibold mb-2">
+          مهارت‌های مدیریتی (حداکثر ۳ مورد)
+        </h3>
         <div className="grid grid-cols-2 gap-2">
           {allManagerialSkills.map((skill) => (
             <div key={skill} className="flex items-center gap-2">
@@ -207,7 +239,7 @@ const SkillForm: React.FC = () => {
               {managerialSkills.some((s) => s.name === skill) &&
                 renderStars(
                   managerialSkills.find((s) => s.name === skill)?.level || 0,
-                  (lvl) => setManagerialLevel(skill, lvl)
+                  (lvl) => setManagerialLevel(skill, lvl),
                 )}
             </div>
           ))}
@@ -216,22 +248,40 @@ const SkillForm: React.FC = () => {
 
       <div className="mt-8 space-y-4">
         {skillList.map((skill, index) => (
-          <div key={index} className="p-4 border rounded flex justify-between items-center">
+          <div
+            key={index}
+            className="p-4 border rounded flex justify-between items-center"
+          >
             <div>
               <p className="font-semibold">{skill.name}</p>
-              <p className="text-yellow-500">{"★".repeat(skill.level)}{"☆".repeat(5 - skill.level)}</p>
+              <p className="text-yellow-500">
+                {"★".repeat(skill.level)}
+                {"☆".repeat(5 - skill.level)}
+              </p>
             </div>
             <div className="flex gap-2">
-              <Button type="button" onClick={() => handleEdit(index)}>ویرایش</Button>
-              <Button type="button" onClick={() => handleDelete(index)} variant="destructive">حذف</Button>
+              <Button type="button" onClick={() => handleEdit(index)}>
+                ویرایش
+              </Button>
+              <Button
+                type="button"
+                onClick={() => handleDelete(index)}
+                variant="destructive"
+              >
+                حذف
+              </Button>
             </div>
           </div>
         ))}
       </div>
 
       <div className="mt-8 flex justify-between">
-        <Button onClick={() => handleNavigation("prev")} type="button">مرحله قبل</Button>
-        <Button onClick={() => handleNavigation("next")} type="button">مرحله بعد</Button>
+        <Button onClick={() => handleNavigation("prev")} type="button">
+          مرحله قبل
+        </Button>
+        <Button onClick={() => handleNavigation("next")} type="button">
+          مرحله بعد
+        </Button>
       </div>
     </div>
   );

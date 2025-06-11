@@ -42,19 +42,17 @@ const defaultFormValues: EducationFormData = {
 const EducationHistory: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const educationListInStore = useSelector((state: RootState) => state.education.educationList);
-  const educationFormInStore = useSelector((state: RootState) => state.education.educationForm);
+  const educationListInStore = useSelector(
+    (state: RootState) => state.education.educationList,
+  );
+  const educationFormInStore = useSelector(
+    (state: RootState) => state.education.educationForm,
+  );
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setValue,
-    watch,
-    getValues,
-  } = useForm<EducationFormData>({
-    defaultValues: defaultFormValues,
-  });
+  const { register, handleSubmit, reset, setValue, watch, getValues } =
+    useForm<EducationFormData>({
+      defaultValues: defaultFormValues,
+    });
 
   const [educationList, setEducationList] = useState<EducationFormData[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -113,15 +111,26 @@ const EducationHistory: React.FC = () => {
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow" dir="rtl">
       <h1 className="text-2xl font-bold mb-4 text-center">سوابق تحصیلی</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Input label="مقطع" {...register("degree", { required: "مقطع الزامی است" })} />
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+      >
+        <Input
+          label="مقطع"
+          {...register("degree", { required: "مقطع الزامی است" })}
+        />
         <Input label="رشته" {...register("field")} />
         <Input label="گرایش" {...register("specialization")} />
         <Input label="نوع موسسه" {...register("institutionType")} />
         <Input label="نام موسسه" {...register("institutionName")} />
         <Input label="معدل" {...register("grade")} />
         <Input label="تاریخ شروع" type="date" {...register("startDate")} />
-        <Input label="تاریخ پایان" type="date" {...register("endDate")} disabled={isStudying} />
+        <Input
+          label="تاریخ پایان"
+          type="date"
+          {...register("endDate")}
+          disabled={isStudying}
+        />
 
         <div className="col-span-2">
           <label className="flex items-center gap-2">
@@ -143,22 +152,39 @@ const EducationHistory: React.FC = () => {
 
       <div className="mt-8 space-y-4">
         {educationList.map((edu, index) => (
-          <div key={index} className="p-4 border rounded flex justify-between items-center">
+          <div
+            key={index}
+            className="p-4 border rounded flex justify-between items-center"
+          >
             <div>
-              <p className="font-semibold">{edu.degree} - {edu.field}</p>
+              <p className="font-semibold">
+                {edu.degree} - {edu.field}
+              </p>
               <p className="text-sm text-gray-500">{edu.institutionName}</p>
             </div>
             <div className="flex gap-2">
-              <Button onClick={() => handleEdit(index)} type="button">ویرایش</Button>
-              <Button onClick={() => handleDelete(index)} type="button" variant="destructive">حذف</Button>
+              <Button onClick={() => handleEdit(index)} type="button">
+                ویرایش
+              </Button>
+              <Button
+                onClick={() => handleDelete(index)}
+                type="button"
+                variant="destructive"
+              >
+                حذف
+              </Button>
             </div>
           </div>
         ))}
       </div>
 
       <div className="mt-8 flex justify-between">
-        <Button onClick={() => handleNavigation("prevTab")} type="button">مرحله قبل</Button>
-        <Button onClick={() => handleNavigation("nextTab")} type="button">مرحله بعد</Button>
+        <Button onClick={() => handleNavigation("prevTab")} type="button">
+          مرحله قبل
+        </Button>
+        <Button onClick={() => handleNavigation("nextTab")} type="button">
+          مرحله بعد
+        </Button>
       </div>
     </div>
   );

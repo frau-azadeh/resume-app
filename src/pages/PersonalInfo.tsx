@@ -14,7 +14,7 @@ const PersonalInfo: React.FC = () => {
 
   // اطلاعات ذخیره‌شده در Redux
   const savedInfo = useSelector(
-    (state: RootState) => state.personalInfo.personalInfo
+    (state: RootState) => state.personalInfo.personalInfo,
   );
 
   // مقداردهی اولیه فرم
@@ -39,7 +39,10 @@ const PersonalInfo: React.FC = () => {
   };
 
   return (
-    <div className="max-w-5xl mx-auto p-6 space-y-8 bg-white rounded-lg shadow" dir="rtl">
+    <div
+      className="max-w-5xl mx-auto p-6 space-y-8 bg-white rounded-lg shadow"
+      dir="rtl"
+    >
       <h1 className="text-2xl font-bold text-center mb-4">اطلاعات فردی</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
@@ -47,10 +50,26 @@ const PersonalInfo: React.FC = () => {
         <div className="border rounded-lg p-4 shadow-sm">
           <h2 className="text-lg font-semibold mb-4">اطلاعات فردی</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Input label="نام" {...register("firstName", { required: "نام الزامی است" })} error={errors.firstName} />
-            <Input label="نام خانوادگی" {...register("lastName", { required: "نام خانوادگی الزامی است" })} error={errors.lastName} />
-            <Input label="کدملی" {...register("nationalCode", { required: "کدملی الزامی است" })} error={errors.nationalCode} />
-            <Input label="تاریخ تولد" {...register("birthDate", { required: "تاریخ تولد الزامی است" })} error={errors.birthDate} />
+            <Input
+              label="نام"
+              {...register("firstName", { required: "نام الزامی است" })}
+              error={errors.firstName}
+            />
+            <Input
+              label="نام خانوادگی"
+              {...register("lastName", { required: "نام خانوادگی الزامی است" })}
+              error={errors.lastName}
+            />
+            <Input
+              label="کدملی"
+              {...register("nationalCode", { required: "کدملی الزامی است" })}
+              error={errors.nationalCode}
+            />
+            <Input
+              label="تاریخ تولد"
+              {...register("birthDate", { required: "تاریخ تولد الزامی است" })}
+              error={errors.birthDate}
+            />
             <Input label="استان محل تولد" {...register("birthProvince")} />
             <Input label="شهر محل تولد" {...register("birthCity")} />
             <Input label="شماره شناسنامه" {...register("idNumber")} />
@@ -72,8 +91,16 @@ const PersonalInfo: React.FC = () => {
             <Input label="نام مادر" {...register("motherName")} />
             <Input label="شغل مادر" {...register("motherJob")} />
             <Input label="تحصیلات مادر" {...register("motherEducation")} />
-            <Input label="تعداد برادر و خواهر" type="number" {...register("siblingsCount")} />
-            <Input label="تعداد فرزندان" type="number" {...register("childrenCount")} />
+            <Input
+              label="تعداد برادر و خواهر"
+              type="number"
+              {...register("siblingsCount")}
+            />
+            <Input
+              label="تعداد فرزندان"
+              type="number"
+              {...register("childrenCount")}
+            />
           </div>
         </div>
 
@@ -87,7 +114,10 @@ const PersonalInfo: React.FC = () => {
             <Input label="کد پستی" {...register("postalCode")} />
             <Input label="تلفن ثابت با کد شهر" {...register("phone")} />
             <Input label="ایمیل" type="email" {...register("email")} />
-            <Input label="نام فرد رابط جهت تماس اضطراری" {...register("emergencyContactName")} />
+            <Input
+              label="نام فرد رابط جهت تماس اضطراری"
+              {...register("emergencyContactName")}
+            />
             <Input label="نسبت" {...register("emergencyContactRelation")} />
             <Input label="تلفن ضروری" {...register("emergencyContactPhone")} />
           </div>
@@ -95,7 +125,12 @@ const PersonalInfo: React.FC = () => {
 
         {/* دکمه‌ها */}
         <div className="flex justify-between mt-6">
-          <Button type="button" variant="secondary" disabled className="cursor-not-allowed opacity-50">
+          <Button
+            type="button"
+            variant="secondary"
+            disabled
+            className="cursor-not-allowed opacity-50"
+          >
             مرحله قبل
           </Button>
           <div className="flex gap-2">

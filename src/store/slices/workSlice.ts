@@ -1,20 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type {PayloadAction} from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface workFormData {
-    companyName: string;
-    position: string;
-    field: string;
-    level: string;
-    cooperationType: string;
-    insuranceMonths: string;
-    startDate: string;
-    endDate: string;
-    isWorking: boolean;
-    workPhone: string;
-    lastSalary: string;
-    terminationReason: string;
-    description: string;
+  companyName: string;
+  position: string;
+  field: string;
+  level: string;
+  cooperationType: string;
+  insuranceMonths: string;
+  startDate: string;
+  endDate: string;
+  isWorking: boolean;
+  workPhone: string;
+  lastSalary: string;
+  terminationReason: string;
+  description: string;
 }
 
 interface workState {

@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type {PayloadAction} from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface EducationFormData {
   degree: string;
@@ -41,5 +41,6 @@ const educationSlice = createSlice({
   },
 });
 
-export const { setEducationList, setEducationForm, clearEducationData } = educationSlice.actions;
+export const { setEducationList, setEducationForm, clearEducationData } =
+  educationSlice.actions;
 export default educationSlice.reducer;

@@ -55,5 +55,10 @@ const skillSlice = createSlice({
   },
 });
 
-export const { setSkillList, setSkillForm, setLanguageSkills, setManagementSkills } = skillSlice.actions;
+export const {
+  setSkillList,
+  setSkillForm,
+  setLanguageSkills,
+  setManagementSkills,
+} = skillSlice.actions;
 export default skillSlice.reducer;

@@ -48,20 +48,18 @@ const tabsOrder = ["personal-info", "education", "work-experience", "skills"];
 const WorkInfo: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const workListInStore = useSelector((state: RootState) => state.work.workList);
-  const workFormInStore = useSelector((state: RootState) => state.work.workForm);
+  const workListInStore = useSelector(
+    (state: RootState) => state.work.workList,
+  );
+  const workFormInStore = useSelector(
+    (state: RootState) => state.work.workForm,
+  );
   const activeTab = useSelector((state: RootState) => state.tab.activeTab);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setValue,
-    watch,
-    getValues,
-  } = useForm<WorkFormData>({
-    defaultValues: defaultFormValues,
-  });
+  const { register, handleSubmit, reset, setValue, watch, getValues } =
+    useForm<WorkFormData>({
+      defaultValues: defaultFormValues,
+    });
 
   const [workList, setWorkList] = useState<WorkFormData[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -131,16 +129,28 @@ const WorkInfo: React.FC = () => {
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow" dir="rtl">
       <h1 className="text-2xl font-bold mb-4 text-center">سوابق کاری</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+      >
         <Input label="نام شرکت" {...register("companyName")} />
         <Input label="عنوان شغلی" {...register("position")} />
         <Input label="زمینه فعالیت شرکت" {...register("field")} />
         <Input label="رده سازمانی" {...register("level")} />
         <Input label="نوع همکاری" {...register("cooperationType")} />
-        <Input label="سابقه بیمه (ماه)" type="number" {...register("insuranceMonths")} />
+        <Input
+          label="سابقه بیمه (ماه)"
+          type="number"
+          {...register("insuranceMonths")}
+        />
         <Input label="تاریخ شروع" type="date" {...register("startDate")} />
-        <Input label="تاریخ پایان" type="date" {...register("endDate")} disabled={isWorking} />
-        
+        <Input
+          label="تاریخ پایان"
+          type="date"
+          {...register("endDate")}
+          disabled={isWorking}
+        />
+
         <div className="col-span-2">
           <label className="flex items-center gap-2">
             <input type="checkbox" {...register("isWorking")} />
@@ -165,22 +175,39 @@ const WorkInfo: React.FC = () => {
 
       <div className="mt-8 space-y-4">
         {workList.map((item, index) => (
-          <div key={index} className="p-4 border rounded flex justify-between items-center">
+          <div
+            key={index}
+            className="p-4 border rounded flex justify-between items-center"
+          >
             <div>
-              <p className="font-semibold">{item.companyName} - {item.position}</p>
+              <p className="font-semibold">
+                {item.companyName} - {item.position}
+              </p>
               <p className="text-sm text-gray-500">{item.cooperationType}</p>
             </div>
             <div className="flex gap-2">
-              <Button onClick={() => handleEdit(index)} type="button">ویرایش</Button>
-              <Button onClick={() => handleDelete(index)} type="button" variant="destructive">حذف</Button>
+              <Button onClick={() => handleEdit(index)} type="button">
+                ویرایش
+              </Button>
+              <Button
+                onClick={() => handleDelete(index)}
+                type="button"
+                variant="destructive"
+              >
+                حذف
+              </Button>
             </div>
           </div>
         ))}
       </div>
 
       <div className="mt-8 flex justify-between">
-        <Button onClick={() => handleNavigation("prev")} type="button">مرحله قبل</Button>
-        <Button onClick={() => handleNavigation("next")} type="button">مرحله بعد</Button>
+        <Button onClick={() => handleNavigation("prev")} type="button">
+          مرحله قبل
+        </Button>
+        <Button onClick={() => handleNavigation("next")} type="button">
+          مرحله بعد
+        </Button>
       </div>
     </div>
   );

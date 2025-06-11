@@ -1,38 +1,38 @@
 // types.ts
 
 export interface PersonalInfoForm {
-    firstName: string;
-    lastName: string;
-    nationalCode: string;
-    birthDate: string;
-    birthCity: string;
-    birthProvince: string;
-    idNumber: string;
-    issueCity: string;
-    issueProvince: string;
-    religion: string;
-    maritalStatus: string;
-    gender: string;
-    fatherName: string;
-    fatherJob: string;
-    fatherEducation: string;
-    motherName: string;
-    motherJob: string;
-    motherEducation: string;
-    siblingsCount: number;
-    childrenCount: number;
-    residenceProvince: string;
-    residenceCity: string;
-    address: string;
-    postalCode: string;
-    phone: string;
-    email: string;
-    emergencyContactName: string;
-    emergencyContactRelation: string;
-    emergencyContactPhone: string;
-  }
+  firstName: string;
+  lastName: string;
+  nationalCode: string;
+  birthDate: string;
+  birthCity: string;
+  birthProvince: string;
+  idNumber: string;
+  issueCity: string;
+  issueProvince: string;
+  religion: string;
+  maritalStatus: string;
+  gender: string;
+  fatherName: string;
+  fatherJob: string;
+  fatherEducation: string;
+  motherName: string;
+  motherJob: string;
+  motherEducation: string;
+  siblingsCount: number;
+  childrenCount: number;
+  residenceProvince: string;
+  residenceCity: string;
+  address: string;
+  postalCode: string;
+  phone: string;
+  email: string;
+  emergencyContactName: string;
+  emergencyContactRelation: string;
+  emergencyContactPhone: string;
+}
 
-  export type Proficiency = "ضعیف" | "متوسط" | "عالی";
+export type Proficiency = "ضعیف" | "متوسط" | "عالی";
 
 export interface SkillItem {
   name: string;
@@ -51,4 +51,3 @@ export interface ManagementSkill {
   name: string;
   level: number;
 }
-  
