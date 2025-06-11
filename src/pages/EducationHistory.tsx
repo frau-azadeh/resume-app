@@ -64,7 +64,7 @@ const EducationHistory: React.FC = () => {
   }, [educationListInStore, educationFormInStore, reset]);
 
   const onSubmit = (data: EducationFormData) => {
-    let updatedList = [...educationList];
+    const updatedList = [...educationList];
 
     if (editingIndex !== null) {
       updatedList[editingIndex] = data;
