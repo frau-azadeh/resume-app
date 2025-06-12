@@ -15,7 +15,10 @@ const App: React.FC = () => {
     <BrowserRouter>
       <ToastContainer position="top-center" />
       <Routes>
-        <Route path="/" element={<Navigate to="/form/personal-info" replace />} />
+        <Route
+          path="/"
+          element={<Navigate to="/form/personal-info" replace />}
+        />
         <Route path="/form" element={<Layout />}>
           <Route path="personal-info" element={<PersonalInfo />} />
           <Route path="education" element={<EducationHistory />} />

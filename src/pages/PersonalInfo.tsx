@@ -14,12 +14,12 @@ const PersonalInfo: React.FC = () => {
   const navigate = useNavigate();
 
   const savedInfo = useSelector(
-    (state: RootState) => state.personalInfo.personalInfo
+    (state: RootState) => state.personalInfo.personalInfo,
   );
 
   // local state برای آواتار (برای نمایش سریع)
   const [avatarPreview, setAvatarPreview] = React.useState<string | null>(
-    savedInfo.avatar || null
+    savedInfo.avatar || null,
   );
 
   const {

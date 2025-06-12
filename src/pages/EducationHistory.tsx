@@ -42,22 +42,16 @@ const EducationHistory: React.FC = () => {
   const navigate = useNavigate(); // ✅ اضافه شده
 
   const educationListInStore = useSelector(
-    (state: RootState) => state.education.educationList
+    (state: RootState) => state.education.educationList,
   );
   const educationFormInStore = useSelector(
-    (state: RootState) => state.education.educationForm
+    (state: RootState) => state.education.educationForm,
   );
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setValue,
-    watch,
-    getValues,
-  } = useForm<EducationFormData>({
-    defaultValues: defaultFormValues,
-  });
+  const { register, handleSubmit, reset, setValue, watch, getValues } =
+    useForm<EducationFormData>({
+      defaultValues: defaultFormValues,
+    });
 
   const [educationList, setEducationList] = useState<EducationFormData[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);

@@ -9,7 +9,7 @@ import skillReducer from "./slices/skillSlice";
 
 const rootReducer = combineReducers({
   personalInfo: personalInfoReducer,
- 
+
   education: educationReducer,
   work: workReducer,
   skill: skillReducer,
@@ -18,7 +18,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["personalInfo", "work" , "skill" , "education"],
+  whitelist: ["personalInfo", "work", "skill", "education"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

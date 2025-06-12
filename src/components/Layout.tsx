@@ -1,8 +1,5 @@
 // src/components/Layout.tsx
-import {
-  Disclosure,
-  DisclosureButton,
-} from "@headlessui/react";
+import { Disclosure, DisclosureButton } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import React from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
@@ -27,7 +24,7 @@ const Layout: React.FC = () => {
 
   // خواندن اطلاعات شخصی از Redux
   const personalInfo = useSelector(
-    (state: RootState) => state.personalInfo.personalInfo
+    (state: RootState) => state.personalInfo.personalInfo,
   );
 
   const currentTab = location.pathname.split("/").pop();
@@ -45,11 +42,7 @@ const Layout: React.FC = () => {
               <div className="flex h-16 items-center justify-between">
                 <div className="flex items-center">
                   <div className="shrink-0">
-                    <img
-                      className="size-8"
-                      src="/resume.jpg"
-                      alt="لوگو"
-                    />
+                    <img className="size-8" src="/resume.jpg" alt="لوگو" />
                   </div>
                   <div className="hidden md:flex md:items-center">
                     <span className="text-white text-lg font-bold ml-4">
@@ -64,7 +57,7 @@ const Layout: React.FC = () => {
                             currentTab === tab.id
                               ? "bg-blue-600 text-white"
                               : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                            "px-3 py-2 rounded-md text-sm font-medium"
+                            "px-3 py-2 rounded-md text-sm font-medium",
                           )}
                         >
                           {tab.label}
@@ -81,13 +74,12 @@ const Layout: React.FC = () => {
                     {personalInfo?.lastName || ""}
                   </span>
                   {personalInfo?.avatar && personalInfo.avatar !== "" && (
-  <img
-    className="w-8 h-8 rounded-full object-cover"
-    src={personalInfo.avatar}
-    alt="آواتار کاربر"
-  />
-)}
-
+                    <img
+                      className="w-8 h-8 rounded-full object-cover"
+                      src={personalInfo.avatar}
+                      alt="آواتار کاربر"
+                    />
+                  )}
                 </div>
 
                 <div className="-mr-2 flex md:hidden">
@@ -112,7 +104,7 @@ const Layout: React.FC = () => {
                     currentTab === tab.id
                       ? "bg-blue-600 text-white"
                       : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block w-full text-right px-3 py-2 rounded-md text-base font-medium"
+                    "block w-full text-right px-3 py-2 rounded-md text-base font-medium",
                   )}
                 >
                   {tab.label}

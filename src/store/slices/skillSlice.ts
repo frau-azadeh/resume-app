@@ -59,7 +59,10 @@ const skillSlice = createSlice({
     setLanguageForm: (state, action: PayloadAction<Partial<LanguageSkill>>) => {
       state.languageForm = action.payload;
     },
-    setManagementForm: (state, action: PayloadAction<Partial<ManagementSkill>>) => {
+    setManagementForm: (
+      state,
+      action: PayloadAction<Partial<ManagementSkill>>,
+    ) => {
       state.managementForm = action.payload;
     },
   },
