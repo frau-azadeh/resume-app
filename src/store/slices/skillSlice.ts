@@ -1,15 +1,15 @@
-// UPDATED skillSlice.ts
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-interface SkillItem {
+// --- انواع داده‌ها ---
+export interface SkillItem {
   name: string;
   level: number;
 }
 
 export type Proficiency = "ضعیف" | "متوسط" | "عالی";
 
-interface LanguageSkill {
+export interface LanguageSkill {
   language: string;
   reading: Proficiency;
   writing: Proficiency;
@@ -17,7 +17,7 @@ interface LanguageSkill {
   comprehension: Proficiency;
 }
 
-interface ManagementSkill {
+export interface ManagementSkill {
   name: string;
   level: number;
 }
@@ -27,6 +27,8 @@ interface SkillState {
   skillForm: Partial<SkillItem>;
   languageSkills: LanguageSkill[];
   managementSkills: ManagementSkill[];
+  languageForm: Partial<LanguageSkill>;
+  managementForm: Partial<ManagementSkill>;
 }
 
 const initialState: SkillState = {
@@ -34,6 +36,8 @@ const initialState: SkillState = {
   skillForm: {},
   languageSkills: [],
   managementSkills: [],
+  languageForm: {},
+  managementForm: {},
 };
 
 const skillSlice = createSlice({
@@ -52,6 +56,15 @@ const skillSlice = createSlice({
     setManagementSkills: (state, action: PayloadAction<ManagementSkill[]>) => {
       state.managementSkills = action.payload;
     },
+    setLanguageForm: (state, action: PayloadAction<Partial<LanguageSkill>>) => {
+      state.languageForm = action.payload;
+    },
+    setManagementForm: (
+      state,
+      action: PayloadAction<Partial<ManagementSkill>>,
+    ) => {
+      state.managementForm = action.payload;
+    },
   },
 });
 
@@ -60,5 +73,8 @@ export const {
   setSkillForm,
   setLanguageSkills,
   setManagementSkills,
+  setLanguageForm,
+  setManagementForm,
 } = skillSlice.actions;
+
 export default skillSlice.reducer;

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
-import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../store/store";
-import { setActiveTab } from "../store/slices/tabSlice";
 import {
   setworkList as saveWorkList,
   setworkForm as saveWorkForm,
@@ -43,10 +43,9 @@ const defaultFormValues: WorkFormData = {
   description: "",
 };
 
-const tabsOrder = ["personal-info", "education", "work-experience", "skills"];
-
 const WorkInfo: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const workListInStore = useSelector(
     (state: RootState) => state.work.workList,
@@ -54,7 +53,6 @@ const WorkInfo: React.FC = () => {
   const workFormInStore = useSelector(
     (state: RootState) => state.work.workForm,
   );
-  const activeTab = useSelector((state: RootState) => state.tab.activeTab);
 
   const { register, handleSubmit, reset, setValue, watch, getValues } =
     useForm<WorkFormData>({
@@ -112,17 +110,11 @@ const WorkInfo: React.FC = () => {
     dispatch(saveWorkList(workList));
     dispatch(saveWorkForm(currentFormData));
 
-    const currentIndex = tabsOrder.indexOf(activeTab);
-    if (currentIndex === -1) return;
-
-    let newIndex = currentIndex;
-    if (direction === "next" && currentIndex < tabsOrder.length - 1) {
-      newIndex = currentIndex + 1;
-    } else if (direction === "prev" && currentIndex > 0) {
-      newIndex = currentIndex - 1;
+    if (direction === "next") {
+      navigate("/form/skill");
+    } else if (direction === "prev") {
+      navigate("/form/education");
     }
-
-    dispatch(setActiveTab(tabsOrder[newIndex]));
   };
 
   return (
@@ -183,7 +175,7 @@ const WorkInfo: React.FC = () => {
               <p className="font-semibold">
                 {item.companyName} - {item.position}
               </p>
-              <p className="text-sm text-gray-500">{item.cooperationType}</p>
+              <p className="text-sm text-gray-500">{item.field}</p>
             </div>
             <div className="flex gap-2">
               <Button onClick={() => handleEdit(index)} type="button">
