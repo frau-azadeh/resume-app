@@ -15,6 +15,7 @@ import WorkInfo from "../pages/WorkInfo";
 import { useAppDispatch, useAppSelector } from "../store/hooks"; // 🟢 تغییر با Redux
 import { setActiveTab } from "../store/slices/tabSlice"; // 🟢 تغییر با Redux
 import SkillForm from "../pages/SkillForm";
+import "../styles/fonts.css";
 
 const user = {
   name: "علی رضایی",
