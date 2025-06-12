@@ -2,26 +2,13 @@
 import {
   Disclosure,
   DisclosureButton,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuItems,
 } from "@headlessui/react";
-import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import React from "react";
-import PersonalInfo from "../pages/PersonalInfo";
-import EducationHistory from "../pages/EducationHistory";
-import WorkInfo from "../pages/WorkInfo";
-import { useAppDispatch, useAppSelector } from "../store/hooks"; // 🟢 تغییر با Redux
-import { setActiveTab } from "../store/slices/tabSlice"; // 🟢 تغییر با Redux
-import SkillForm from "../pages/SkillForm";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import "../styles/fonts.css";
-
-const user = {
-  name: "علی رضایی",
-  email: "ali@example.com",
-  imageUrl: "https://i.pravatar.cc/100",
-};
+import { useSelector } from "react-redux";
+import type { RootState } from "../store/store";
 
 const tabs = [
   { id: "personal-info", label: "اطلاعات فردی" },
@@ -35,8 +22,19 @@ function classNames(...classes: string[]) {
 }
 
 const Layout: React.FC = () => {
-  const dispatch = useAppDispatch(); // 🟢 تغییر با Redux
-  const activeTab = useAppSelector((state) => state.tab.activeTab); // 🟢 تغییر با Redux
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // خواندن اطلاعات شخصی از Redux
+  const personalInfo = useSelector(
+    (state: RootState) => state.personalInfo.personalInfo
+  );
+
+  const currentTab = location.pathname.split("/").pop();
+
+  const handleTabClick = (tabId: string) => {
+    navigate(`/form/${tabId}`);
+  };
 
   return (
     <div className="min-h-full" dir="rtl">
@@ -47,7 +45,11 @@ const Layout: React.FC = () => {
               <div className="flex h-16 items-center justify-between">
                 <div className="flex items-center">
                   <div className="shrink-0">
-                    <img className="size-8" src="/resume.jpg" alt="لوگو" />
+                    <img
+                      className="size-8"
+                      src="/resume.jpg"
+                      alt="لوگو"
+                    />
                   </div>
                   <div className="hidden md:flex md:items-center">
                     <span className="text-white text-lg font-bold ml-4">
@@ -57,12 +59,12 @@ const Layout: React.FC = () => {
                       {tabs.map((tab) => (
                         <button
                           key={tab.id}
-                          onClick={() => dispatch(setActiveTab(tab.id))} // 🟢 تغییر با Redux
+                          onClick={() => handleTabClick(tab.id)}
                           className={classNames(
-                            activeTab === tab.id
+                            currentTab === tab.id
                               ? "bg-blue-600 text-white"
                               : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                            "px-3 py-2 rounded-md text-sm font-medium",
+                            "px-3 py-2 rounded-md text-sm font-medium"
                           )}
                         >
                           {tab.label}
@@ -71,68 +73,23 @@ const Layout: React.FC = () => {
                     </div>
                   </div>
                 </div>
-                <div className="hidden md:block">
-                  <div className="ml-4 flex items-center md:ml-6">
-                    <button
-                      type="button"
-                      className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-none"
-                    >
-                      <span className="sr-only">مشاهده اعلان‌ها</span>
-                      <BellIcon className="size-6" aria-hidden="true" />
-                    </button>
 
-                    <Menu as="div" className="relative ml-3">
-                      <div>
-                        <MenuButton className="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-none">
-                          <span className="sr-only">باز کردن منوی کاربر</span>
-                          <img
-                            className="size-8 rounded-full"
-                            src={user.imageUrl}
-                            alt=""
-                          />
-                        </MenuButton>
-                      </div>
-                      <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 focus:outline-none">
-                        <MenuItem>
-                          {({ active }) => (
-                            <span
-                              className={classNames(
-                                active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700 cursor-pointer",
-                              )}
-                            >
-                              پروفایل شما
-                            </span>
-                          )}
-                        </MenuItem>
-                        <MenuItem>
-                          {({ active }) => (
-                            <span
-                              className={classNames(
-                                active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700 cursor-pointer",
-                              )}
-                            >
-                              تنظیمات
-                            </span>
-                          )}
-                        </MenuItem>
-                        <MenuItem>
-                          {({ active }) => (
-                            <span
-                              className={classNames(
-                                active ? "bg-gray-100" : "",
-                                "block px-4 py-2 text-sm text-gray-700 cursor-pointer",
-                              )}
-                            >
-                              خروج
-                            </span>
-                          )}
-                        </MenuItem>
-                      </MenuItems>
-                    </Menu>
-                  </div>
+                {/* بخش نام و عکس کاربر */}
+                <div className="hidden md:flex items-center gap-2">
+                  <span className="text-white text-sm whitespace-nowrap">
+                    {personalInfo?.firstName || "کاربر"}{" "}
+                    {personalInfo?.lastName || ""}
+                  </span>
+                  {personalInfo?.avatar && personalInfo.avatar !== "" && (
+  <img
+    className="w-8 h-8 rounded-full object-cover"
+    src={personalInfo.avatar}
+    alt="آواتار کاربر"
+  />
+)}
+
                 </div>
+
                 <div className="-mr-2 flex md:hidden">
                   <DisclosureButton className="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                     <span className="sr-only">باز کردن منو</span>
@@ -150,12 +107,12 @@ const Layout: React.FC = () => {
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => dispatch(setActiveTab(tab.id))} // 🟢 تغییر با Redux
+                  onClick={() => handleTabClick(tab.id)}
                   className={classNames(
-                    activeTab === tab.id
+                    currentTab === tab.id
                       ? "bg-blue-600 text-white"
                       : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block w-full text-right px-3 py-2 rounded-md text-base font-medium",
+                    "block w-full text-right px-3 py-2 rounded-md text-base font-medium"
                   )}
                 >
                   {tab.label}
@@ -169,11 +126,7 @@ const Layout: React.FC = () => {
       <main>
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           <div className="rounded-lg border-2 border-dashed border-gray-200 p-6 bg-white shadow">
-            {activeTab === "personal-info" && <PersonalInfo />}
-            {activeTab === "education" && <EducationHistory />}
-            {activeTab === "work-experience" && <WorkInfo />}
-            {activeTab === "skill" && <SkillForm />}
-            {/* بقیه تب‌ها رو هم اینجا لود کن بعداً */}
+            <Outlet />
           </div>
         </div>
       </main>
