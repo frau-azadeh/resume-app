@@ -30,6 +30,7 @@ export interface PersonalInfoForm {
   emergencyContactName: string;
   emergencyContactRelation: string;
   emergencyContactPhone: string;
+  avatar?: string; // ✅ اضافه کردن آواتار (base64 string)
 }
 
 export type Proficiency = "ضعیف" | "متوسط" | "عالی";
