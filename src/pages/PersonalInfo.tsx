@@ -3,39 +3,65 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "../store/store";
 import { setPersonalInfo } from "../store/slices/personalInfoSlice";
-import { setActiveTab } from "../store/slices/tabSlice";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { toast } from "react-toastify";
 import type { PersonalInfoForm } from "../types/types";
+import { useNavigate } from "react-router-dom";
 
 const PersonalInfo: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
-  // اطلاعات ذخیره‌شده در Redux
   const savedInfo = useSelector(
-    (state: RootState) => state.personalInfo.personalInfo,
+    (state: RootState) => state.personalInfo.personalInfo
   );
 
-  // مقداردهی اولیه فرم
+  // local state برای آواتار (برای نمایش سریع)
+  const [avatarPreview, setAvatarPreview] = React.useState<string | null>(
+    savedInfo.avatar || null
+  );
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    getValues,
   } = useForm<PersonalInfoForm>({
-    defaultValues: savedInfo, // ← این خط مهم است
+    defaultValues: savedInfo,
   });
 
-  // اطمینان از اینکه هنگام لود اولیه مقادیر در فرم نمایش داده شوند
   React.useEffect(() => {
     reset(savedInfo);
+    setAvatarPreview(savedInfo.avatar || null);
   }, [reset, savedInfo]);
+
+  const handleAvatarUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // قبول همه نوع عکس بجز فایل‌های غیر تصویر
+    if (!file.type.startsWith("image/")) {
+      toast.error("فقط فایل تصویر مجاز است.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result as string;
+      setAvatarPreview(base64String); // برای نمایش فوری عکس
+      // ذخیره در redux با داده‌های فرم فعلی
+      dispatch(setPersonalInfo({ ...getValues(), avatar: base64String }));
+      toast.success("عکس با موفقیت بارگذاری شد");
+    };
+    reader.readAsDataURL(file);
+  };
 
   const onSubmit = (data: PersonalInfoForm) => {
     dispatch(setPersonalInfo(data));
     toast.success("اطلاعات با موفقیت ثبت شد!");
-    dispatch(setActiveTab("education"));
+    navigate("/form/education");
   };
 
   return (
@@ -44,6 +70,27 @@ const PersonalInfo: React.FC = () => {
       dir="rtl"
     >
       <h1 className="text-2xl font-bold text-center mb-4">اطلاعات فردی</h1>
+
+      {/* ✅ آپلود عکس */}
+      <div className="flex flex-col items-center mb-6">
+        {avatarPreview ? (
+          <img
+            src={avatarPreview}
+            alt="آواتار"
+            className="w-24 h-24 rounded-full object-cover"
+          />
+        ) : (
+          <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center text-sm text-gray-500">
+            بدون عکس
+          </div>
+        )}
+        <input
+          type="file"
+          accept="image/*" // همه عکس ها رو قبول کن
+          onChange={handleAvatarUpload}
+          className="mt-2"
+        />
+      </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
         {/* اطلاعات فردی */}
@@ -123,16 +170,7 @@ const PersonalInfo: React.FC = () => {
           </div>
         </div>
 
-        {/* دکمه‌ها */}
-        <div className="flex justify-between mt-6">
-          <Button
-            type="button"
-            variant="secondary"
-            disabled
-            className="cursor-not-allowed opacity-50"
-          >
-            مرحله قبل
-          </Button>
+        <div className="flex justify-end mt-6">
           <div className="flex gap-2">
             <Button type="button" className="bg-red-500 hover:bg-red-600">
               انصراف
