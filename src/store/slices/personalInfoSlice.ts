@@ -38,6 +38,7 @@ const initialState: PersonalInfoState = {
     emergencyContactName: "",
     emergencyContactRelation: "",
     emergencyContactPhone: "",
+    avatar: "",
   },
 };
 
