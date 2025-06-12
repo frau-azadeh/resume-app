@@ -1,5 +1,3 @@
-// components/EducationHistory.tsx
-
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Input from "../components/ui/Input";
@@ -7,11 +5,11 @@ import Button from "../components/ui/Button";
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "../store/store";
-import { setActiveTab } from "../store/slices/tabSlice";
 import {
   setEducationList as saveEducationList,
   setEducationForm as saveEducationForm,
 } from "../store/slices/educationSlice";
+import { useNavigate } from "react-router-dom"; // ✅ اضافه شده
 
 interface EducationFormData {
   degree: string;
@@ -41,18 +39,25 @@ const defaultFormValues: EducationFormData = {
 
 const EducationHistory: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate(); // ✅ اضافه شده
 
   const educationListInStore = useSelector(
-    (state: RootState) => state.education.educationList,
+    (state: RootState) => state.education.educationList
   );
   const educationFormInStore = useSelector(
-    (state: RootState) => state.education.educationForm,
+    (state: RootState) => state.education.educationForm
   );
 
-  const { register, handleSubmit, reset, setValue, watch, getValues } =
-    useForm<EducationFormData>({
-      defaultValues: defaultFormValues,
-    });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    watch,
+    getValues,
+  } = useForm<EducationFormData>({
+    defaultValues: defaultFormValues,
+  });
 
   const [educationList, setEducationList] = useState<EducationFormData[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -100,11 +105,16 @@ const EducationHistory: React.FC = () => {
     }
   };
 
-  const handleNavigation = (tab: string) => {
+  const handleNavigation = (direction: "prev" | "next") => {
     const currentFormData = getValues();
     dispatch(saveEducationList(educationList));
     dispatch(saveEducationForm(currentFormData));
-    dispatch(setActiveTab(tab));
+
+    if (direction === "prev") {
+      navigate("/form/personal-info"); // ← مرحله قبل
+    } else {
+      navigate("/form/work-experience"); // ← مرحله بعد
+    }
   };
 
   return (
@@ -179,10 +189,10 @@ const EducationHistory: React.FC = () => {
       </div>
 
       <div className="mt-8 flex justify-between">
-        <Button onClick={() => handleNavigation("prevTab")} type="button">
+        <Button onClick={() => handleNavigation("prev")} type="button">
           مرحله قبل
         </Button>
-        <Button onClick={() => handleNavigation("nextTab")} type="button">
+        <Button onClick={() => handleNavigation("next")} type="button">
           مرحله بعد
         </Button>
       </div>
