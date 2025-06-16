@@ -1,3 +1,4 @@
+// PersonalInfo.tsx
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,7 +18,6 @@ const PersonalInfo: React.FC = () => {
     (state: RootState) => state.personalInfo.personalInfo,
   );
 
-  // local state برای آواتار (برای نمایش سریع)
   const [avatarPreview, setAvatarPreview] = React.useState<string | null>(
     savedInfo.avatar || null,
   );
@@ -41,7 +41,6 @@ const PersonalInfo: React.FC = () => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    // قبول همه نوع عکس بجز فایل‌های غیر تصویر
     if (!file.type.startsWith("image/")) {
       toast.error("فقط فایل تصویر مجاز است.");
       return;
@@ -50,8 +49,7 @@ const PersonalInfo: React.FC = () => {
     const reader = new FileReader();
     reader.onloadend = () => {
       const base64String = reader.result as string;
-      setAvatarPreview(base64String); // برای نمایش فوری عکس
-      // ذخیره در redux با داده‌های فرم فعلی
+      setAvatarPreview(base64String);
       dispatch(setPersonalInfo({ ...getValues(), avatar: base64String }));
       toast.success("عکس با موفقیت بارگذاری شد");
     };
@@ -66,12 +64,11 @@ const PersonalInfo: React.FC = () => {
 
   return (
     <div
-      className="max-w-5xl mx-auto p-6 space-y-8 bg-white rounded-lg shadow"
+      className="max-w-5xl mx-auto p-6 space-y-8 bg-white rounded-lg shadow-md"
       dir="rtl"
     >
       <h1 className="text-2xl font-bold text-center mb-4">اطلاعات فردی</h1>
 
-      {/* ✅ آپلود عکس */}
       <div className="flex flex-col items-center mb-6">
         {avatarPreview ? (
           <img
@@ -86,7 +83,7 @@ const PersonalInfo: React.FC = () => {
         )}
         <input
           type="file"
-          accept="image/*" // همه عکس ها رو قبول کن
+          accept="image/*"
           onChange={handleAvatarUpload}
           className="mt-2"
         />
@@ -108,8 +105,14 @@ const PersonalInfo: React.FC = () => {
               error={errors.lastName}
             />
             <Input
-              label="کدملی"
-              {...register("nationalCode", { required: "کدملی الزامی است" })}
+              label="کد ملی"
+              {...register("nationalCode", {
+                required: "کد ملی الزامی است",
+                pattern: {
+                  value: /^\d+$/,
+                  message: "کد ملی باید فقط شامل عدد باشد",
+                },
+              })}
               error={errors.nationalCode}
             />
             <Input
@@ -122,9 +125,83 @@ const PersonalInfo: React.FC = () => {
             <Input label="شماره شناسنامه" {...register("idNumber")} />
             <Input label="استان محل صدور" {...register("issueProvince")} />
             <Input label="شهر محل صدور" {...register("issueCity")} />
-            <Input label="دین" {...register("religion")} />
-            <Input label="وضعیت تاهل" {...register("maritalStatus")} />
-            <Input label="جنسیت" {...register("gender")} />
+
+            {/* وضعیت تاهل */}
+            <div className="flex flex-col">
+              <label className="font-medium mb-1">وضعیت تاهل</label>
+              <div className="flex gap-4">
+                <label className="flex items-center gap-1">
+                  <input
+                    type="radio"
+                    value="مجرد"
+                    {...register("maritalStatus", {
+                      required: "وضعیت تاهل الزامی است",
+                    })}
+                  />{" "}
+                  مجرد
+                </label>
+                <label className="flex items-center gap-1">
+                  <input
+                    type="radio"
+                    value="متاهل"
+                    {...register("maritalStatus")}
+                  />{" "}
+                  متاهل
+                </label>
+              </div>
+              {errors.maritalStatus && (
+                <span className="text-red-500 text-sm mt-1">
+                  {errors.maritalStatus.message}
+                </span>
+              )}
+            </div>
+
+            {/* جنسیت */}
+            <div className="flex flex-col">
+              <label className="font-medium mb-1">جنسیت</label>
+              <div className="flex gap-4">
+                <label className="flex items-center gap-1">
+                  <input
+                    type="radio"
+                    value="مرد"
+                    {...register("gender", { required: "جنسیت الزامی است" })}
+                  />{" "}
+                  مرد
+                </label>
+                <label className="flex items-center gap-1">
+                  <input type="radio" value="زن" {...register("gender")} /> زن
+                </label>
+              </div>
+              {errors.gender && (
+                <span className="text-red-500 text-sm mt-1">
+                  {errors.gender.message}
+                </span>
+              )}
+            </div>
+
+            {/* دین */}
+            <div className="flex flex-col">
+              <label className="font-medium mb-1">دین</label>
+              <div className="flex gap-4 flex-wrap">
+                {["اسلام", "یهودی", "مسیحی", "سایر"].map((val) => (
+                  <label key={val} className="flex items-center gap-1">
+                    <input
+                      type="radio"
+                      value={val}
+                      {...register("religion", {
+                        required: "انتخاب دین الزامی است",
+                      })}
+                    />{" "}
+                    {val}
+                  </label>
+                ))}
+              </div>
+              {errors.religion && (
+                <span className="text-red-500 text-sm mt-1">
+                  {errors.religion.message}
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
@@ -139,14 +216,23 @@ const PersonalInfo: React.FC = () => {
             <Input label="شغل مادر" {...register("motherJob")} />
             <Input label="تحصیلات مادر" {...register("motherEducation")} />
             <Input
-              label="تعداد برادر و خواهر"
+              label="تعداد خواهر و برادر"
               type="number"
-              {...register("siblingsCount")}
+              min={0}
+              {...register("siblingsCount", {
+                min: { value: 0, message: "تعداد نمی‌تواند منفی باشد" },
+              })}
+              error={errors.siblingsCount}
             />
+
             <Input
               label="تعداد فرزندان"
               type="number"
-              {...register("childrenCount")}
+              min={0}
+              {...register("childrenCount", {
+                min: { value: 0, message: "تعداد نمی‌تواند منفی باشد" },
+              })}
+              error={errors.childrenCount}
             />
           </div>
         </div>
@@ -158,15 +244,42 @@ const PersonalInfo: React.FC = () => {
             <Input label="استان محل سکونت" {...register("residenceProvince")} />
             <Input label="شهر محل سکونت" {...register("residenceCity")} />
             <Input label="آدرس" {...register("address")} />
-            <Input label="کد پستی" {...register("postalCode")} />
-            <Input label="تلفن ثابت با کد شهر" {...register("phone")} />
+            <Input
+              label="کد پستی"
+              {...register("postalCode", {
+                pattern: {
+                  value: /^\d{14}$/,
+                  message: "کد پستی باید 14 رقمی باشد",
+                },
+              })}
+              error={errors.postalCode}
+            />
+            <Input
+              label="تلفن ثابت با کد شهر"
+              {...register("phone", {
+                pattern: {
+                  value: /^\d{11}$/,
+                  message: "تلفن باید 11 رقم باشد",
+                },
+              })}
+              error={errors.phone}
+            />
             <Input label="ایمیل" type="email" {...register("email")} />
             <Input
-              label="نام فرد رابط جهت تماس اضطراری"
+              label="نام تماس اضطراری"
               {...register("emergencyContactName")}
             />
             <Input label="نسبت" {...register("emergencyContactRelation")} />
-            <Input label="تلفن ضروری" {...register("emergencyContactPhone")} />
+            <Input
+              label="تلفن ضروری"
+              {...register("emergencyContactPhone", {
+                pattern: {
+                  value: /^\d{11}$/,
+                  message: "شماره موبایل باید 11 رقمی باشد",
+                },
+              })}
+              error={errors.emergencyContactPhone}
+            />
           </div>
         </div>
 
