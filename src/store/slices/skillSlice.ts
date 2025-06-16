@@ -67,7 +67,7 @@ const skillSlice = createSlice({
     },
     setManagementForm: (
       state,
-      action: PayloadAction<Partial<ManagementSkill>>
+      action: PayloadAction<Partial<ManagementSkill>>,
     ) => {
       state.managementForm = action.payload;
     },
