@@ -1,3 +1,4 @@
+// SkillForm.tsx
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,11 +9,13 @@ import {
   setSkillForm,
   setLanguageSkills,
   setManagementSkills,
+  setResumeFile,
 } from "../store/slices/skillSlice";
 import type {
   Proficiency,
   LanguageSkill,
   ManagementSkill,
+  ResumeFile,
 } from "../store/slices/skillSlice";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
@@ -61,18 +64,11 @@ const SkillForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const skillListInStore = useSelector(
-    (state: RootState) => state.skill.skillList
-  );
-  const languageSkillsInStore = useSelector(
-    (state: RootState) => state.skill.languageSkills
-  );
-  const managementSkillsInStore = useSelector(
-    (state: RootState) => state.skill.managementSkills
-  );
-  const skillFormInStore = useSelector(
-    (state: RootState) => state.skill.skillForm
-  );
+  const skillListInStore = useSelector((state: RootState) => state.skill.skillList);
+  const languageSkillsInStore = useSelector((state: RootState) => state.skill.languageSkills);
+  const managementSkillsInStore = useSelector((state: RootState) => state.skill.managementSkills);
+  const skillFormInStore = useSelector((state: RootState) => state.skill.skillForm);
+  const resumeFile = useSelector((state: RootState) => state.skill.resumeFile);
 
   const {
     register,
@@ -84,55 +80,29 @@ const SkillForm: React.FC = () => {
   } = useForm<SkillFormData>({ defaultValues: defaultSkillValues });
 
   const [skillList, setSkillListLocal] = useState<SkillFormData[]>([]);
-  const [editingSkillIndex, setEditingSkillIndex] = useState<number | null>(
-    null
-  );
+  const [editingSkillIndex, setEditingSkillIndex] = useState<number | null>(null);
 
-  const [languageForm, setLanguageForm] = useState<LanguageSkill>(
-    defaultLanguageValues
-  );
-  const [languageSkills, setLanguageSkillsLocal] = useState<LanguageSkill[]>(
-    []
-  );
-  const [editingLanguageIndex, setEditingLanguageIndex] = useState<
-    number | null
-  >(null);
+  const [languageForm, setLanguageForm] = useState<LanguageSkill>(defaultLanguageValues);
+  const [languageSkills, setLanguageSkillsLocal] = useState<LanguageSkill[]>([]);
+  const [editingLanguageIndex, setEditingLanguageIndex] = useState<number | null>(null);
 
-  const [managementForm, setManagementForm] = useState<ManagementSkill>({
-    name: "",
-    level: 0,
-  });
-  const [managementSkills, setManagementSkillsLocal] = useState<
-    ManagementSkill[]
-  >([]);
-  const [editingManagementIndex, setEditingManagementIndex] = useState<
-    number | null
-  >(null);
+  const [managementForm, setManagementForm] = useState<ManagementSkill>({ name: "", level: 0 });
+  const [managementSkills, setManagementSkillsLocal] = useState<ManagementSkill[]>([]);
+  const [editingManagementIndex, setEditingManagementIndex] = useState<number | null>(null);
 
   useEffect(() => {
     setSkillListLocal(skillListInStore || []);
     setLanguageSkillsLocal(languageSkillsInStore || []);
     setManagementSkillsLocal(managementSkillsInStore || []);
     reset({ ...defaultSkillValues, ...skillFormInStore });
-  }, [
-    skillListInStore,
-    languageSkillsInStore,
-    managementSkillsInStore,
-    skillFormInStore,
-    reset,
-  ]);
+  }, [skillListInStore, languageSkillsInStore, managementSkillsInStore, skillFormInStore, reset]);
 
-  const renderStars = (
-    currentValue: number,
-    onChange: (level: number) => void
-  ) => (
+  const renderStars = (currentValue: number, onChange: (level: number) => void) => (
     <div className="flex gap-1">
       {[1, 2, 3, 4, 5].map((star) => (
         <span
           key={star}
-          className={`cursor-pointer text-2xl ${
-            star <= currentValue ? "text-yellow-400" : "text-gray-400"
-          }`}
+          className={`cursor-pointer text-2xl ${star <= currentValue ? "text-yellow-400" : "text-gray-400"}`}
           onClick={() => onChange(star)}
         >
           ★
@@ -187,8 +157,7 @@ const SkillForm: React.FC = () => {
     }
 
     const exists = managementSkills.some(
-      (s, index) =>
-        s.name === managementForm.name && index !== editingManagementIndex
+      (s, index) => s.name === managementForm.name && index !== editingManagementIndex
     );
     if (exists) {
       toast.error("این مهارت قبلاً انتخاب شده است");
@@ -210,18 +179,37 @@ const SkillForm: React.FC = () => {
   };
 
   const availableManagerialSkills = allManagerialSkills.filter(
-    (skill) =>
-      !managementSkills
-        .filter((_, i) => i !== editingManagementIndex)
-        .some((s) => s.name === skill)
+    (skill) => !managementSkills.filter((_, i) => i !== editingManagementIndex).some((s) => s.name === skill)
   );
 
-  const languageFields: LanguageSkillField[] = [
-    "reading",
-    "writing",
-    "speaking",
-    "comprehension",
-  ];
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== "application/pdf") {
+      toast.error("فقط فایل PDF مجاز است");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64 = reader.result as string;
+      const payload: ResumeFile = {
+        name: file.name,
+        base64,
+      };
+      dispatch(setResumeFile(payload));
+      toast.success("فایل رزومه آپلود شد");
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleRemoveResume = () => {
+    dispatch(setResumeFile(null));
+    toast.info("فایل رزومه حذف شد");
+  };
+
+  const languageFields: LanguageSkillField[] = ["reading", "writing", "speaking", "comprehension"];
 
   return (
     <div className="max-w-2xl mx-auto bg-white p-6 rounded shadow" dir="rtl">
@@ -229,18 +217,13 @@ const SkillForm: React.FC = () => {
 
       {/* مهارت تخصصی */}
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
-        <Input
-          label="نام مهارت"
-          {...register("name", { required: "نام مهارت الزامی است" })}
-        />
+        <Input label="نام مهارت" {...register("name", { required: "نام مهارت الزامی است" })} />
         <div>
           <label className="text-sm font-medium mb-1 block">میزان تسلط</label>
           {renderStars(watch("level"), (lvl) => setValue("level", lvl))}
         </div>
         <div className="text-center">
-          <Button type="submit">
-            {editingSkillIndex !== null ? "ویرایش مهارت" : "افزودن مهارت"}
-          </Button>
+          <Button type="submit">{editingSkillIndex !== null ? "ویرایش مهارت" : "افزودن مهارت"}</Button>
         </div>
       </form>
 
@@ -250,9 +233,7 @@ const SkillForm: React.FC = () => {
         <Input
           label="نام زبان"
           value={languageForm.language}
-          onChange={(e) =>
-            setLanguageForm({ ...languageForm, language: e.target.value })
-          }
+          onChange={(e) => setLanguageForm({ ...languageForm, language: e.target.value })}
         />
         {languageFields.map((field) => (
           <div key={field} className="mt-2">
@@ -260,12 +241,7 @@ const SkillForm: React.FC = () => {
             <select
               className="border rounded p-1 w-full"
               value={languageForm[field]}
-              onChange={(e) =>
-                setLanguageForm({
-                  ...languageForm,
-                  [field]: e.target.value as Proficiency,
-                })
-              }
+              onChange={(e) => setLanguageForm({ ...languageForm, [field]: e.target.value as Proficiency })}
             >
               {proficiencyLevels.map((level) => (
                 <option key={level} value={level}>
@@ -288,9 +264,7 @@ const SkillForm: React.FC = () => {
         <select
           className="border p-2 rounded w-full"
           value={managementForm.name}
-          onChange={(e) =>
-            setManagementForm({ ...managementForm, name: e.target.value })
-          }
+          onChange={(e) => setManagementForm({ ...managementForm, name: e.target.value })}
         >
           <option value="">انتخاب مهارت</option>
           {availableManagerialSkills.map((s) => (
@@ -300,45 +274,26 @@ const SkillForm: React.FC = () => {
           ))}
         </select>
         <div className="mt-2">
-          {renderStars(managementForm.level, (lvl) =>
-            setManagementForm({ ...managementForm, level: lvl })
-          )}
+          {renderStars(managementForm.level, (lvl) => setManagementForm({ ...managementForm, level: lvl }))}
         </div>
         <div className="text-center mt-2">
           <Button onClick={addOrUpdateManagementSkill}>
-            {editingManagementIndex !== null
-              ? "ویرایش مهارت"
-              : "افزودن مهارت"}
+            {editingManagementIndex !== null ? "ویرایش مهارت" : "افزودن مهارت"}
           </Button>
         </div>
 
         <div className="mt-4 space-y-2">
           {managementSkills.map((skill, index) => (
-            <div
-              key={index}
-              className="border p-2 rounded flex justify-between items-center"
-            >
+            <div key={index} className="border p-2 rounded flex justify-between items-center">
               <div>
                 <p className="font-bold">{skill.name}</p>
-                <p className="text-yellow-500">
-                  {"★".repeat(skill.level)}
-                  {"☆".repeat(5 - skill.level)}
-                </p>
+                <p className="text-yellow-500">{"★".repeat(skill.level)}{"☆".repeat(5 - skill.level)}</p>
               </div>
               <div className="flex gap-2">
+                <Button onClick={() => { setManagementForm(skill); setEditingManagementIndex(index); }}>ویرایش</Button>
                 <Button
                   onClick={() => {
-                    setManagementForm(skill);
-                    setEditingManagementIndex(index);
-                  }}
-                >
-                  ویرایش
-                </Button>
-                <Button
-                  onClick={() => {
-                    const updated = managementSkills.filter(
-                      (_, i) => i !== index
-                    );
+                    const updated = managementSkills.filter((_, i) => i !== index);
                     setManagementSkillsLocal(updated);
                     dispatch(setManagementSkills(updated));
                   }}
@@ -350,6 +305,36 @@ const SkillForm: React.FC = () => {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* آپلود فایل رزومه */}
+      <div className="mt-8">
+        <h3 className="text-lg font-semibold mb-2">رزومه (فقط PDF)</h3>
+        {resumeFile ? (
+          <div className="border p-3 rounded flex justify-between items-center">
+            <div className="text-sm">{resumeFile.name}</div>
+            <div className="flex gap-3">
+              <a
+                href={resumeFile.base64}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 underline"
+              >
+                مشاهده
+              </a>
+              <Button variant="destructive" onClick={handleRemoveResume}>
+                حذف
+              </Button>
+            </div>
+          </div>
+        ) : (
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={handleFileUpload}
+            className="w-full border p-2 rounded"
+          />
+        )}
       </div>
 
       {/* مرحله قبل */}

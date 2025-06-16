@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-// --- انواع داده‌ها ---
 export interface SkillItem {
   name: string;
   level: number;
@@ -22,13 +21,19 @@ export interface ManagementSkill {
   level: number;
 }
 
-interface SkillState {
+export interface SkillState {
   skillList: SkillItem[];
   skillForm: Partial<SkillItem>;
   languageSkills: LanguageSkill[];
   managementSkills: ManagementSkill[];
   languageForm: Partial<LanguageSkill>;
   managementForm: Partial<ManagementSkill>;
+  resumeFile: ResumeFile | null;
+}
+
+export interface ResumeFile {
+  name: string;
+  base64: string;
 }
 
 const initialState: SkillState = {
@@ -38,6 +43,7 @@ const initialState: SkillState = {
   managementSkills: [],
   languageForm: {},
   managementForm: {},
+  resumeFile: null,
 };
 
 const skillSlice = createSlice({
@@ -61,9 +67,12 @@ const skillSlice = createSlice({
     },
     setManagementForm: (
       state,
-      action: PayloadAction<Partial<ManagementSkill>>,
+      action: PayloadAction<Partial<ManagementSkill>>
     ) => {
       state.managementForm = action.payload;
+    },
+    setResumeFile: (state, action: PayloadAction<ResumeFile | null>) => {
+      state.resumeFile = action.payload;
     },
   },
 });
@@ -75,6 +84,7 @@ export const {
   setManagementSkills,
   setLanguageForm,
   setManagementForm,
+  setResumeFile,
 } = skillSlice.actions;
 
 export default skillSlice.reducer;
