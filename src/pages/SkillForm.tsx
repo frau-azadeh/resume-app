@@ -23,6 +23,11 @@ interface SkillFormData {
   level: number;
 }
 
+type LanguageSkillField = keyof Pick<
+  LanguageSkill,
+  "reading" | "writing" | "speaking" | "comprehension"
+>;
+
 const defaultSkillValues: SkillFormData = { name: "", level: 0 };
 const defaultLanguageValues: LanguageSkill = {
   language: "",
@@ -32,7 +37,7 @@ const defaultLanguageValues: LanguageSkill = {
   comprehension: "متوسط",
 };
 
-const allManagerialSkills = [
+const allManagerialSkills: string[] = [
   "روابط عمومی",
   "انتقاد پذیری",
   "شنونده خوب",
@@ -50,36 +55,44 @@ const allManagerialSkills = [
   "مسئولیت پذیری",
 ];
 
+const proficiencyLevels: Proficiency[] = ["ضعیف", "متوسط", "عالی"];
+
 const SkillForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   const skillListInStore = useSelector(
-    (state: RootState) => state.skill.skillList,
+    (state: RootState) => state.skill.skillList
   );
   const languageSkillsInStore = useSelector(
-    (state: RootState) => state.skill.languageSkills,
+    (state: RootState) => state.skill.languageSkills
   );
   const managementSkillsInStore = useSelector(
-    (state: RootState) => state.skill.managementSkills,
+    (state: RootState) => state.skill.managementSkills
   );
   const skillFormInStore = useSelector(
-    (state: RootState) => state.skill.skillForm,
+    (state: RootState) => state.skill.skillForm
   );
 
-  const { register, handleSubmit, reset, setValue, getValues, watch } =
-    useForm<SkillFormData>({ defaultValues: defaultSkillValues });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    getValues,
+    watch,
+  } = useForm<SkillFormData>({ defaultValues: defaultSkillValues });
 
   const [skillList, setSkillListLocal] = useState<SkillFormData[]>([]);
   const [editingSkillIndex, setEditingSkillIndex] = useState<number | null>(
-    null,
+    null
   );
 
   const [languageForm, setLanguageForm] = useState<LanguageSkill>(
-    defaultLanguageValues,
+    defaultLanguageValues
   );
   const [languageSkills, setLanguageSkillsLocal] = useState<LanguageSkill[]>(
-    [],
+    []
   );
   const [editingLanguageIndex, setEditingLanguageIndex] = useState<
     number | null
@@ -111,13 +124,15 @@ const SkillForm: React.FC = () => {
 
   const renderStars = (
     currentValue: number,
-    onChange: (level: number) => void,
+    onChange: (level: number) => void
   ) => (
     <div className="flex gap-1">
       {[1, 2, 3, 4, 5].map((star) => (
         <span
           key={star}
-          className={`cursor-pointer text-2xl ${star <= currentValue ? "text-yellow-400" : "text-gray-400"}`}
+          className={`cursor-pointer text-2xl ${
+            star <= currentValue ? "text-yellow-400" : "text-gray-400"
+          }`}
           onClick={() => onChange(star)}
         >
           ★
@@ -165,6 +180,21 @@ const SkillForm: React.FC = () => {
       toast.error("نام مهارت را وارد کنید");
       return;
     }
+
+    if (editingManagementIndex === null && managementSkills.length >= 3) {
+      toast.error("حداکثر ۳ مهارت مدیریتی مجاز است");
+      return;
+    }
+
+    const exists = managementSkills.some(
+      (s, index) =>
+        s.name === managementForm.name && index !== editingManagementIndex
+    );
+    if (exists) {
+      toast.error("این مهارت قبلاً انتخاب شده است");
+      return;
+    }
+
     const updated = [...managementSkills];
     if (editingManagementIndex !== null) {
       updated[editingManagementIndex] = managementForm;
@@ -179,15 +209,26 @@ const SkillForm: React.FC = () => {
     setEditingManagementIndex(null);
   };
 
+  const availableManagerialSkills = allManagerialSkills.filter(
+    (skill) =>
+      !managementSkills
+        .filter((_, i) => i !== editingManagementIndex)
+        .some((s) => s.name === skill)
+  );
+
+  const languageFields: LanguageSkillField[] = [
+    "reading",
+    "writing",
+    "speaking",
+    "comprehension",
+  ];
+
   return (
     <div className="max-w-2xl mx-auto bg-white p-6 rounded shadow" dir="rtl">
       <h2 className="text-xl font-bold text-center mb-4">مهارت‌ها</h2>
 
       {/* مهارت تخصصی */}
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="grid grid-cols-1 gap-4"
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
         <Input
           label="نام مهارت"
           {...register("name", { required: "نام مهارت الزامی است" })}
@@ -203,45 +244,6 @@ const SkillForm: React.FC = () => {
         </div>
       </form>
 
-      {/* نمایش مهارت‌ها */}
-      <div className="mt-6 space-y-4">
-        {skillList.map((skill, index) => (
-          <div
-            key={index}
-            className="p-4 border rounded flex justify-between items-center"
-          >
-            <div>
-              <p className="font-semibold">{skill.name}</p>
-              <p className="text-yellow-500">
-                {"★".repeat(skill.level)}
-                {"☆".repeat(5 - skill.level)}
-              </p>
-            </div>
-            <div className="flex gap-2">
-              <Button
-                onClick={() => {
-                  setEditingSkillIndex(index);
-                  setValue("name", skill.name);
-                  setValue("level", skill.level);
-                }}
-              >
-                ویرایش
-              </Button>
-              <Button
-                onClick={() => {
-                  const updated = skillList.filter((_, i) => i !== index);
-                  setSkillListLocal(updated);
-                  dispatch(setSkillList(updated));
-                }}
-                variant="destructive"
-              >
-                حذف
-              </Button>
-            </div>
-          </div>
-        ))}
-      </div>
-
       {/* زبان خارجی */}
       <div className="mt-8">
         <h3 className="text-lg font-semibold mb-2">زبان خارجی</h3>
@@ -252,12 +254,12 @@ const SkillForm: React.FC = () => {
             setLanguageForm({ ...languageForm, language: e.target.value })
           }
         />
-        {["reading", "writing", "speaking", "comprehension"].map((field) => (
+        {languageFields.map((field) => (
           <div key={field} className="mt-2">
             <label className="block font-medium">{field}</label>
             <select
               className="border rounded p-1 w-full"
-              value={(languageForm as any)[field]}
+              value={languageForm[field]}
               onChange={(e) =>
                 setLanguageForm({
                   ...languageForm,
@@ -265,9 +267,11 @@ const SkillForm: React.FC = () => {
                 })
               }
             >
-              <option value="ضعیف">ضعیف</option>
-              <option value="متوسط">متوسط</option>
-              <option value="عالی">عالی</option>
+              {proficiencyLevels.map((level) => (
+                <option key={level} value={level}>
+                  {level}
+                </option>
+              ))}
             </select>
           </div>
         ))}
@@ -275,44 +279,6 @@ const SkillForm: React.FC = () => {
           <Button onClick={addOrUpdateLanguage}>
             {editingLanguageIndex !== null ? "ویرایش زبان" : "افزودن زبان"}
           </Button>
-        </div>
-        <div className="mt-4 space-y-2">
-          {languageSkills.map((lang, index) => (
-            <div
-              key={index}
-              className="border p-2 rounded flex justify-between items-center"
-            >
-              <div>
-                <p className="font-bold">{lang.language}</p>
-                <p>
-                  درک: {lang.comprehension} | گفتار: {lang.speaking} | نوشتار:{" "}
-                  {lang.writing} | خواندن: {lang.reading}
-                </p>
-              </div>
-              <div className="flex gap-2">
-                <Button
-                  onClick={() => {
-                    setLanguageForm(lang);
-                    setEditingLanguageIndex(index);
-                  }}
-                >
-                  ویرایش
-                </Button>
-                <Button
-                  onClick={() => {
-                    const updated = languageSkills.filter(
-                      (_, i) => i !== index,
-                    );
-                    setLanguageSkillsLocal(updated);
-                    dispatch(setLanguageSkills(updated));
-                  }}
-                  variant="destructive"
-                >
-                  حذف
-                </Button>
-              </div>
-            </div>
-          ))}
         </div>
       </div>
 
@@ -327,7 +293,7 @@ const SkillForm: React.FC = () => {
           }
         >
           <option value="">انتخاب مهارت</option>
-          {allManagerialSkills.map((s) => (
+          {availableManagerialSkills.map((s) => (
             <option key={s} value={s}>
               {s}
             </option>
@@ -335,14 +301,17 @@ const SkillForm: React.FC = () => {
         </select>
         <div className="mt-2">
           {renderStars(managementForm.level, (lvl) =>
-            setManagementForm({ ...managementForm, level: lvl }),
+            setManagementForm({ ...managementForm, level: lvl })
           )}
         </div>
         <div className="text-center mt-2">
           <Button onClick={addOrUpdateManagementSkill}>
-            {editingManagementIndex !== null ? "ویرایش مهارت" : "افزودن مهارت"}
+            {editingManagementIndex !== null
+              ? "ویرایش مهارت"
+              : "افزودن مهارت"}
           </Button>
         </div>
+
         <div className="mt-4 space-y-2">
           {managementSkills.map((skill, index) => (
             <div
@@ -368,7 +337,7 @@ const SkillForm: React.FC = () => {
                 <Button
                   onClick={() => {
                     const updated = managementSkills.filter(
-                      (_, i) => i !== index,
+                      (_, i) => i !== index
                     );
                     setManagementSkillsLocal(updated);
                     dispatch(setManagementSkills(updated));
@@ -383,7 +352,7 @@ const SkillForm: React.FC = () => {
         </div>
       </div>
 
-      {/* دکمه مرحله قبل */}
+      {/* مرحله قبل */}
       <div className="mt-8 flex justify-between">
         <Button
           onClick={() => {
