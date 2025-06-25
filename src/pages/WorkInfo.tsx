@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
+import JalaliDateInput from "../components/ui/JalaliDatePicker";
+import { todayJalali } from "../utils/date";
+import dayjs, { Dayjs } from "dayjs";
 import type { RootState, AppDispatch } from "../store/store";
 import {
   setworkList as saveWorkList,
@@ -18,8 +21,8 @@ interface WorkFormData {
   level: string;
   cooperationType: string;
   insuranceMonths: string;
-  startDate: string;
-  endDate: string;
+  startDate: Dayjs | null;
+  endDate: Dayjs | null;
   isWorking: boolean;
   workPhone: string;
   lastSalary: string;
@@ -34,8 +37,8 @@ const defaultFormValues: WorkFormData = {
   level: "",
   cooperationType: "",
   insuranceMonths: "",
-  startDate: "",
-  endDate: "",
+  startDate: todayJalali(),
+  endDate: todayJalali(),
   isWorking: false,
   workPhone: "",
   lastSalary: "",
@@ -62,10 +65,30 @@ const WorkInfo: React.FC = () => {
   const [workList, setWorkList] = useState<WorkFormData[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const isWorking = watch("isWorking");
+  const startDate = watch("startDate");
+  const endDate = watch("endDate");
 
   useEffect(() => {
-    setWorkList(workListInStore || []);
-    reset({ ...defaultFormValues, ...workFormInStore });
+    setWorkList(
+      (workListInStore || []).map((item) => ({
+        ...item,
+        startDate: item.startDate ? dayjs(item.startDate, "YYYY-MM-DD") : null,
+        endDate: item.endDate ? dayjs(item.endDate, "YYYY-MM-DD") : null,
+      })),
+    );
+
+    if (workFormInStore) {
+      reset({
+        ...defaultFormValues,
+        ...workFormInStore,
+        startDate: workFormInStore.startDate
+          ? dayjs(workFormInStore.startDate, "YYYY-MM-DD")
+          : todayJalali(),
+        endDate: workFormInStore.endDate
+          ? dayjs(workFormInStore.endDate, "YYYY-MM-DD")
+          : todayJalali(),
+      });
+    }
   }, [workListInStore, workFormInStore, reset]);
 
   const onSubmit = (data: WorkFormData) => {
@@ -80,7 +103,15 @@ const WorkInfo: React.FC = () => {
     }
 
     setWorkList(updatedList);
-    dispatch(saveWorkList(updatedList));
+    dispatch(
+      saveWorkList(
+        updatedList.map((item) => ({
+          ...item,
+          startDate: item.startDate ? item.startDate.format("YYYY-MM-DD") : "",
+          endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : "",
+        })),
+      ),
+    );
     dispatch(saveWorkForm({}));
     setEditingIndex(null);
     reset(defaultFormValues);
@@ -88,16 +119,29 @@ const WorkInfo: React.FC = () => {
 
   const handleEdit = (index: number) => {
     const item = workList[index];
-    Object.entries(item).forEach(([key, value]) => {
-      setValue(key as keyof WorkFormData, value);
-    });
     setEditingIndex(index);
+    reset(item);
+    dispatch(
+      saveWorkForm({
+        ...item,
+        startDate: item.startDate ? item.startDate.format("YYYY-MM-DD") : "",
+        endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : "",
+      }),
+    );
   };
 
   const handleDelete = (index: number) => {
     const updated = workList.filter((_, i) => i !== index);
     setWorkList(updated);
-    dispatch(saveWorkList(updated));
+    dispatch(
+      saveWorkList(
+        updated.map((item) => ({
+          ...item,
+          startDate: item.startDate ? item.startDate.format("YYYY-MM-DD") : "",
+          endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : "",
+        })),
+      ),
+    );
     toast.info("سابقه کاری حذف شد");
     if (editingIndex === index) {
       setEditingIndex(null);
@@ -107,12 +151,30 @@ const WorkInfo: React.FC = () => {
 
   const handleNavigation = (direction: "next" | "prev") => {
     const currentFormData = getValues();
-    dispatch(saveWorkList(workList));
-    dispatch(saveWorkForm(currentFormData));
+    dispatch(
+      saveWorkList(
+        workList.map((item) => ({
+          ...item,
+          startDate: item.startDate ? item.startDate.format("YYYY-MM-DD") : "",
+          endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : "",
+        })),
+      ),
+    );
+    dispatch(
+      saveWorkForm({
+        ...currentFormData,
+        startDate: currentFormData.startDate
+          ? currentFormData.startDate.format("YYYY-MM-DD")
+          : "",
+        endDate: currentFormData.endDate
+          ? currentFormData.endDate.format("YYYY-MM-DD")
+          : "",
+      }),
+    );
 
     if (direction === "next") {
       navigate("/form/skill");
-    } else if (direction === "prev") {
+    } else {
       navigate("/form/education");
     }
   };
@@ -135,11 +197,16 @@ const WorkInfo: React.FC = () => {
           type="number"
           {...register("insuranceMonths")}
         />
-        <Input label="تاریخ شروع" type="date" {...register("startDate")} />
-        <Input
+
+        <JalaliDateInput
+          label="تاریخ شروع"
+          value={startDate}
+          onChange={(v) => setValue("startDate", v)}
+        />
+        <JalaliDateInput
           label="تاریخ پایان"
-          type="date"
-          {...register("endDate")}
+          value={endDate}
+          onChange={(v) => setValue("endDate", v)}
           disabled={isWorking}
         />
 
@@ -175,7 +242,10 @@ const WorkInfo: React.FC = () => {
               <p className="font-semibold">
                 {item.companyName} - {item.position}
               </p>
-              <p className="text-sm text-gray-500">{item.field}</p>
+              <p className="text-sm text-gray-500">
+                {item.startDate?.format("YYYY-MM-DD")} تا{" "}
+                {item.isWorking ? "شاغل" : item.endDate?.format("YYYY-MM-DD")}
+              </p>
             </div>
             <div className="flex gap-2">
               <Button onClick={() => handleEdit(index)} type="button">

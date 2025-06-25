@@ -1,5 +1,5 @@
 // src/components/Layout.tsx
-import { Disclosure, DisclosureButton } from "@headlessui/react";
+import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import React from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
@@ -83,14 +83,14 @@ const Layout: React.FC = () => {
                 </div>
 
                 <div className="-mr-2 flex md:hidden">
-                  <DisclosureButton className="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                  <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                     <span className="sr-only">باز کردن منو</span>
                     {open ? (
                       <XMarkIcon className="block size-6" aria-hidden="true" />
                     ) : (
                       <Bars3Icon className="block size-6" aria-hidden="true" />
                     )}
-                  </DisclosureButton>
+                  </Disclosure.Button>
                 </div>
               </div>
             </div>
