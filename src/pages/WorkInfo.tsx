@@ -50,12 +50,17 @@ const WorkInfo: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const workListInStore = useSelector((state: RootState) => state.work.workList);
-  const workFormInStore = useSelector((state: RootState) => state.work.workForm);
+  const workListInStore = useSelector(
+    (state: RootState) => state.work.workList,
+  );
+  const workFormInStore = useSelector(
+    (state: RootState) => state.work.workForm,
+  );
 
-  const { register, handleSubmit, reset, setValue, watch, getValues } = useForm<WorkFormData>({
-    defaultValues: defaultFormValues,
-  });
+  const { register, handleSubmit, reset, setValue, watch, getValues } =
+    useForm<WorkFormData>({
+      defaultValues: defaultFormValues,
+    });
 
   const [workList, setWorkList] = useState<WorkFormData[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -69,7 +74,7 @@ const WorkInfo: React.FC = () => {
         ...item,
         startDate: item.startDate ? dayjs(item.startDate, "YYYY-MM-DD") : null,
         endDate: item.endDate ? dayjs(item.endDate, "YYYY-MM-DD") : null,
-      }))
+      })),
     );
 
     if (workFormInStore) {
@@ -104,8 +109,8 @@ const WorkInfo: React.FC = () => {
           ...item,
           startDate: item.startDate ? item.startDate.format("YYYY-MM-DD") : "",
           endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : "",
-        }))
-      )
+        })),
+      ),
     );
     dispatch(saveWorkForm({}));
     setEditingIndex(null);
@@ -121,7 +126,7 @@ const WorkInfo: React.FC = () => {
         ...item,
         startDate: item.startDate ? item.startDate.format("YYYY-MM-DD") : "",
         endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : "",
-      })
+      }),
     );
   };
 
@@ -134,8 +139,8 @@ const WorkInfo: React.FC = () => {
           ...item,
           startDate: item.startDate ? item.startDate.format("YYYY-MM-DD") : "",
           endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : "",
-        }))
-      )
+        })),
+      ),
     );
     toast.info("سابقه کاری حذف شد");
     if (editingIndex === index) {
@@ -152,8 +157,8 @@ const WorkInfo: React.FC = () => {
           ...item,
           startDate: item.startDate ? item.startDate.format("YYYY-MM-DD") : "",
           endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : "",
-        }))
-      )
+        })),
+      ),
     );
     dispatch(
       saveWorkForm({
@@ -164,7 +169,7 @@ const WorkInfo: React.FC = () => {
         endDate: currentFormData.endDate
           ? currentFormData.endDate.format("YYYY-MM-DD")
           : "",
-      })
+      }),
     );
 
     if (direction === "next") {
@@ -178,13 +183,20 @@ const WorkInfo: React.FC = () => {
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow" dir="rtl">
       <h1 className="text-2xl font-bold mb-4 text-center">سوابق کاری</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+      >
         <Input label="نام شرکت" {...register("companyName")} />
         <Input label="عنوان شغلی" {...register("position")} />
         <Input label="زمینه فعالیت شرکت" {...register("field")} />
         <Input label="رده سازمانی" {...register("level")} />
         <Input label="نوع همکاری" {...register("cooperationType")} />
-        <Input label="سابقه بیمه (ماه)" type="number" {...register("insuranceMonths")} />
+        <Input
+          label="سابقه بیمه (ماه)"
+          type="number"
+          {...register("insuranceMonths")}
+        />
 
         <JalaliDateInput
           label="تاریخ شروع"
@@ -222,7 +234,10 @@ const WorkInfo: React.FC = () => {
 
       <div className="mt-8 space-y-4">
         {workList.map((item, index) => (
-          <div key={index} className="p-4 border rounded flex justify-between items-center">
+          <div
+            key={index}
+            className="p-4 border rounded flex justify-between items-center"
+          >
             <div>
               <p className="font-semibold">
                 {item.companyName} - {item.position}
@@ -236,7 +251,11 @@ const WorkInfo: React.FC = () => {
               <Button onClick={() => handleEdit(index)} type="button">
                 ویرایش
               </Button>
-              <Button onClick={() => handleDelete(index)} type="button" variant="destructive">
+              <Button
+                onClick={() => handleDelete(index)}
+                type="button"
+                variant="destructive"
+              >
                 حذف
               </Button>
             </div>
