@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import { createSlice} from "@reduxjs/toolkit";
 
 export interface EducationFormData {
   degree: string;
@@ -8,8 +8,8 @@ export interface EducationFormData {
   institutionType: string;
   institutionName: string;
   grade: string;
-  startDate: string;
-  endDate: string;
+  startDate: string;  // YYYY-MM-DD
+  endDate: string;    // YYYY-MM-DD
   isStudying: boolean;
   description: string;
 }
@@ -31,7 +31,7 @@ const educationSlice = createSlice({
     setEducationList(state, action: PayloadAction<EducationFormData[]>) {
       state.educationList = action.payload;
     },
-    setEducationForm(state, action: PayloadAction<Partial<EducationFormData>>) {
+    setEducationForm(state, action: PayloadAction<Partial<EducationFormData> | null>) {
       state.educationForm = action.payload;
     },
     clearEducationData(state) {
@@ -41,6 +41,5 @@ const educationSlice = createSlice({
   },
 });
 
-export const { setEducationList, setEducationForm, clearEducationData } =
-  educationSlice.actions;
+export const { setEducationList, setEducationForm, clearEducationData } = educationSlice.actions;
 export default educationSlice.reducer;
