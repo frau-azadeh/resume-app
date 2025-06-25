@@ -1,6 +1,6 @@
 # 📄 resume-app
 
-A modern **Resume Builder Web Application** developed for showcasing front-end and back-end skills as part of an interview project .
+A modern **Resume Builder Web Application** developed for showcasing front-end skills as part of an interview project .
 
 This app allows users to input personal details, education history, skills, courses, and awards in a multi-step form and stores data securely in Supabase.
 
@@ -16,8 +16,6 @@ This app allows users to input personal details, education history, skills, cour
 
 🗄️ Redux Toolkit – Global state management
 
-🔥 Supabase – Backend as a Service (Database & API)
-
 🧹 Prettier – Code formatting
 
 ---
@@ -29,8 +27,6 @@ This app allows users to input personal details, education history, skills, cour
 ✅ Personal info, education, skills, courses, awards
 
 ✅ Form validation
-
-✅ Data persistence in Supabase
 
 ✅ Modern responsive UI
 
@@ -51,8 +47,6 @@ This app allows users to input personal details, education history, skills, cour
 3.  Start the development server:
 
         npm run dev
-
-4.  Configure your Supabase keys in /src/services/supabaseClient.ts
 
 ---
 
