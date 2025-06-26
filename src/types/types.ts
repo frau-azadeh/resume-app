@@ -1,10 +1,10 @@
-// types.ts
+import type { Dayjs } from "dayjs";
 
 export interface PersonalInfoForm {
   firstName: string;
   lastName: string;
   nationalCode: string;
-  birthDate: string;
+  birthDate: Dayjs | null; // فرم از نوع Dayjs
   birthCity: string;
   birthProvince: string;
   idNumber: string;
@@ -30,7 +30,7 @@ export interface PersonalInfoForm {
   emergencyContactName: string;
   emergencyContactRelation: string;
   emergencyContactPhone: string;
-  avatar?: string; // ✅ اضافه کردن آواتار (base64 string)
+  avatar: string;
 }
 
 export type Proficiency = "ضعیف" | "متوسط" | "عالی";

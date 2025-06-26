@@ -4,3 +4,9 @@ body {
   font-family: vazir;
   direction: rtl;
 }
+
+.toast-rtl .Toastify__toast-body {
+  font-family: "Vazir", sans-serif !important;
+  text-align: right;
+  direction: rtl;
+}

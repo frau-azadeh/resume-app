@@ -13,7 +13,11 @@ import SkillForm from "./pages/SkillForm";
 const App: React.FC = () => {
   return (
     <BrowserRouter>
-      <ToastContainer position="top-center" />
+      <ToastContainer
+        position="top-center"
+        rtl={true}
+        toastClassName="toast-rtl"
+      />
       <Routes>
         <Route
           path="/"
