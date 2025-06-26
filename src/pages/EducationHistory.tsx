@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type FieldErrors } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { toast } from "react-toastify";
@@ -10,21 +11,11 @@ import {
   setEducationForm as saveEducationForm,
 } from "../store/slices/educationSlice";
 import dayjs, { todayJalali } from "../utils/date";
-import type { Dayjs } from "dayjs";
 import JalaliDateInput from "../components/ui/JalaliDatePicker";
-
-interface EducationFormDataLocal {
-  degree: string;
-  field: string;
-  specialization: string;
-  institutionType: string;
-  institutionName: string;
-  grade: string;
-  startDate: Dayjs | null;
-  endDate: Dayjs | null;
-  isStudying: boolean;
-  description: string;
-}
+import {
+  educationSchema,
+  type EducationFormDataLocal,
+} from "../validation/educationSchema";
 
 const defaultFormValues: EducationFormDataLocal = {
   degree: "",
@@ -34,7 +25,7 @@ const defaultFormValues: EducationFormDataLocal = {
   institutionName: "",
   grade: "",
   startDate: todayJalali(),
-  endDate: todayJalali(),
+  endDate: null,
   isStudying: false,
   description: "",
 };
@@ -48,14 +39,22 @@ const EducationHistory: React.FC = () => {
     (state: RootState) => state.education.educationForm,
   );
 
-  const { register, handleSubmit, reset, setValue, watch } =
-    useForm<EducationFormDataLocal>({
-      defaultValues: defaultFormValues,
-    });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<EducationFormDataLocal>({
+    defaultValues: defaultFormValues,
+    resolver: zodResolver(educationSchema),
+  });
 
   const [educationList, setEducationList] = useState<EducationFormDataLocal[]>(
     [],
   );
+
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
   const isStudying = watch("isStudying");
@@ -65,27 +64,42 @@ const EducationHistory: React.FC = () => {
   useEffect(() => {
     setEducationList(
       educationListInStore.map((edu) => ({
-        ...edu,
-        startDate: edu.startDate ? dayjs(edu.startDate, "YYYY-MM-DD") : null,
+        degree: edu.degree,
+        field: edu.field ?? "",
+        specialization: edu.specialization ?? "",
+        institutionType: edu.institutionType ?? "",
+        institutionName: edu.institutionName ?? "",
+        grade: edu.grade ?? "",
+        startDate: edu.startDate
+          ? dayjs(edu.startDate, "YYYY-MM-DD")
+          : todayJalali(),
         endDate: edu.endDate ? dayjs(edu.endDate, "YYYY-MM-DD") : null,
+        isStudying: edu.isStudying,
+        description: edu.description ?? "",
       })),
     );
 
     if (educationFormInStore) {
       reset({
-        ...defaultFormValues,
-        ...educationFormInStore,
+        degree: educationFormInStore.degree,
+        field: educationFormInStore.field ?? "",
+        specialization: educationFormInStore.specialization ?? "",
+        institutionType: educationFormInStore.institutionType ?? "",
+        institutionName: educationFormInStore.institutionName ?? "",
+        grade: educationFormInStore.grade ?? "",
         startDate: educationFormInStore.startDate
           ? dayjs(educationFormInStore.startDate, "YYYY-MM-DD")
           : todayJalali(),
         endDate: educationFormInStore.endDate
           ? dayjs(educationFormInStore.endDate, "YYYY-MM-DD")
-          : todayJalali(),
+          : null,
+        isStudying: educationFormInStore.isStudying,
+        description: educationFormInStore.description ?? "",
       });
     }
   }, [educationListInStore, educationFormInStore, reset]);
 
-  const onSubmit = (data: EducationFormDataLocal): void => {
+  const onValid = (data: EducationFormDataLocal): void => {
     const updatedList = [...educationList];
 
     if (editingIndex !== null) {
@@ -97,12 +111,22 @@ const EducationHistory: React.FC = () => {
     }
 
     setEducationList(updatedList);
+
     dispatch(
       saveEducationList(
         updatedList.map((item) => ({
-          ...item,
-          startDate: item.startDate ? item.startDate.format("YYYY-MM-DD") : "",
+          degree: item.degree,
+          field: item.field || "",
+          specialization: item.specialization || "",
+          institutionType: item.institutionType || "",
+          institutionName: item.institutionName || "",
+          grade: item.grade || "",
+          startDate: item.startDate
+            ? item.startDate.format("YYYY-MM-DD")
+            : todayJalali().format("YYYY-MM-DD"),
           endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : "",
+          isStudying: item.isStudying,
+          description: item.description || "",
         })),
       ),
     );
@@ -112,15 +136,34 @@ const EducationHistory: React.FC = () => {
     reset(defaultFormValues);
   };
 
+  const onInvalid = (errors: FieldErrors<EducationFormDataLocal>) => {
+    // گرفتن پیام اولین خطا
+    const firstError = Object.values(errors)[0];
+    if (firstError && "message" in firstError) {
+      toast.error(firstError.message as string);
+    } else {
+      toast.error("اطلاعات نامعتبر است");
+    }
+  };
+
   const handleDelete = (index: number) => {
     const updatedList = educationList.filter((_, i) => i !== index);
     setEducationList(updatedList);
     dispatch(
       saveEducationList(
         updatedList.map((item) => ({
-          ...item,
-          startDate: item.startDate ? item.startDate.format("YYYY-MM-DD") : "",
+          degree: item.degree,
+          field: item.field || "",
+          specialization: item.specialization || "",
+          institutionType: item.institutionType || "",
+          institutionName: item.institutionName || "",
+          grade: item.grade || "",
+          startDate: item.startDate
+            ? item.startDate.format("YYYY-MM-DD")
+            : todayJalali().format("YYYY-MM-DD"),
           endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : "",
+          isStudying: item.isStudying,
+          description: item.description || "",
         })),
       ),
     );
@@ -131,13 +174,14 @@ const EducationHistory: React.FC = () => {
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow" dir="rtl">
       <h1 className="text-2xl font-bold mb-4 text-center">سوابق تحصیلی</h1>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={handleSubmit(onValid, onInvalid)}
         className="grid grid-cols-1 md:grid-cols-2 gap-4"
       >
         <Input
           label="مقطع"
           {...register("degree", { required: "مقطع الزامی است" })}
         />
+
         <Input label="رشته" {...register("field")} />
         <Input label="گرایش" {...register("specialization")} />
         <Input label="نوع موسسه" {...register("institutionType")} />
@@ -146,14 +190,20 @@ const EducationHistory: React.FC = () => {
         <JalaliDateInput
           label="تاریخ شروع"
           value={startDate}
-          onChange={(v) => setValue("startDate", v)}
+          onChange={(v) => setValue("startDate", v!)}
         />
+        {errors.startDate && (
+          <p className="text-red-600 text-sm">{errors.startDate.message}</p>
+        )}
         <JalaliDateInput
           label="تاریخ پایان"
           value={endDate}
           onChange={(v) => setValue("endDate", v)}
           disabled={isStudying}
         />
+        {errors.endDate && (
+          <p className="text-red-600 text-sm">{errors.endDate.message}</p>
+        )}
         <div className="col-span-2">
           <label className="flex items-center gap-2">
             <input type="checkbox" {...register("isStudying")} />

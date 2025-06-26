@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import type { SubmitHandler } from "react-hook-form";
+
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -13,21 +16,22 @@ import {
   setworkList as saveWorkList,
   setworkForm as saveWorkForm,
 } from "../store/slices/workSlice";
+import { workSchema } from "../validation/workSchema";
 
 interface WorkFormData {
   companyName: string;
   position: string;
-  field: string;
-  level: string;
-  cooperationType: string;
-  insuranceMonths: string;
+  field?: string;
+  level?: string;
+  cooperationType?: string;
+  insuranceMonths?: string;
   startDate: Dayjs | null;
   endDate: Dayjs | null;
   isWorking: boolean;
-  workPhone: string;
-  lastSalary: string;
-  terminationReason: string;
-  description: string;
+  workPhone?: string;
+  lastSalary?: string;
+  terminationReason?: string;
+  description?: string;
 }
 
 const defaultFormValues: WorkFormData = {
@@ -57,10 +61,18 @@ const WorkInfo: React.FC = () => {
     (state: RootState) => state.work.workForm,
   );
 
-  const { register, handleSubmit, reset, setValue, watch, getValues } =
-    useForm<WorkFormData>({
-      defaultValues: defaultFormValues,
-    });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    watch,
+    getValues,
+    formState: { errors },
+  } = useForm<WorkFormData>({
+    resolver: zodResolver(workSchema),
+    defaultValues: defaultFormValues,
+  });
 
   const [workList, setWorkList] = useState<WorkFormData[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -74,6 +86,14 @@ const WorkInfo: React.FC = () => {
         ...item,
         startDate: item.startDate ? dayjs(item.startDate, "YYYY-MM-DD") : null,
         endDate: item.endDate ? dayjs(item.endDate, "YYYY-MM-DD") : null,
+        field: item.field ?? "",
+        level: item.level ?? "",
+        cooperationType: item.cooperationType ?? "",
+        insuranceMonths: item.insuranceMonths ?? "",
+        workPhone: item.workPhone ?? "",
+        lastSalary: item.lastSalary ?? "",
+        terminationReason: item.terminationReason ?? "",
+        description: item.description ?? "",
       })),
     );
 
@@ -87,11 +107,19 @@ const WorkInfo: React.FC = () => {
         endDate: workFormInStore.endDate
           ? dayjs(workFormInStore.endDate, "YYYY-MM-DD")
           : todayJalali(),
+        field: workFormInStore.field ?? "",
+        level: workFormInStore.level ?? "",
+        cooperationType: workFormInStore.cooperationType ?? "",
+        insuranceMonths: workFormInStore.insuranceMonths ?? "",
+        workPhone: workFormInStore.workPhone ?? "",
+        lastSalary: workFormInStore.lastSalary ?? "",
+        terminationReason: workFormInStore.terminationReason ?? "",
+        description: workFormInStore.description ?? "",
       });
     }
   }, [workListInStore, workFormInStore, reset]);
 
-  const onSubmit = (data: WorkFormData) => {
+  const onSubmit: SubmitHandler<WorkFormData> = (data) => {
     const updatedList = [...workList];
 
     if (editingIndex !== null) {
@@ -107,8 +135,16 @@ const WorkInfo: React.FC = () => {
       saveWorkList(
         updatedList.map((item) => ({
           ...item,
+          field: item.field ?? "",
+          level: item.level ?? "",
+          cooperationType: item.cooperationType ?? "",
+          insuranceMonths: item.insuranceMonths ?? "",
           startDate: item.startDate ? item.startDate.format("YYYY-MM-DD") : "",
           endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : "",
+          workPhone: item.workPhone ?? "",
+          lastSalary: item.lastSalary ?? "",
+          terminationReason: item.terminationReason ?? "",
+          description: item.description ?? "",
         })),
       ),
     );
@@ -124,8 +160,16 @@ const WorkInfo: React.FC = () => {
     dispatch(
       saveWorkForm({
         ...item,
+        field: item.field ?? "",
+        level: item.level ?? "",
+        cooperationType: item.cooperationType ?? "",
+        insuranceMonths: item.insuranceMonths ?? "",
         startDate: item.startDate ? item.startDate.format("YYYY-MM-DD") : "",
         endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : "",
+        workPhone: item.workPhone ?? "",
+        lastSalary: item.lastSalary ?? "",
+        terminationReason: item.terminationReason ?? "",
+        description: item.description ?? "",
       }),
     );
   };
@@ -137,8 +181,16 @@ const WorkInfo: React.FC = () => {
       saveWorkList(
         updated.map((item) => ({
           ...item,
+          field: item.field ?? "",
+          level: item.level ?? "",
+          cooperationType: item.cooperationType ?? "",
+          insuranceMonths: item.insuranceMonths ?? "",
           startDate: item.startDate ? item.startDate.format("YYYY-MM-DD") : "",
           endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : "",
+          workPhone: item.workPhone ?? "",
+          lastSalary: item.lastSalary ?? "",
+          terminationReason: item.terminationReason ?? "",
+          description: item.description ?? "",
         })),
       ),
     );
@@ -155,8 +207,16 @@ const WorkInfo: React.FC = () => {
       saveWorkList(
         workList.map((item) => ({
           ...item,
+          field: item.field ?? "",
+          level: item.level ?? "",
+          cooperationType: item.cooperationType ?? "",
+          insuranceMonths: item.insuranceMonths ?? "",
           startDate: item.startDate ? item.startDate.format("YYYY-MM-DD") : "",
           endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : "",
+          workPhone: item.workPhone ?? "",
+          lastSalary: item.lastSalary ?? "",
+          terminationReason: item.terminationReason ?? "",
+          description: item.description ?? "",
         })),
       ),
     );
@@ -169,6 +229,14 @@ const WorkInfo: React.FC = () => {
         endDate: currentFormData.endDate
           ? currentFormData.endDate.format("YYYY-MM-DD")
           : "",
+        field: currentFormData.field ?? "",
+        level: currentFormData.level ?? "",
+        cooperationType: currentFormData.cooperationType ?? "",
+        insuranceMonths: currentFormData.insuranceMonths ?? "",
+        workPhone: currentFormData.workPhone ?? "",
+        lastSalary: currentFormData.lastSalary ?? "",
+        terminationReason: currentFormData.terminationReason ?? "",
+        description: currentFormData.description ?? "",
       }),
     );
 
@@ -188,7 +256,15 @@ const WorkInfo: React.FC = () => {
         className="grid grid-cols-1 md:grid-cols-2 gap-4"
       >
         <Input label="نام شرکت" {...register("companyName")} />
+        {errors.companyName && (
+          <p className="text-red-600 text-sm">{errors.companyName.message}</p>
+        )}
+
         <Input label="عنوان شغلی" {...register("position")} />
+        {errors.position && (
+          <p className="text-red-600 text-sm">{errors.position.message}</p>
+        )}
+
         <Input label="زمینه فعالیت شرکت" {...register("field")} />
         <Input label="رده سازمانی" {...register("level")} />
         <Input label="نوع همکاری" {...register("cooperationType")} />
@@ -197,18 +273,30 @@ const WorkInfo: React.FC = () => {
           type="number"
           {...register("insuranceMonths")}
         />
+        {errors.insuranceMonths && (
+          <p className="text-red-600 text-sm">
+            {errors.insuranceMonths.message}
+          </p>
+        )}
 
         <JalaliDateInput
           label="تاریخ شروع"
           value={startDate}
           onChange={(v) => setValue("startDate", v)}
         />
+        {errors.startDate && (
+          <p className="text-red-600 text-sm">{errors.startDate.message}</p>
+        )}
+
         <JalaliDateInput
           label="تاریخ پایان"
           value={endDate}
           onChange={(v) => setValue("endDate", v)}
           disabled={isWorking}
         />
+        {errors.endDate && (
+          <p className="text-red-600 text-sm">{errors.endDate.message}</p>
+        )}
 
         <div className="col-span-2">
           <label className="flex items-center gap-2">
@@ -248,13 +336,13 @@ const WorkInfo: React.FC = () => {
               </p>
             </div>
             <div className="flex gap-2">
-              <Button onClick={() => handleEdit(index)} type="button">
+              <Button onClick={() => handleEdit(index)} variant="outline">
                 ویرایش
               </Button>
               <Button
                 onClick={() => handleDelete(index)}
-                type="button"
-                variant="destructive"
+                variant="outline"
+                color="red"
               >
                 حذف
               </Button>
@@ -263,13 +351,11 @@ const WorkInfo: React.FC = () => {
         ))}
       </div>
 
-      <div className="mt-8 flex justify-between">
-        <Button onClick={() => handleNavigation("prev")} type="button">
-          مرحله قبل
+      <div className="flex justify-between mt-8">
+        <Button onClick={() => handleNavigation("prev")} variant="outline">
+          قبلی
         </Button>
-        <Button onClick={() => handleNavigation("next")} type="button">
-          مرحله بعد
-        </Button>
+        <Button onClick={() => handleNavigation("next")}>بعدی</Button>
       </div>
     </div>
   );

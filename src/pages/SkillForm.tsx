@@ -1,29 +1,34 @@
-// SkillForm.tsx
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { z } from "zod";
+import type { AnyAction } from "@reduxjs/toolkit";
+
 import type { RootState, AppDispatch } from "../store/store";
 import {
   setSkillList,
   setLanguageSkills,
   setManagementSkills,
   setResumeFile,
+  type Proficiency,
+  type LanguageSkill,
+  type ManagementSkill,
 } from "../store/slices/skillSlice";
-import type {
-  Proficiency,
-  LanguageSkill,
-  ManagementSkill,
-} from "../store/slices/skillSlice";
+
+import {
+  skillSchema,
+  languageSkillSchema,
+  managementSkillSchema,
+} from "../validation/skillSchema";
 import Button from "../components/ui/Button";
 import Input from "../components/ui/Input";
-import { toast } from "react-toastify";
+
 import "../App.css";
 
-interface SkillFormData {
-  name: string;
-  level: number;
-}
+type SkillFormData = z.infer<typeof skillSchema>;
 
 const defaultSkillValues: SkillFormData = { name: "", level: 0 };
 const defaultLanguageValues: LanguageSkill = {
@@ -33,6 +38,7 @@ const defaultLanguageValues: LanguageSkill = {
   speaking: "متوسط",
   comprehension: "متوسط",
 };
+const defaultManagementValues: ManagementSkill = { name: "", level: 0 };
 
 const allManagerialSkills: string[] = [
   "روابط عمومی",
@@ -53,26 +59,35 @@ const allManagerialSkills: string[] = [
 ];
 
 const proficiencyLevels: Proficiency[] = ["ضعیف", "متوسط", "عالی"];
+const languageFields: (keyof Omit<LanguageSkill, "language">)[] = [
+  "reading",
+  "writing",
+  "speaking",
+  "comprehension",
+];
 
 const SkillForm: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const skillListInStore = useSelector(
-    (state: RootState) => state.skill.skillList,
-  );
-  const languageSkillsInStore = useSelector(
-    (state: RootState) => state.skill.languageSkills,
-  );
-  const managementSkillsInStore = useSelector(
-    (state: RootState) => state.skill.managementSkills,
-  );
-  const resumeFile = useSelector((state: RootState) => state.skill.resumeFile);
+  const {
+    skillList: skillListInStore,
+    languageSkills: languageSkillsInStore,
+    managementSkills: managementSkillsInStore,
+    resumeFile,
+  } = useSelector((state: RootState) => state.skill);
 
-  const { register, handleSubmit, reset, setValue, watch } =
-    useForm<SkillFormData>({
-      defaultValues: defaultSkillValues,
-    });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<SkillFormData>({
+    defaultValues: defaultSkillValues,
+    resolver: zodResolver(skillSchema),
+  });
 
   const [skillList, setSkillListLocal] = useState<SkillFormData[]>([]);
   const [editingSkillIndex, setEditingSkillIndex] = useState<number | null>(
@@ -89,10 +104,9 @@ const SkillForm: React.FC = () => {
     number | null
   >(null);
 
-  const [managementForm, setManagementForm] = useState<ManagementSkill>({
-    name: "",
-    level: 0,
-  });
+  const [managementForm, setManagementForm] = useState<ManagementSkill>(
+    defaultManagementValues,
+  );
   const [managementSkills, setManagementSkillsLocal] = useState<
     ManagementSkill[]
   >([]);
@@ -139,16 +153,23 @@ const SkillForm: React.FC = () => {
     setEditingSkillIndex(null);
   };
 
-  const handleDeleteSkill = (index: number) => {
-    const updated = skillList.filter((_, i) => i !== index);
-    setSkillListLocal(updated);
-    dispatch(setSkillList(updated));
-    toast.info("مهارت حذف شد");
+  const handleDelete = <T,>(
+    list: T[],
+    index: number,
+    setter: React.Dispatch<React.SetStateAction<T[]>>,
+    dispatcher: (payload: T[]) => AnyAction, // اکشن کریتور که اکشن برمی‌گرداند
+    successMsg: string,
+  ) => {
+    const updated = list.filter((_, i) => i !== index);
+    setter(updated);
+    dispatch(dispatcher(updated));
+    toast.info(successMsg);
   };
 
   const addOrUpdateLanguage = () => {
-    if (!languageForm.language) {
-      toast.error("نام زبان را وارد کنید");
+    const parsed = languageSkillSchema.safeParse(languageForm);
+    if (!parsed.success) {
+      parsed.error.issues.forEach((issue) => toast.error(issue.message));
       return;
     }
     const updated = [...languageSkills];
@@ -165,26 +186,22 @@ const SkillForm: React.FC = () => {
     setEditingLanguageIndex(null);
   };
 
-  const handleDeleteLanguage = (index: number) => {
-    const updated = languageSkills.filter((_, i) => i !== index);
-    setLanguageSkillsLocal(updated);
-    dispatch(setLanguageSkills(updated));
-    toast.info("زبان حذف شد");
-  };
-
   const addOrUpdateManagementSkill = () => {
-    if (!managementForm.name) {
-      toast.error("مهارت را انتخاب کنید");
+    const parsed = managementSkillSchema.safeParse(managementForm);
+    if (!parsed.success) {
+      parsed.error.issues.forEach((issue) => toast.error(issue.message));
       return;
     }
     if (editingManagementIndex === null && managementSkills.length >= 3) {
       toast.error("حداکثر ۳ مهارت مدیریتی مجاز است");
       return;
     }
-    const exists = managementSkills.some(
-      (s, i) => s.name === managementForm.name && i !== editingManagementIndex,
-    );
-    if (exists) {
+    if (
+      managementSkills.some(
+        (s, i) =>
+          s.name === managementForm.name && i !== editingManagementIndex,
+      )
+    ) {
       toast.error("این مهارت قبلاً انتخاب شده است");
       return;
     }
@@ -198,15 +215,8 @@ const SkillForm: React.FC = () => {
     }
     setManagementSkillsLocal(updated);
     dispatch(setManagementSkills(updated));
-    setManagementForm({ name: "", level: 0 });
+    setManagementForm(defaultManagementValues);
     setEditingManagementIndex(null);
-  };
-
-  const handleDeleteManagementSkill = (index: number) => {
-    const updated = managementSkills.filter((_, i) => i !== index);
-    setManagementSkillsLocal(updated);
-    dispatch(setManagementSkills(updated));
-    toast.info("مهارت مدیریتی حذف شد");
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -225,25 +235,6 @@ const SkillForm: React.FC = () => {
     reader.readAsDataURL(file);
   };
 
-  const handleRemoveResume = () => {
-    dispatch(setResumeFile(null));
-    toast.info("فایل رزومه حذف شد");
-  };
-
-  const languageFields = [
-    "reading",
-    "writing",
-    "speaking",
-    "comprehension",
-  ] as const;
-
-  const availableManagerialSkills = allManagerialSkills.filter(
-    (s) =>
-      !managementSkills
-        .filter((_, i) => i !== editingManagementIndex)
-        .some((m) => m.name === s),
-  );
-
   return (
     <div className="max-w-2xl mx-auto bg-white p-6 rounded shadow" dir="rtl">
       <h2 className="text-xl font-bold text-center mb-4">مهارت‌ها</h2>
@@ -251,7 +242,8 @@ const SkillForm: React.FC = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
         <Input
           label="نام مهارت"
-          {...register("name", { required: "نام مهارت الزامی است" })}
+          {...register("name")}
+          error={errors.name?.message}
         />
         <div>
           <label className="text-sm font-medium mb-1 block">میزان تسلط</label>
@@ -287,7 +279,15 @@ const SkillForm: React.FC = () => {
               </Button>
               <Button
                 variant="destructive"
-                onClick={() => handleDeleteSkill(index)}
+                onClick={() =>
+                  handleDelete(
+                    skillList,
+                    index,
+                    setSkillListLocal,
+                    setSkillList,
+                    "مهارت حذف شد",
+                  )
+                }
               >
                 حذف
               </Button>
@@ -296,6 +296,7 @@ const SkillForm: React.FC = () => {
         ))}
       </div>
 
+      {/* Language Skills */}
       <div className="mt-8">
         <h3 className="text-lg font-semibold mb-2">زبان خارجی</h3>
         <Input
@@ -354,7 +355,15 @@ const SkillForm: React.FC = () => {
                 </Button>
                 <Button
                   variant="destructive"
-                  onClick={() => handleDeleteLanguage(index)}
+                  onClick={() =>
+                    handleDelete(
+                      languageSkills,
+                      index,
+                      setLanguageSkillsLocal,
+                      setLanguageSkills,
+                      "زبان حذف شد",
+                    )
+                  }
                 >
                   حذف
                 </Button>
@@ -364,6 +373,7 @@ const SkillForm: React.FC = () => {
         </div>
       </div>
 
+      {/* Management Skills */}
       <div className="mt-8">
         <h3 className="text-lg font-semibold mb-2">مهارت‌های مدیریتی</h3>
         <select
@@ -374,9 +384,9 @@ const SkillForm: React.FC = () => {
           }
         >
           <option value="">انتخاب مهارت</option>
-          {availableManagerialSkills.map((s) => (
-            <option key={s} value={s}>
-              {s}
+          {allManagerialSkills.map((skill) => (
+            <option key={skill} value={skill}>
+              {skill}
             </option>
           ))}
         </select>
@@ -413,7 +423,15 @@ const SkillForm: React.FC = () => {
                 </Button>
                 <Button
                   variant="destructive"
-                  onClick={() => handleDeleteManagementSkill(index)}
+                  onClick={() =>
+                    handleDelete(
+                      managementSkills,
+                      index,
+                      setManagementSkillsLocal,
+                      setManagementSkills,
+                      "مهارت مدیریتی حذف شد",
+                    )
+                  }
                 >
                   حذف
                 </Button>
@@ -423,6 +441,7 @@ const SkillForm: React.FC = () => {
         </div>
       </div>
 
+      {/* Resume Upload */}
       <div className="mt-8">
         <h3 className="text-lg font-semibold mb-2">رزومه (فقط PDF)</h3>
         {resumeFile ? (
@@ -437,7 +456,13 @@ const SkillForm: React.FC = () => {
               >
                 مشاهده
               </a>
-              <Button variant="destructive" onClick={handleRemoveResume}>
+              <Button
+                variant="destructive"
+                onClick={() => {
+                  dispatch(setResumeFile(null));
+                  toast.info("فایل رزومه حذف شد");
+                }}
+              >
                 حذف
               </Button>
             </div>

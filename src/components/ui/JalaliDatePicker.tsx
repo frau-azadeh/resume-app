@@ -9,6 +9,8 @@ interface JalaliDateInputProps {
   value: Dayjs | null;
   onChange: (value: Dayjs | null) => void;
   disabled?: boolean;
+  error?: string;
+  locale?: string;
 }
 
 const JalaliDateInput: React.FC<JalaliDateInputProps> = ({
@@ -51,6 +53,10 @@ const JalaliDateInput: React.FC<JalaliDateInputProps> = ({
     };
   }, []);
 
+  // بازه تاریخ جلالی برای انتخاب (می‌تونی تغییرش بدی)
+  const minimumDate: Day = { year: 1300, month: 1, day: 1 };
+  const maximumDate: Day = { year: 1500, month: 12, day: 29 };
+
   return (
     <div className="relative flex flex-col" ref={wrapperRef}>
       <label className="mb-1 font-semibold">{label}</label>
@@ -74,6 +80,8 @@ const JalaliDateInput: React.FC<JalaliDateInputProps> = ({
             shouldHighlightWeekends
             locale="fa"
             colorPrimary="#0f62fe"
+            minimumDate={minimumDate}
+            maximumDate={maximumDate}
           />
         </div>
       )}

@@ -52,3 +52,16 @@ export interface ManagementSkill {
   name: string;
   level: number;
 }
+
+export interface EducationFormDataLocal {
+  degree: string;
+  field: string;
+  specialization: string;
+  institutionType: string;
+  institutionName: string;
+  grade: string;
+  startDate: Dayjs | null;
+  endDate: Dayjs | null;
+  isStudying: boolean;
+  description: string;
+}
