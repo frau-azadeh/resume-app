@@ -17,6 +17,7 @@
     "@emotion/styled": "^11.14.0",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.2.0",
+    "@hookform/resolvers": "^5.1.1",
     "@reduxjs/toolkit": "^1.9.5",
     "@supabase/supabase-js": "^2.49.4",
     "@tailwindcss/vite": "^4.1.5",
