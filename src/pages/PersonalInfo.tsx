@@ -1,41 +1,46 @@
-// PersonalInfo.tsx
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import type { AppDispatch, RootState } from "../store/store";
-import { setPersonalInfo } from "../store/slices/personalInfoSlice";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
-import { toast } from "react-toastify";
+import JalaliDateInput from "../components/ui/JalaliDatePicker";
+import { todayJalali } from "../utils/date";
+import dayjs, { Dayjs } from "dayjs";
+import type { AppDispatch, RootState } from "../store/store";
+import { setPersonalInfo } from "../store/slices/personalInfoSlice";
 import type { PersonalInfoForm } from "../types/types";
-import { useNavigate } from "react-router-dom";
 
 const PersonalInfo: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
+  const savedInfo = useSelector((state: RootState) => state.personalInfo.personalInfo);
 
-  const savedInfo = useSelector(
-    (state: RootState) => state.personalInfo.personalInfo,
-  );
-
-  const [avatarPreview, setAvatarPreview] = React.useState<string | null>(
-    savedInfo.avatar || null,
-  );
+  const [avatarPreview, setAvatarPreview] = React.useState<string | null>(savedInfo.avatar || null);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
+    watch,
     getValues,
   } = useForm<PersonalInfoForm>({
-    defaultValues: savedInfo,
+    defaultValues: {
+      ...savedInfo,
+      birthDate: savedInfo.birthDate ? dayjs(savedInfo.birthDate) : todayJalali(),
+    },
   });
 
   React.useEffect(() => {
-    reset(savedInfo);
+    reset({
+      ...savedInfo,
+      birthDate: savedInfo.birthDate ? dayjs(savedInfo.birthDate) : todayJalali(),
+    });
     setAvatarPreview(savedInfo.avatar || null);
-  }, [reset, savedInfo]);
+  }, [savedInfo, reset]);
 
   const handleAvatarUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -50,32 +55,34 @@ const PersonalInfo: React.FC = () => {
     reader.onloadend = () => {
       const base64String = reader.result as string;
       setAvatarPreview(base64String);
-      dispatch(setPersonalInfo({ ...getValues(), avatar: base64String }));
+      dispatch(setPersonalInfo({
+        ...getValues(),
+        avatar: base64String,
+        birthDate: getValues().birthDate?.format("YYYY-MM-DD") || null
+      }));
       toast.success("عکس با موفقیت بارگذاری شد");
     };
     reader.readAsDataURL(file);
   };
 
   const onSubmit = (data: PersonalInfoForm) => {
-    dispatch(setPersonalInfo(data));
+    dispatch(setPersonalInfo({
+      ...data,
+      birthDate: data.birthDate ? data.birthDate.format("YYYY-MM-DD") : null,
+      avatar: avatarPreview || "",
+    }));
     toast.success("اطلاعات با موفقیت ثبت شد!");
     navigate("/form/education");
   };
 
+ 
   return (
-    <div
-      className="max-w-5xl mx-auto p-6 space-y-8 bg-white rounded-lg shadow-md"
-      dir="rtl"
-    >
+    <div className="max-w-5xl mx-auto p-6 space-y-8 bg-white rounded-lg shadow-md" dir="rtl">
       <h1 className="text-2xl font-bold text-center mb-4">اطلاعات فردی</h1>
 
       <div className="flex flex-col items-center mb-6">
         {avatarPreview ? (
-          <img
-            src={avatarPreview}
-            alt="آواتار"
-            className="w-24 h-24 rounded-full object-cover"
-          />
+          <img src={avatarPreview} alt="آواتار" className="w-24 h-24 rounded-full object-cover" />
         ) : (
           <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center text-sm text-gray-500">
             بدون عکس
@@ -90,7 +97,6 @@ const PersonalInfo: React.FC = () => {
       </div>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-        {/* اطلاعات فردی */}
         <div className="border rounded-lg p-4 shadow-sm">
           <h2 className="text-lg font-semibold mb-4">اطلاعات فردی</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -115,49 +121,29 @@ const PersonalInfo: React.FC = () => {
               })}
               error={errors.nationalCode}
             />
-            <Input
-              label="تاریخ تولد"
-              {...register("birthDate", { required: "تاریخ تولد الزامی است" })}
-              error={errors.birthDate}
-            />
+            <div className="flex flex-col">
+              <JalaliDateInput
+                label="تاریخ تولد"
+                value={watch("birthDate")}
+                onChange={(date: Dayjs | null) => {
+                  setValue("birthDate", date, { shouldValidate: true });
+                }}
+              />
+              {errors.birthDate && (
+                <span className="text-red-500 text-sm mt-1">
+                  {errors.birthDate.message}
+                </span>
+              )}
+            </div>
             <Input label="استان محل تولد" {...register("birthProvince")} />
             <Input label="شهر محل تولد" {...register("birthCity")} />
             <Input label="شماره شناسنامه" {...register("idNumber")} />
             <Input label="استان محل صدور" {...register("issueProvince")} />
             <Input label="شهر محل صدور" {...register("issueCity")} />
+      
 
-            {/* وضعیت تاهل */}
-            <div className="flex flex-col">
-              <label className="font-medium mb-1">وضعیت تاهل</label>
-              <div className="flex gap-4">
-                <label className="flex items-center gap-1">
-                  <input
-                    type="radio"
-                    value="مجرد"
-                    {...register("maritalStatus", {
-                      required: "وضعیت تاهل الزامی است",
-                    })}
-                  />{" "}
-                  مجرد
-                </label>
-                <label className="flex items-center gap-1">
-                  <input
-                    type="radio"
-                    value="متاهل"
-                    {...register("maritalStatus")}
-                  />{" "}
-                  متاهل
-                </label>
-              </div>
-              {errors.maritalStatus && (
-                <span className="text-red-500 text-sm mt-1">
-                  {errors.maritalStatus.message}
-                </span>
-              )}
-            </div>
-
-            {/* جنسیت */}
-            <div className="flex flex-col">
+        {/* جنسیت */}
+        <div className="flex flex-col">
               <label className="font-medium mb-1">جنسیت</label>
               <div className="flex gap-4">
                 <label className="flex items-center gap-1">
@@ -203,7 +189,7 @@ const PersonalInfo: React.FC = () => {
               )}
             </div>
           </div>
-        </div>
+  
 
         {/* اطلاعات خانواده */}
         <div className="border rounded-lg p-4 shadow-sm">
@@ -248,8 +234,8 @@ const PersonalInfo: React.FC = () => {
               label="کد پستی"
               {...register("postalCode", {
                 pattern: {
-                  value: /^\d{14}$/,
-                  message: "کد پستی باید 14 رقمی باشد",
+                  value: /^\d{10}$/,
+                  message: "کد پستی باید 10 رقمی باشد",
                 },
               })}
               error={errors.postalCode}
@@ -290,6 +276,7 @@ const PersonalInfo: React.FC = () => {
             </Button>
             <Button type="submit">ثبت و مرحله بعد</Button>
           </div>
+        </div>
         </div>
       </form>
     </div>
