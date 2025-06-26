@@ -1,12 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
-import type{  PayloadAction } from "@reduxjs/toolkit";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 interface PersonalInfoState {
   personalInfo: {
     firstName: string;
     lastName: string;
     nationalCode: string;
-    birthDate: string | null;  // ذخیره به صورت string
+    birthDate: string | null; // ذخیره به صورت string
     birthCity: string;
     birthProvince: string;
     idNumber: string;
@@ -68,14 +68,17 @@ const initialState: PersonalInfoState = {
     emergencyContactRelation: "",
     emergencyContactPhone: "",
     avatar: "",
-  }
+  },
 };
 
 const personalInfoSlice = createSlice({
   name: "personalInfo",
   initialState,
   reducers: {
-    setPersonalInfo(state, action: PayloadAction<PersonalInfoState["personalInfo"]>) {
+    setPersonalInfo(
+      state,
+      action: PayloadAction<PersonalInfoState["personalInfo"]>,
+    ) {
       state.personalInfo = action.payload;
     },
     clearPersonalInfo(state) {

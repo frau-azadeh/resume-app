@@ -4,7 +4,7 @@ export interface PersonalInfoForm {
   firstName: string;
   lastName: string;
   nationalCode: string;
-  birthDate: Dayjs | null;  // فرم از نوع Dayjs
+  birthDate: Dayjs | null; // فرم از نوع Dayjs
   birthCity: string;
   birthProvince: string;
   idNumber: string;

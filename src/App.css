@@ -6,7 +6,7 @@ body {
 }
 
 .toast-rtl .Toastify__toast-body {
-  font-family: 'Vazir', sans-serif !important;
+  font-family: "Vazir", sans-serif !important;
   text-align: right;
   direction: rtl;
 }
