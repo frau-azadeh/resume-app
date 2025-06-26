@@ -54,8 +54,12 @@ const WorkInfo: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const workListInStore = useSelector((state: RootState) => state.work.workList);
-  const workFormInStore = useSelector((state: RootState) => state.work.workForm);
+  const workListInStore = useSelector(
+    (state: RootState) => state.work.workList,
+  );
+  const workFormInStore = useSelector(
+    (state: RootState) => state.work.workForm,
+  );
 
   const {
     register,
@@ -270,7 +274,9 @@ const WorkInfo: React.FC = () => {
           {...register("insuranceMonths")}
         />
         {errors.insuranceMonths && (
-          <p className="text-red-600 text-sm">{errors.insuranceMonths.message}</p>
+          <p className="text-red-600 text-sm">
+            {errors.insuranceMonths.message}
+          </p>
         )}
 
         <JalaliDateInput
@@ -333,7 +339,11 @@ const WorkInfo: React.FC = () => {
               <Button onClick={() => handleEdit(index)} variant="outline">
                 ویرایش
               </Button>
-              <Button onClick={() => handleDelete(index)} variant="outline" color="red">
+              <Button
+                onClick={() => handleDelete(index)}
+                variant="outline"
+                color="red"
+              >
                 حذف
               </Button>
             </div>

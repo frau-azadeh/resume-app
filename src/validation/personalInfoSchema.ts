@@ -4,10 +4,9 @@ import dayjs from "dayjs";
 
 const dayjsValidator = z
   .union([z.instanceof(dayjs.Dayjs), z.null()])
-  .refine(
-    (val) => val === null || val.isValid(),
-    { message: "تاریخ تولد نامعتبر است" }
-  );
+  .refine((val) => val === null || val.isValid(), {
+    message: "تاریخ تولد نامعتبر است",
+  });
 
 export const personalInfoSchema = z.object({
   firstName: z.string().min(1, "نام الزامی است"),
@@ -33,12 +32,21 @@ export const personalInfoSchema = z.object({
   residenceProvince: z.string().optional(),
   residenceCity: z.string().optional(),
   address: z.string().optional(),
-  postalCode: z.string().regex(/^\d{10}$/, "کد پستی باید 10 رقم باشد").optional(),
-  phone: z.string().regex(/^\d{11}$/, "تلفن باید 11 رقم باشد").optional(),
+  postalCode: z
+    .string()
+    .regex(/^\d{10}$/, "کد پستی باید 10 رقم باشد")
+    .optional(),
+  phone: z
+    .string()
+    .regex(/^\d{11}$/, "تلفن باید 11 رقم باشد")
+    .optional(),
   email: z.string().email("ایمیل معتبر نیست").optional(),
   emergencyContactName: z.string().optional(),
   emergencyContactRelation: z.string().optional(),
-  emergencyContactPhone: z.string().regex(/^\d{11}$/, "شماره موبایل باید 11 رقمی باشد").optional(),
+  emergencyContactPhone: z
+    .string()
+    .regex(/^\d{11}$/, "شماره موبایل باید 11 رقمی باشد")
+    .optional(),
   avatar: z.string().optional(),
 });
 

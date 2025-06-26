@@ -53,7 +53,6 @@ export interface ManagementSkill {
   level: number;
 }
 
-
 export interface EducationFormDataLocal {
   degree: string;
   field: string;

@@ -12,7 +12,10 @@ import {
 } from "../store/slices/educationSlice";
 import dayjs, { todayJalali } from "../utils/date";
 import JalaliDateInput from "../components/ui/JalaliDatePicker";
-import { educationSchema, type EducationFormDataLocal } from "../validation/educationSchema";
+import {
+  educationSchema,
+  type EducationFormDataLocal,
+} from "../validation/educationSchema";
 
 const defaultFormValues: EducationFormDataLocal = {
   degree: "",
@@ -48,7 +51,9 @@ const EducationHistory: React.FC = () => {
     resolver: zodResolver(educationSchema),
   });
 
-  const [educationList, setEducationList] = useState<EducationFormDataLocal[]>([]);
+  const [educationList, setEducationList] = useState<EducationFormDataLocal[]>(
+    [],
+  );
 
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
@@ -68,9 +73,7 @@ const EducationHistory: React.FC = () => {
         startDate: edu.startDate
           ? dayjs(edu.startDate, "YYYY-MM-DD")
           : todayJalali(),
-        endDate: edu.endDate
-          ? dayjs(edu.endDate, "YYYY-MM-DD")
-          : null,
+        endDate: edu.endDate ? dayjs(edu.endDate, "YYYY-MM-DD") : null,
         isStudying: edu.isStudying,
         description: edu.description ?? "",
       })),
@@ -178,7 +181,7 @@ const EducationHistory: React.FC = () => {
           label="مقطع"
           {...register("degree", { required: "مقطع الزامی است" })}
         />
-      
+
         <Input label="رشته" {...register("field")} />
         <Input label="گرایش" {...register("specialization")} />
         <Input label="نوع موسسه" {...register("institutionType")} />

@@ -67,7 +67,9 @@ const PersonalInfo: React.FC = () => {
   } = useForm<PersonalInfoForm>({
     defaultValues: {
       ...savedInfo,
-      birthDate: savedInfo.birthDate ? dayjs(savedInfo.birthDate) : todayJalali(),
+      birthDate: savedInfo.birthDate
+        ? dayjs(savedInfo.birthDate)
+        : todayJalali(),
       avatar: savedInfo.avatar || "",
       birthCity: savedInfo.birthCity || "",
       birthProvince: savedInfo.birthProvince || "",
@@ -103,7 +105,9 @@ const PersonalInfo: React.FC = () => {
   React.useEffect(() => {
     reset({
       ...savedInfo,
-      birthDate: savedInfo.birthDate ? dayjs(savedInfo.birthDate) : todayJalali(),
+      birthDate: savedInfo.birthDate
+        ? dayjs(savedInfo.birthDate)
+        : todayJalali(),
       avatar: savedInfo.avatar || "",
     });
     setAvatarPreview(savedInfo.avatar || "");
@@ -127,7 +131,9 @@ const PersonalInfo: React.FC = () => {
         setPersonalInfo({
           ...values,
           avatar: base64String,
-          birthDate: values.birthDate ? values.birthDate.format("YYYY-MM-DD") : null,
+          birthDate: values.birthDate
+            ? values.birthDate.format("YYYY-MM-DD")
+            : null,
         }),
       );
       toast.success("عکس با موفقیت بارگذاری شد");
@@ -216,27 +222,37 @@ const PersonalInfo: React.FC = () => {
 
             <Input
               label="استان محل تولد"
-              {...register("birthProvince", { required: "استان محل تولد الزامی است" })}
+              {...register("birthProvince", {
+                required: "استان محل تولد الزامی است",
+              })}
               error={errors.birthProvince}
             />
             <Input
               label="شهر محل تولد"
-              {...register("birthCity", { required: "شهر محل تولد الزامی است" })}
+              {...register("birthCity", {
+                required: "شهر محل تولد الزامی است",
+              })}
               error={errors.birthCity}
             />
             <Input
               label="شماره شناسنامه"
-              {...register("idNumber", { required: "شماره شناسنامه الزامی است" })}
+              {...register("idNumber", {
+                required: "شماره شناسنامه الزامی است",
+              })}
               error={errors.idNumber}
             />
             <Input
               label="استان محل صدور"
-              {...register("issueProvince", { required: "استان محل صدور الزامی است" })}
+              {...register("issueProvince", {
+                required: "استان محل صدور الزامی است",
+              })}
               error={errors.issueProvince}
             />
             <Input
               label="شهر محل صدور"
-              {...register("issueCity", { required: "شهر محل صدور الزامی است" })}
+              {...register("issueCity", {
+                required: "شهر محل صدور الزامی است",
+              })}
               error={errors.issueCity}
             />
 
@@ -275,14 +291,18 @@ const PersonalInfo: React.FC = () => {
                     <input
                       type="radio"
                       value={val}
-                      {...register("religion", { required: "انتخاب دین الزامی است" })}
+                      {...register("religion", {
+                        required: "انتخاب دین الزامی است",
+                      })}
                     />{" "}
                     {val}
                   </label>
                 ))}
               </div>
               {errors.religion && (
-                <p className="text-red-500 text-sm">{errors.religion.message}</p>
+                <p className="text-red-500 text-sm">
+                  {errors.religion.message}
+                </p>
               )}
             </div>
           </div>
@@ -304,7 +324,9 @@ const PersonalInfo: React.FC = () => {
             />
             <Input
               label="تحصیلات پدر"
-              {...register("fatherEducation", { required: "تحصیلات پدر الزامی است" })}
+              {...register("fatherEducation", {
+                required: "تحصیلات پدر الزامی است",
+              })}
               error={errors.fatherEducation}
             />
             <Input
@@ -319,7 +341,9 @@ const PersonalInfo: React.FC = () => {
             />
             <Input
               label="تحصیلات مادر"
-              {...register("motherEducation", { required: "تحصیلات مادر الزامی است" })}
+              {...register("motherEducation", {
+                required: "تحصیلات مادر الزامی است",
+              })}
               error={errors.motherEducation}
             />
             <Input
@@ -344,7 +368,9 @@ const PersonalInfo: React.FC = () => {
             />
             <Input
               label="وضعیت تاهل"
-              {...register("maritalStatus", { required: "وضعیت تاهل الزامی است" })}
+              {...register("maritalStatus", {
+                required: "وضعیت تاهل الزامی است",
+              })}
               error={errors.maritalStatus}
             />
           </div>
@@ -356,12 +382,16 @@ const PersonalInfo: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Input
               label="استان محل سکونت"
-              {...register("residenceProvince", { required: "استان محل سکونت الزامی است" })}
+              {...register("residenceProvince", {
+                required: "استان محل سکونت الزامی است",
+              })}
               error={errors.residenceProvince}
             />
             <Input
               label="شهر محل سکونت"
-              {...register("residenceCity", { required: "شهر محل سکونت الزامی است" })}
+              {...register("residenceCity", {
+                required: "شهر محل سکونت الزامی است",
+              })}
               error={errors.residenceCity}
             />
             <Input
@@ -396,8 +426,7 @@ const PersonalInfo: React.FC = () => {
               {...register("email", {
                 required: "ایمیل الزامی است",
                 pattern: {
-                  value:
-                    /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                   message: "ایمیل معتبر نیست",
                 },
               })}
@@ -412,12 +441,16 @@ const PersonalInfo: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Input
               label="نام تماس اضطراری"
-              {...register("emergencyContactName", { required: "نام تماس اضطراری الزامی است" })}
+              {...register("emergencyContactName", {
+                required: "نام تماس اضطراری الزامی است",
+              })}
               error={errors.emergencyContactName}
             />
             <Input
               label="نسبت تماس اضطراری"
-              {...register("emergencyContactRelation", { required: "نسبت تماس اضطراری الزامی است" })}
+              {...register("emergencyContactRelation", {
+                required: "نسبت تماس اضطراری الزامی است",
+              })}
               error={errors.emergencyContactRelation}
             />
             <Input

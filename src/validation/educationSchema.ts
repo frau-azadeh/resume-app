@@ -8,10 +8,9 @@ export const educationSchema = z.object({
   institutionType: z.string().optional(),
   institutionName: z.string().optional(),
   grade: z.string().optional(),
-  startDate: z.custom<Dayjs>(
-    (val) => dayjs.isDayjs(val),
-    { message: "تاریخ شروع نامعتبر است" }
-  ),
+  startDate: z.custom<Dayjs>((val) => dayjs.isDayjs(val), {
+    message: "تاریخ شروع نامعتبر است",
+  }),
   endDate: z.union([
     z.custom<Dayjs>((val) => dayjs.isDayjs(val), {
       message: "تاریخ پایان نامعتبر است",

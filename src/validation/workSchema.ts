@@ -19,9 +19,12 @@ export const workSchema = z.object({
     })
     .nullable(),
   endDate: z
-    .custom<Dayjs>((val) => val === null || (dayjs.isDayjs(val) && val.isValid()), {
-      message: "تاریخ پایان معتبر نیست",
-    })
+    .custom<Dayjs>(
+      (val) => val === null || (dayjs.isDayjs(val) && val.isValid()),
+      {
+        message: "تاریخ پایان معتبر نیست",
+      },
+    )
     .nullable(),
   isWorking: z.boolean(),
   workPhone: z.string().optional().or(z.literal("")),
