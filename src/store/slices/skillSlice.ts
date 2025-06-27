@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
+
+// Types
 export interface SkillItem {
   name: string;
   level: number;
@@ -21,69 +23,69 @@ export interface ManagementSkill {
   level: number;
 }
 
-export interface SkillState {
-  skillList: SkillItem[];
-  skillForm: Partial<SkillItem>;
-  languageSkills: LanguageSkill[];
-  managementSkills: ManagementSkill[];
-  languageForm: Partial<LanguageSkill>;
-  managementForm: Partial<ManagementSkill>;
-  resumeFile: ResumeFile | null;
-}
-
 export interface ResumeFile {
   name: string;
   base64: string;
 }
 
+export interface SkillState {
+  skillList: SkillItem[];
+  languageSkills: LanguageSkill[];
+  managementSkills: ManagementSkill[];
+  resumeFile: ResumeFile | null;
+}
+
 const initialState: SkillState = {
   skillList: [],
-  skillForm: {},
   languageSkills: [],
   managementSkills: [],
-  languageForm: {},
-  managementForm: {},
   resumeFile: null,
 };
 
+// Slice
 const skillSlice = createSlice({
   name: "skill",
   initialState,
   reducers: {
-    setSkillList: (state, action: PayloadAction<SkillItem[]>) => {
-      state.skillList = action.payload;
+    // --- Skill Actions ---
+    addSkill: (state, action: PayloadAction<SkillItem>) => {
+      state.skillList.push(action.payload);
     },
-    setSkillForm: (state, action: PayloadAction<Partial<SkillItem>>) => {
-      state.skillForm = action.payload;
+    deleteSkill: (state, action: PayloadAction<number>) => {
+      state.skillList.splice(action.payload, 1);
     },
-    setLanguageSkills: (state, action: PayloadAction<LanguageSkill[]>) => {
-      state.languageSkills = action.payload;
+
+    // --- Language Skill Actions ---
+    addLanguageSkill: (state, action: PayloadAction<LanguageSkill>) => {
+      state.languageSkills.push(action.payload);
     },
-    setManagementSkills: (state, action: PayloadAction<ManagementSkill[]>) => {
-      state.managementSkills = action.payload;
+    deleteLanguageSkill: (state, action: PayloadAction<number>) => {
+      state.languageSkills.splice(action.payload, 1);
     },
-    setLanguageForm: (state, action: PayloadAction<Partial<LanguageSkill>>) => {
-      state.languageForm = action.payload;
+
+    // --- Management Skill Actions ---
+    addManagementSkill: (state, action: PayloadAction<ManagementSkill>) => {
+      state.managementSkills.push(action.payload);
     },
-    setManagementForm: (
-      state,
-      action: PayloadAction<Partial<ManagementSkill>>,
-    ) => {
-      state.managementForm = action.payload;
+    deleteManagementSkill: (state, action: PayloadAction<number>) => {
+      state.managementSkills.splice(action.payload, 1);
     },
+
+    // --- Resume File ---
     setResumeFile: (state, action: PayloadAction<ResumeFile | null>) => {
       state.resumeFile = action.payload;
     },
   },
 });
 
+// Exports
 export const {
-  setSkillList,
-  setSkillForm,
-  setLanguageSkills,
-  setManagementSkills,
-  setLanguageForm,
-  setManagementForm,
+  addSkill,
+  deleteSkill,
+  addLanguageSkill,
+  deleteLanguageSkill,
+  addManagementSkill,
+  deleteManagementSkill,
   setResumeFile,
 } = skillSlice.actions;
 
