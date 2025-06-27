@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { setResumeFile } from "../../store/slices/skillSlice"; // <-- use skillSlice here
 import type { RootState, AppDispatch } from "../../store/store";
-import  Button  from "../ui/Button";
+import Button from "../ui/Button";
 
 const ResumeUpload: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,7 +14,9 @@ const ResumeUpload: React.FC = () => {
     if (file && file.type === "application/pdf") {
       const reader = new FileReader();
       reader.onload = () => {
-        dispatch(setResumeFile({ name: file.name, base64: reader.result as string }));
+        dispatch(
+          setResumeFile({ name: file.name, base64: reader.result as string }),
+        );
       };
       reader.readAsDataURL(file);
     } else {

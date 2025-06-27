@@ -9,7 +9,7 @@ export interface EducationFormData {
   institutionName?: string;
   grade?: string;
   startDate: string; // YYYY-MM-DD
-  endDate?: string;  // YYYY-MM-DD or undefined
+  endDate?: string; // YYYY-MM-DD or undefined
   isStudying: boolean;
   description?: string;
 }
@@ -31,7 +31,10 @@ const educationSlice = createSlice({
     setEducationList(state, action: PayloadAction<EducationFormData[]>) {
       state.educationList = action.payload;
     },
-    setEducationForm(state, action: PayloadAction<Partial<EducationFormData> | null>) {
+    setEducationForm(
+      state,
+      action: PayloadAction<Partial<EducationFormData> | null>,
+    ) {
       state.educationForm = action.payload;
     },
     clearEducationData(state) {
@@ -41,5 +44,6 @@ const educationSlice = createSlice({
   },
 });
 
-export const { setEducationList, setEducationForm, clearEducationData } = educationSlice.actions;
+export const { setEducationList, setEducationForm, clearEducationData } =
+  educationSlice.actions;
 export default educationSlice.reducer;

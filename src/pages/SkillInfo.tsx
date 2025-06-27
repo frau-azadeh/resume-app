@@ -26,12 +26,12 @@ const SkillInfo: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { skillList, languageSkills, managementSkills } = useSelector(
-    (state: RootState) => state.skill
+    (state: RootState) => state.skill,
   );
 
   const handleManagementSkillChange = (
     data: ManagementSkillData | null,
-    index?: number
+    index?: number,
   ) => {
     if (index !== undefined) {
       if (data === null) {
@@ -100,10 +100,16 @@ const SkillInfo: React.FC = () => {
       <ResumeUpload />
 
       <div className="flex justify-between mt-8">
-        <Button onClick={() => handleNavigation("prev")} className="btn btn-outline">
+        <Button
+          onClick={() => handleNavigation("prev")}
+          className="btn btn-outline"
+        >
           قبلی
         </Button>
-        <Button onClick={() => handleNavigation("next")} className="btn btn-primary">
+        <Button
+          onClick={() => handleNavigation("next")}
+          className="btn btn-primary"
+        >
           بعدی
         </Button>
       </div>

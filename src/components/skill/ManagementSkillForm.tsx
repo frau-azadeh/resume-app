@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { managementSkillSchema, type ManagementSkillData } from "../../validation/skillSchema";
-import  Button  from "../ui/Button";
+import {
+  managementSkillSchema,
+  type ManagementSkillData,
+} from "../../validation/skillSchema";
+import Button from "../ui/Button";
 
 const allManagerialSkills: string[] = [
   "روابط عمومی",
@@ -23,29 +26,27 @@ const allManagerialSkills: string[] = [
 ];
 
 interface Props {
-    onAdd: (data: ManagementSkillData | null, index?: number) => void;
-    managementSkills: ManagementSkillData[];
-  }
-  
-  
+  onAdd: (data: ManagementSkillData | null, index?: number) => void;
+  managementSkills: ManagementSkillData[];
+}
 
 const MAX_SKILLS = 3;
 
-const renderStars = (
-  currentLevel: number,
-  onChange: (lvl: number) => void
-) => {
+const renderStars = (currentLevel: number, onChange: (lvl: number) => void) => {
   const stars = [];
   for (let i = 1; i <= 5; i++) {
     stars.push(
       <span
         key={i}
         onClick={() => onChange(i)}
-        style={{ cursor: "pointer", color: i <= currentLevel ? "#FACC15" : "#DDD" }}
+        style={{
+          cursor: "pointer",
+          color: i <= currentLevel ? "#FACC15" : "#DDD",
+        }}
         aria-label={`${i} stars`}
       >
         ★
-      </span>
+      </span>,
     );
   }
   return stars;
@@ -79,10 +80,7 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
 
   // Clear form on reset or after add
   const onSubmit = (data: ManagementSkillData) => {
-    if (
-      editingIndex === null &&
-      managementSkills.length >= MAX_SKILLS
-    ) {
+    if (editingIndex === null && managementSkills.length >= MAX_SKILLS) {
       alert(`شما فقط می‌توانید تا ${MAX_SKILLS} مهارت مدیریتی اضافه کنید.`);
       return;
     }
@@ -105,12 +103,23 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
         <select
           {...register("name")}
           className="border p-2 rounded w-full"
-          disabled={editingIndex === null && managementSkills.length >= MAX_SKILLS}
+          disabled={
+            editingIndex === null && managementSkills.length >= MAX_SKILLS
+          }
           defaultValue=""
         >
           <option value="">انتخاب مهارت</option>
           {allManagerialSkills.map((skill) => (
-            <option key={skill} value={skill} disabled={managementSkills.some(s => s.name === skill && (editingIndex === null || managementSkills[editingIndex!].name !== skill))}>
+            <option
+              key={skill}
+              value={skill}
+              disabled={managementSkills.some(
+                (s) =>
+                  s.name === skill &&
+                  (editingIndex === null ||
+                    managementSkills[editingIndex!].name !== skill),
+              )}
+            >
               {skill}
             </option>
           ))}
@@ -133,7 +142,13 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
         )}
 
         <div className="flex gap-2">
-          <Button type="submit" disabled={!nameValue || (editingIndex === null && managementSkills.length >= MAX_SKILLS)}>
+          <Button
+            type="submit"
+            disabled={
+              !nameValue ||
+              (editingIndex === null && managementSkills.length >= MAX_SKILLS)
+            }
+          >
             {editingIndex !== null ? "ویرایش مهارت" : "افزودن مهارت"}
           </Button>
           {editingIndex !== null && (

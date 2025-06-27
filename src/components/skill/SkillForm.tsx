@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { skillSchema } from "../../validation/skillSchema";
 import type { SkillFormData } from "../../validation/skillSchema";
 
-
 interface Props {
   onAdd: (data: SkillFormData) => void;
 }
@@ -26,9 +25,18 @@ const SkillForm: React.FC<Props> = ({ onAdd }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-      <input {...register("name")} placeholder="نام مهارت فنی" className="input" />
-      {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"
+    >
+      <input
+        {...register("name")}
+        placeholder="نام مهارت فنی"
+        className="input"
+      />
+      {errors.name && (
+        <p className="text-red-500 text-sm">{errors.name.message}</p>
+      )}
 
       <input
         type="number"
@@ -38,7 +46,9 @@ const SkillForm: React.FC<Props> = ({ onAdd }) => {
         placeholder="میزان تسلط (۱ تا ۵)"
         className="input"
       />
-      {errors.level && <p className="text-red-500 text-sm">{errors.level.message}</p>}
+      {errors.level && (
+        <p className="text-red-500 text-sm">{errors.level.message}</p>
+      )}
 
       <button type="submit" className="btn btn-primary col-span-2">
         افزودن مهارت فنی

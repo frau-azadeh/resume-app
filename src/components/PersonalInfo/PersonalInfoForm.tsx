@@ -50,7 +50,7 @@ const PersonalInfoForm: React.FC<Props> = ({ defaultValues, onSubmit }) => {
 
   // Avatar state and handlers
   const [avatarPreview, setAvatarPreview] = React.useState<string>(
-    defaultValues.avatar || ""
+    defaultValues.avatar || "",
   );
 
   const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -95,8 +95,16 @@ const PersonalInfoForm: React.FC<Props> = ({ defaultValues, onSubmit }) => {
         />
       </div>
 
-      <form onSubmit={handleSubmit(internalSubmit)} className="space-y-8" noValidate>
-        <PersonalSection register={register} errors={errors} control={control} />
+      <form
+        onSubmit={handleSubmit(internalSubmit)}
+        className="space-y-8"
+        noValidate
+      >
+        <PersonalSection
+          register={register}
+          errors={errors}
+          control={control}
+        />
         <FamilySection register={register} errors={errors} />
         <ResidenceSection register={register} errors={errors} />
         <ContactSection register={register} errors={errors} />

@@ -11,7 +11,7 @@ export const personalInfoSchema = z.object({
   birthDate: z
     .string()
     .min(1, "تاریخ تولد ضروری است")
-    .refine(val => !isNaN(Date.parse(val)), "تاریخ تولد معتبر نیست"),
+    .refine((val) => !isNaN(Date.parse(val)), "تاریخ تولد معتبر نیست"),
   birthProvince: z.string().min(1, "استان محل تولد ضروری است"),
   birthCity: z.string().min(1, "شهر محل تولد ضروری است"),
   idNumber: z.string().min(1, "شماره شناسنامه ضروری است"),

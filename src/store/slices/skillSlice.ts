@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-
 // Types
 export interface SkillItem {
   name: string;

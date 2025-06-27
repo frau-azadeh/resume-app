@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import type { RootState, AppDispatch } from "../store/store";
-import {
-  setEducationList as saveEducationList,
-} from "../store/slices/educationSlice";
+import { setEducationList as saveEducationList } from "../store/slices/educationSlice";
 import dayjs, { todayJalali } from "../utils/date";
 import EducationForm from "../components/education/EducationForm";
 import EducationList from "../components/education/EducationList";
@@ -13,9 +11,10 @@ import type { EducationFormData } from "../store/slices/educationSlice";
 import { Button } from "../components/ui";
 import { useNavigate } from "react-router-dom";
 
-
 // تبدیل redux به local (string -> Dayjs)
-const mapFromStoreToLocal = (item: EducationFormData): EducationFormDataLocal => ({
+const mapFromStoreToLocal = (
+  item: EducationFormData,
+): EducationFormDataLocal => ({
   ...item,
   startDate: dayjs(item.startDate),
   endDate: item.endDate ? dayjs(item.endDate) : null,
@@ -28,7 +27,9 @@ const mapFromStoreToLocal = (item: EducationFormData): EducationFormDataLocal =>
 });
 
 // تبدیل local به redux (Dayjs -> string)
-const mapFromLocalToStore = (item: EducationFormDataLocal): EducationFormData => ({
+const mapFromLocalToStore = (
+  item: EducationFormDataLocal,
+): EducationFormData => ({
   ...item,
   startDate: item.startDate.format("YYYY-MM-DD"),
   endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : undefined,
@@ -54,9 +55,12 @@ const EducationHistory: React.FC = () => {
     (state: RootState) => state.education.educationList,
   );
 
-  const [educationList, setEducationList] = useState<EducationFormDataLocal[]>([]);
+  const [educationList, setEducationList] = useState<EducationFormDataLocal[]>(
+    [],
+  );
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
-  const [formInitialData, setFormInitialData] = useState<EducationFormDataLocal>(defaultFormValues);
+  const [formInitialData, setFormInitialData] =
+    useState<EducationFormDataLocal>(defaultFormValues);
 
   // مپ کردن داده redux به local هنگام بارگذاری
   useEffect(() => {
@@ -113,9 +117,16 @@ const EducationHistory: React.FC = () => {
         onCancel={handleCancelEdit}
         isEditing={editingIndex !== null}
       />
-      <EducationList educationList={educationList} onEdit={handleEdit} onDelete={handleDelete} />
+      <EducationList
+        educationList={educationList}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
       <div className="flex justify-between mt-8">
-        <Button onClick={() => navigate("/form/personal-info")} variant="outline">
+        <Button
+          onClick={() => navigate("/form/personal-info")}
+          variant="outline"
+        >
           قبلی
         </Button>
         <Button onClick={() => navigate("/form/work-experience")}>بعدی</Button>

@@ -29,7 +29,11 @@ const WorkList: React.FC<WorkListProps> = ({ workList, onEdit, onDelete }) => {
             <Button onClick={() => onEdit(index)} variant="outline">
               ویرایش
             </Button>
-            <Button onClick={() => onDelete(index)} variant="outline" color="red">
+            <Button
+              onClick={() => onDelete(index)}
+              variant="outline"
+              color="red"
+            >
               حذف
             </Button>
           </div>

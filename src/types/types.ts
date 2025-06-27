@@ -33,7 +33,6 @@ export interface PersonalInfoForm {
   avatar: string;
 }
 
-
 export type Proficiency = "ضعیف" | "متوسط" | "عالی";
 
 // types/index.ts
@@ -41,7 +40,6 @@ export interface SkillFormData {
   name: string;
   level: "beginner" | "intermediate" | "advanced";
 }
-
 
 export interface LanguageSkill {
   language: string;

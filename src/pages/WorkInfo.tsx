@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import type {  SubmitHandler } from "react-hook-form";
+import type { SubmitHandler } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,8 +13,11 @@ import Button from "../components/ui/Button";
 import JalaliDateInput from "../components/ui/JalaliDatePicker";
 import WorkList from "../components/work/WorkList";
 import { todayJalali } from "../utils/date";
-import type{ RootState, AppDispatch } from "../store/store";
-import { setworkList as saveWorkList, setworkForm as saveWorkForm } from "../store/slices/workSlice";
+import type { RootState, AppDispatch } from "../store/store";
+import {
+  setworkList as saveWorkList,
+  setworkForm as saveWorkForm,
+} from "../store/slices/workSlice";
 import { workSchema } from "../validation/workSchema";
 
 export interface WorkFormData {
@@ -53,8 +56,12 @@ const WorkInfo: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const workListInStore = useSelector((state: RootState) => state.work.workList);
-  const workFormInStore = useSelector((state: RootState) => state.work.workForm);
+  const workListInStore = useSelector(
+    (state: RootState) => state.work.workList,
+  );
+  const workFormInStore = useSelector(
+    (state: RootState) => state.work.workForm,
+  );
 
   const {
     register,
@@ -98,8 +105,12 @@ const WorkInfo: React.FC = () => {
       reset({
         ...defaultFormValues,
         ...workFormInStore,
-        startDate: workFormInStore.startDate ? dayjs(workFormInStore.startDate, "YYYY-MM-DD") : todayJalali(),
-        endDate: workFormInStore.endDate ? dayjs(workFormInStore.endDate, "YYYY-MM-DD") : todayJalali(),
+        startDate: workFormInStore.startDate
+          ? dayjs(workFormInStore.startDate, "YYYY-MM-DD")
+          : todayJalali(),
+        endDate: workFormInStore.endDate
+          ? dayjs(workFormInStore.endDate, "YYYY-MM-DD")
+          : todayJalali(),
         field: workFormInStore.field ?? "",
         level: workFormInStore.level ?? "",
         cooperationType: workFormInStore.cooperationType ?? "",
@@ -173,24 +184,52 @@ const WorkInfo: React.FC = () => {
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow" dir="rtl">
       <h1 className="text-2xl font-bold mb-4 text-center">سوابق کاری</h1>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+      >
         <Input label="نام شرکت" {...register("companyName")} />
-        {errors.companyName && <p className="text-red-600 text-sm">{errors.companyName.message}</p>}
+        {errors.companyName && (
+          <p className="text-red-600 text-sm">{errors.companyName.message}</p>
+        )}
 
         <Input label="عنوان شغلی" {...register("position")} />
-        {errors.position && <p className="text-red-600 text-sm">{errors.position.message}</p>}
+        {errors.position && (
+          <p className="text-red-600 text-sm">{errors.position.message}</p>
+        )}
 
         <Input label="زمینه فعالیت شرکت" {...register("field")} />
         <Input label="رده سازمانی" {...register("level")} />
         <Input label="نوع همکاری" {...register("cooperationType")} />
-        <Input label="سابقه بیمه (ماه)" type="number" {...register("insuranceMonths")} />
-        {errors.insuranceMonths && <p className="text-red-600 text-sm">{errors.insuranceMonths.message}</p>}
+        <Input
+          label="سابقه بیمه (ماه)"
+          type="number"
+          {...register("insuranceMonths")}
+        />
+        {errors.insuranceMonths && (
+          <p className="text-red-600 text-sm">
+            {errors.insuranceMonths.message}
+          </p>
+        )}
 
-        <JalaliDateInput label="تاریخ شروع" value={startDate} onChange={(v) => setValue("startDate", v)} />
-        {errors.startDate && <p className="text-red-600 text-sm">{errors.startDate.message}</p>}
+        <JalaliDateInput
+          label="تاریخ شروع"
+          value={startDate}
+          onChange={(v) => setValue("startDate", v)}
+        />
+        {errors.startDate && (
+          <p className="text-red-600 text-sm">{errors.startDate.message}</p>
+        )}
 
-        <JalaliDateInput label="تاریخ پایان" value={endDate} onChange={(v) => setValue("endDate", v)} disabled={isWorking} />
-        {errors.endDate && <p className="text-red-600 text-sm">{errors.endDate.message}</p>}
+        <JalaliDateInput
+          label="تاریخ پایان"
+          value={endDate}
+          onChange={(v) => setValue("endDate", v)}
+          disabled={isWorking}
+        />
+        {errors.endDate && (
+          <p className="text-red-600 text-sm">{errors.endDate.message}</p>
+        )}
 
         <div className="col-span-2">
           <label className="flex items-center gap-2">
@@ -207,14 +246,22 @@ const WorkInfo: React.FC = () => {
         </div>
 
         <div className="col-span-2 text-center">
-          <Button type="submit">{editingIndex !== null ? "ویرایش سابقه" : "ثبت سابقه"}</Button>
+          <Button type="submit">
+            {editingIndex !== null ? "ویرایش سابقه" : "ثبت سابقه"}
+          </Button>
         </div>
       </form>
 
-      <WorkList workList={workList} onEdit={handleEdit} onDelete={handleDelete} />
+      <WorkList
+        workList={workList}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
 
       <div className="flex justify-between mt-8">
-        <Button onClick={() => handleNavigation("prev")} variant="outline">قبلی</Button>
+        <Button onClick={() => handleNavigation("prev")} variant="outline">
+          قبلی
+        </Button>
         <Button onClick={() => handleNavigation("next")}>بعدی</Button>
       </div>
     </div>
