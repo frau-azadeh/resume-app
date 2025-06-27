@@ -1,42 +1,44 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-interface PersonalInfoState {
-  personalInfo: {
-    firstName: string;
-    lastName: string;
-    nationalCode: string;
-    birthDate: string | null; // ذخیره به صورت string
-    birthCity: string;
-    birthProvince: string;
-    idNumber: string;
-    issueCity: string;
-    issueProvince: string;
-    religion: string;
-    maritalStatus: string;
-    gender: string;
-    fatherName: string;
-    fatherJob: string;
-    fatherEducation: string;
-    motherName: string;
-    motherJob: string;
-    motherEducation: string;
-    siblingsCount: number;
-    childrenCount: number;
-    residenceProvince: string;
-    residenceCity: string;
-    address: string;
-    postalCode: string;
-    phone: string;
-    email: string;
-    emergencyContactName: string;
-    emergencyContactRelation: string;
-    emergencyContactPhone: string;
-    avatar: string;
-  };
+export interface PersonalInfoState {
+  firstName: string;
+  lastName: string;
+  nationalCode: string;
+  birthDate: string | null;
+  birthCity: string;
+  birthProvince: string;
+  idNumber: string;
+  issueCity: string;
+  issueProvince: string;
+  religion: string;
+  maritalStatus: string;
+  gender: string;
+  fatherName: string;
+  fatherJob: string;
+  fatherEducation: string;
+  motherName: string;
+  motherJob: string;
+  motherEducation: string;
+  siblingsCount: number;
+  childrenCount: number;
+  residenceProvince: string;
+  residenceCity: string;
+  address: string;
+  postalCode: string;
+  phone: string;
+  email: string;
+  emergencyContactName: string;
+  emergencyContactRelation: string;
+  emergencyContactPhone: string;
+  avatar: string;
 }
 
-const initialState: PersonalInfoState = {
+interface SliceState {
+  personalInfo: PersonalInfoState;
+}
+
+const initialState: SliceState = {
   personalInfo: {
     firstName: "",
     lastName: "",
@@ -75,10 +77,7 @@ const personalInfoSlice = createSlice({
   name: "personalInfo",
   initialState,
   reducers: {
-    setPersonalInfo(
-      state,
-      action: PayloadAction<PersonalInfoState["personalInfo"]>,
-    ) {
+    setPersonalInfo(state, action: PayloadAction<PersonalInfoState>) {
       state.personalInfo = action.payload;
     },
     clearPersonalInfo(state) {
