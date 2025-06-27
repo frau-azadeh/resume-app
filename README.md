@@ -28,7 +28,7 @@ This app allows users to input personal details, education history, skills, cour
 
 ✅ Form validation
 
-✅ Zod 
+✅ Zod
 
 ✅ Modern responsive UI
 

@@ -3,15 +3,15 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export interface EducationFormData {
   degree: string;
-  field: string;
-  specialization: string;
-  institutionType: string;
-  institutionName: string;
-  grade: string;
+  field?: string;
+  specialization?: string;
+  institutionType?: string;
+  institutionName?: string;
+  grade?: string;
   startDate: string; // YYYY-MM-DD
-  endDate: string; // YYYY-MM-DD
+  endDate?: string; // YYYY-MM-DD or undefined
   isStudying: boolean;
-  description: string;
+  description?: string;
 }
 
 interface EducationState {

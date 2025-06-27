@@ -1,21 +1,39 @@
-import React, { useEffect, useState } from "react";
-import { useForm, type FieldErrors } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Input from "../components/ui/Input";
-import Button from "../components/ui/Button";
-import { toast } from "react-toastify";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 import type { RootState, AppDispatch } from "../store/store";
-import {
-  setEducationList as saveEducationList,
-  setEducationForm as saveEducationForm,
-} from "../store/slices/educationSlice";
+import { setEducationList as saveEducationList } from "../store/slices/educationSlice";
 import dayjs, { todayJalali } from "../utils/date";
-import JalaliDateInput from "../components/ui/JalaliDatePicker";
-import {
-  educationSchema,
-  type EducationFormDataLocal,
-} from "../validation/educationSchema";
+import EducationForm from "../components/education/EducationForm";
+import EducationList from "../components/education/EducationList";
+import type { EducationFormDataLocal } from "../validation/educationSchema";
+import type { EducationFormData } from "../store/slices/educationSlice";
+import { Button } from "../components/ui";
+import { useNavigate } from "react-router-dom";
+
+// تبدیل redux به local (string -> Dayjs)
+const mapFromStoreToLocal = (
+  item: EducationFormData,
+): EducationFormDataLocal => ({
+  ...item,
+  startDate: dayjs(item.startDate),
+  endDate: item.endDate ? dayjs(item.endDate) : null,
+  field: item.field ?? "",
+  specialization: item.specialization ?? "",
+  institutionType: item.institutionType ?? "",
+  institutionName: item.institutionName ?? "",
+  grade: item.grade ?? "",
+  description: item.description ?? "",
+});
+
+// تبدیل local به redux (Dayjs -> string)
+const mapFromLocalToStore = (
+  item: EducationFormDataLocal,
+): EducationFormData => ({
+  ...item,
+  startDate: item.startDate.format("YYYY-MM-DD"),
+  endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : undefined,
+});
 
 const defaultFormValues: EducationFormDataLocal = {
   degree: "",
@@ -32,76 +50,26 @@ const defaultFormValues: EducationFormDataLocal = {
 
 const EducationHistory: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
   const educationListInStore = useSelector(
     (state: RootState) => state.education.educationList,
   );
-  const educationFormInStore = useSelector(
-    (state: RootState) => state.education.educationForm,
-  );
-
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setValue,
-    watch,
-    formState: { errors },
-  } = useForm<EducationFormDataLocal>({
-    defaultValues: defaultFormValues,
-    resolver: zodResolver(educationSchema),
-  });
 
   const [educationList, setEducationList] = useState<EducationFormDataLocal[]>(
     [],
   );
-
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+  const [formInitialData, setFormInitialData] =
+    useState<EducationFormDataLocal>(defaultFormValues);
 
-  const isStudying = watch("isStudying");
-  const startDate = watch("startDate");
-  const endDate = watch("endDate");
-
+  // مپ کردن داده redux به local هنگام بارگذاری
   useEffect(() => {
-    setEducationList(
-      educationListInStore.map((edu) => ({
-        degree: edu.degree,
-        field: edu.field ?? "",
-        specialization: edu.specialization ?? "",
-        institutionType: edu.institutionType ?? "",
-        institutionName: edu.institutionName ?? "",
-        grade: edu.grade ?? "",
-        startDate: edu.startDate
-          ? dayjs(edu.startDate, "YYYY-MM-DD")
-          : todayJalali(),
-        endDate: edu.endDate ? dayjs(edu.endDate, "YYYY-MM-DD") : null,
-        isStudying: edu.isStudying,
-        description: edu.description ?? "",
-      })),
-    );
+    const mapped = educationListInStore.map(mapFromStoreToLocal);
+    setEducationList(mapped);
+  }, [educationListInStore]);
 
-    if (educationFormInStore) {
-      reset({
-        degree: educationFormInStore.degree,
-        field: educationFormInStore.field ?? "",
-        specialization: educationFormInStore.specialization ?? "",
-        institutionType: educationFormInStore.institutionType ?? "",
-        institutionName: educationFormInStore.institutionName ?? "",
-        grade: educationFormInStore.grade ?? "",
-        startDate: educationFormInStore.startDate
-          ? dayjs(educationFormInStore.startDate, "YYYY-MM-DD")
-          : todayJalali(),
-        endDate: educationFormInStore.endDate
-          ? dayjs(educationFormInStore.endDate, "YYYY-MM-DD")
-          : null,
-        isStudying: educationFormInStore.isStudying,
-        description: educationFormInStore.description ?? "",
-      });
-    }
-  }, [educationListInStore, educationFormInStore, reset]);
-
-  const onValid = (data: EducationFormDataLocal): void => {
-    const updatedList = [...educationList];
-
+  const handleSubmit = (data: EducationFormDataLocal) => {
+    let updatedList = [...educationList];
     if (editingIndex !== null) {
       updatedList[editingIndex] = data;
       toast.success("سابقه تحصیلی ویرایش شد");
@@ -109,166 +77,59 @@ const EducationHistory: React.FC = () => {
       updatedList.push(data);
       toast.success("سابقه تحصیلی ثبت شد");
     }
-
     setEducationList(updatedList);
 
-    dispatch(
-      saveEducationList(
-        updatedList.map((item) => ({
-          degree: item.degree,
-          field: item.field || "",
-          specialization: item.specialization || "",
-          institutionType: item.institutionType || "",
-          institutionName: item.institutionName || "",
-          grade: item.grade || "",
-          startDate: item.startDate
-            ? item.startDate.format("YYYY-MM-DD")
-            : todayJalali().format("YYYY-MM-DD"),
-          endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : "",
-          isStudying: item.isStudying,
-          description: item.description || "",
-        })),
-      ),
-    );
+    // مپ کردن local به redux قبل از ذخیره در store
+    dispatch(saveEducationList(updatedList.map(mapFromLocalToStore)));
 
-    dispatch(saveEducationForm(null));
     setEditingIndex(null);
-    reset(defaultFormValues);
+    setFormInitialData(defaultFormValues);
   };
 
-  const onInvalid = (errors: FieldErrors<EducationFormDataLocal>) => {
-    // گرفتن پیام اولین خطا
-    const firstError = Object.values(errors)[0];
-    if (firstError && "message" in firstError) {
-      toast.error(firstError.message as string);
-    } else {
-      toast.error("اطلاعات نامعتبر است");
-    }
+  const handleEdit = (index: number) => {
+    setEditingIndex(index);
+    setFormInitialData(educationList[index]);
   };
 
   const handleDelete = (index: number) => {
     const updatedList = educationList.filter((_, i) => i !== index);
     setEducationList(updatedList);
-    dispatch(
-      saveEducationList(
-        updatedList.map((item) => ({
-          degree: item.degree,
-          field: item.field || "",
-          specialization: item.specialization || "",
-          institutionType: item.institutionType || "",
-          institutionName: item.institutionName || "",
-          grade: item.grade || "",
-          startDate: item.startDate
-            ? item.startDate.format("YYYY-MM-DD")
-            : todayJalali().format("YYYY-MM-DD"),
-          endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : "",
-          isStudying: item.isStudying,
-          description: item.description || "",
-        })),
-      ),
-    );
+    dispatch(saveEducationList(updatedList.map(mapFromLocalToStore)));
     toast.success("سابقه تحصیلی حذف شد");
+
+    if (editingIndex === index) {
+      setEditingIndex(null);
+      setFormInitialData(defaultFormValues);
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingIndex(null);
+    setFormInitialData(defaultFormValues);
   };
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow" dir="rtl">
       <h1 className="text-2xl font-bold mb-4 text-center">سوابق تحصیلی</h1>
-      <form
-        onSubmit={handleSubmit(onValid, onInvalid)}
-        className="grid grid-cols-1 md:grid-cols-2 gap-4"
-      >
-        <Input
-          label="مقطع"
-          {...register("degree", { required: "مقطع الزامی است" })}
-        />
-
-        <Input label="رشته" {...register("field")} />
-        <Input label="گرایش" {...register("specialization")} />
-        <Input label="نوع موسسه" {...register("institutionType")} />
-        <Input label="نام موسسه" {...register("institutionName")} />
-        <Input label="معدل" {...register("grade")} />
-        <JalaliDateInput
-          label="تاریخ شروع"
-          value={startDate}
-          onChange={(v) => setValue("startDate", v!)}
-        />
-        {errors.startDate && (
-          <p className="text-red-600 text-sm">{errors.startDate.message}</p>
-        )}
-        <JalaliDateInput
-          label="تاریخ پایان"
-          value={endDate}
-          onChange={(v) => setValue("endDate", v)}
-          disabled={isStudying}
-        />
-        {errors.endDate && (
-          <p className="text-red-600 text-sm">{errors.endDate.message}</p>
-        )}
-        <div className="col-span-2">
-          <label className="flex items-center gap-2">
-            <input type="checkbox" {...register("isStudying")} />
-            در حال تحصیل هستم
-          </label>
-        </div>
-        <div className="col-span-2">
-          <Input label="توضیحات" {...register("description")} />
-        </div>
-        <div className="col-span-2 text-center">
-          <Button type="submit">
-            {editingIndex !== null ? "ویرایش سابقه" : "ثبت سابقه"}
-          </Button>
-        </div>
-      </form>
-
-      {/* لیست سوابق */}
-      <div className="mt-6">
-        <h2 className="font-bold mb-2">لیست سوابق</h2>
-        {educationList.map((item, index) => (
-          <div
-            key={index}
-            className="border rounded p-2 mb-2 flex justify-between items-center"
-          >
-            <div>
-              <div>
-                {item.degree} - {item.field}
-              </div>
-              <div>
-                {item.startDate?.format("YYYY-MM-DD")} تا{" "}
-                {item.isStudying
-                  ? "در حال تحصیل"
-                  : item.endDate?.format("YYYY-MM-DD")}
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  setEditingIndex(index);
-                  reset(item);
-                  dispatch(
-                    saveEducationForm({
-                      ...item,
-                      startDate: item.startDate
-                        ? item.startDate.format("YYYY-MM-DD")
-                        : "",
-                      endDate: item.endDate
-                        ? item.endDate.format("YYYY-MM-DD")
-                        : "",
-                    }),
-                  );
-                }}
-                className="text-blue-600"
-              >
-                ویرایش
-              </button>
-              <button
-                onClick={() => handleDelete(index)}
-                className="text-red-600"
-              >
-                حذف
-              </button>
-            </div>
-          </div>
-        ))}
+      <EducationForm
+        initialData={formInitialData}
+        onSubmit={handleSubmit}
+        onCancel={handleCancelEdit}
+        isEditing={editingIndex !== null}
+      />
+      <EducationList
+        educationList={educationList}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
+      <div className="flex justify-between mt-8">
+        <Button
+          onClick={() => navigate("/form/personal-info")}
+          variant="outline"
+        >
+          قبلی
+        </Button>
+        <Button onClick={() => navigate("/form/work-experience")}>بعدی</Button>
       </div>
     </div>
   );

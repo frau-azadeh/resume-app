@@ -4,7 +4,7 @@ export interface PersonalInfoForm {
   firstName: string;
   lastName: string;
   nationalCode: string;
-  birthDate: Dayjs | null; // فرم از نوع Dayjs
+  birthDate: Dayjs | null;
   birthCity: string;
   birthProvince: string;
   idNumber: string;
@@ -35,9 +35,10 @@ export interface PersonalInfoForm {
 
 export type Proficiency = "ضعیف" | "متوسط" | "عالی";
 
-export interface SkillItem {
+// types/index.ts
+export interface SkillFormData {
   name: string;
-  level: number;
+  level: "beginner" | "intermediate" | "advanced";
 }
 
 export interface LanguageSkill {

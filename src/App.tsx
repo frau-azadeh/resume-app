@@ -8,7 +8,7 @@ import Layout from "./components/Layout";
 import PersonalInfo from "./pages/PersonalInfo";
 import EducationHistory from "./pages/EducationHistory";
 import WorkInfo from "./pages/WorkInfo";
-import SkillForm from "./pages/SkillForm";
+import SkillForm from "./pages/SkillInfo";
 
 const App: React.FC = () => {
   return (
