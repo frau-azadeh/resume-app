@@ -1,6 +1,7 @@
 import React from "react";
 import dayjs from "dayjs";
 import type { EducationFormDataLocal } from "../../validation/educationSchema";
+import { Button } from "../ui";
 
 interface Props {
   educationList: EducationFormDataLocal[];
@@ -17,10 +18,11 @@ const EducationList: React.FC<Props> = ({
     <h2 className="font-bold mb-2">لیست سوابق</h2>
     {educationList.length === 0 && <p>هیچ سابقه تحصیلی ثبت نشده است.</p>}
     {educationList.map((item, index) => (
-      <div
-        key={index}
-        className="border rounded p-2 mb-2 flex justify-between items-center"
-      >
+     <div
+     key={index}
+     className="border border-gray-300 rounded-lg p-4 mb-3 flex justify-between items-center shadow-sm bg-white"
+   >
+   
         <div>
           <div>
             {item.degree} - {item.field}
@@ -36,12 +38,12 @@ const EducationList: React.FC<Props> = ({
           </div>
         </div>
         <div className="flex gap-2">
-          <button onClick={() => onEdit(index)} className="text-blue-600">
+          <Button onClick={() => onEdit(index)} variant="primary">
             ویرایش
-          </button>
-          <button onClick={() => onDelete(index)} className="text-red-600">
+          </Button>
+          <Button onClick={() => onDelete(index)} variant="destructive">
             حذف
-          </button>
+          </Button>
         </div>
       </div>
     ))}
