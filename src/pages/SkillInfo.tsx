@@ -46,25 +46,24 @@ const SkillInfo: React.FC = () => {
 
   const handleNavigation = (direction: "prev" | "next") => {
     if (direction === "next") navigate("/form/summary");
-    else navigate("/form/work");
+    else navigate("/form/work-experience");
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow" dir="rtl">
-      {/* فرم مهارت‌های فنی */}
+    <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow" dir="rtl">
+            <h1 className="text-2xl font-bold mb-4 text-center">مهارتها</h1>
+
       <SkillForm
         onAdd={(data) => dispatch(addSkill(data))}
         skills={skillList}
         onDelete={(index) => dispatch(deleteSkill(index))}
       />
 
-      {/* فرم مهارت‌های مدیریتی */}
       <ManagementSkillForm
         managementSkills={managementSkills}
         onAdd={handleManagementSkillChange}
       />
 
-      {/* فرم مهارت‌های زبانی */}
       <LanguageSkillForm
         onAdd={(data) => dispatch(addLanguageSkill(data))}
         languageSkills={languageSkills}
@@ -74,18 +73,10 @@ const SkillInfo: React.FC = () => {
       <ResumeUpload />
 
       <div className="flex justify-between mt-8">
-        <Button
-          onClick={() => handleNavigation("prev")}
-          className="btn btn-outline"
-        >
-          قبلی
-        </Button>
-        <Button
-          onClick={() => handleNavigation("next")}
-          className="btn btn-primary"
-        >
-          بعدی
-        </Button>
+         <Button onClick={() => handleNavigation("prev")} variant="outline">
+                 قبلی
+               </Button>
+        
       </div>
     </div>
   );
