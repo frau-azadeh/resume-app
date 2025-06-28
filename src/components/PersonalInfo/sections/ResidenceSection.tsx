@@ -12,7 +12,7 @@ interface Props {
 const ResidenceSection: React.FC<Props> = ({ register, errors }) => (
   <section className="border border-gray-300 rounded-lg p-4 shadow-sm">
     <h2 className="text-lg font-semibold mb-4">محل سکونت</h2>
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <Input
         label="استان محل سکونت"
         {...register("residenceProvince")}
