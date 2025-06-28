@@ -11,6 +11,7 @@ interface JalaliDateInputProps {
   disabled?: boolean;
   error?: string;
   locale?: string;
+  className?: string;
 }
 
 const JalaliDateInput: React.FC<JalaliDateInputProps> = ({
@@ -18,6 +19,7 @@ const JalaliDateInput: React.FC<JalaliDateInputProps> = ({
   value,
   onChange,
   disabled,
+  className,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -59,10 +61,10 @@ const JalaliDateInput: React.FC<JalaliDateInputProps> = ({
 
   return (
     <div className="relative flex flex-col" ref={wrapperRef}>
-      <label className="mb-1 font-semibold">{label}</label>
-      <input
+<label className="mb-1 text-sm font-medium text-gray-700">{label}</label>
+<input
         type="text"
-        className="border rounded p-2 w-full cursor-pointer"
+        className={`border rounded p-2 w-full cursor-pointer ${className || ""}`} // اینجا ترکیب شد
         onClick={() => !disabled && setIsOpen(!isOpen)}
         value={value ? value.format("YYYY-MM-DD") : ""}
         readOnly
