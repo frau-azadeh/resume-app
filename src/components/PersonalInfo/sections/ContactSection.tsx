@@ -10,8 +10,8 @@ interface Props {
 }
 
 const ContactSection: React.FC<Props> = ({ register, errors }) => (
-  <section className="border rounded-lg p-4 shadow-sm">
-    <h2 className="text-lg font-semibold mb-4">اطلاعات تماس</h2>
+<section className="border border-gray-300 rounded-lg p-4 shadow-sm">
+      <h2 className="text-lg font-semibold mb-4">اطلاعات تماس</h2>
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       <Input label="تلفن" {...register("phone")} error={errors.phone} />
       <Input
