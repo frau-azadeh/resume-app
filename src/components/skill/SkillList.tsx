@@ -2,7 +2,7 @@ import { Button } from "../ui";
 
 type Item = {
   label: string;
-  description: React.ReactNode; // یا JSX.Element | string
+  description: React.ReactNode; 
 };
 
 interface Props {
@@ -13,8 +13,9 @@ interface Props {
 
 const SkillList: React.FC<Props> = ({ title, items, onDelete }) => {
   return (
-    <div className="mb-6" dir="rtl">
-      <h2 className="font-bold text-lg mb-3 text-gray-800">{title}</h2>
+    <div className="mb-6 border-t border-gray-200 pt-6" dir="rtl">
+      <h2 className="font-bold  mb-3 text-gray-800">{title}</h2>
+
       {items.length === 0 ? (
         <p className="text-sm text-gray-500 italic">هیچ آیتمی ثبت نشده است</p>
       ) : (
@@ -22,7 +23,7 @@ const SkillList: React.FC<Props> = ({ title, items, onDelete }) => {
           {items.map((item, idx) => (
             <li
               key={idx}
-              className="border border-gray-300 rounded-lg p-4 flex justify-between items-center shadow-sm hover:shadow-md transition"
+              className="bg-white border border-gray-300 rounded-lg p-4 flex justify-between items-center shadow-sm hover:shadow-md transition"
             >
               <div>
                 <p className="font-semibold text-gray-900">{item.label}</p>
@@ -32,6 +33,7 @@ const SkillList: React.FC<Props> = ({ title, items, onDelete }) => {
                   </p>
                 )}
               </div>
+
               <Button
                 onClick={() => onDelete(idx)}
                 variant="destructive"
