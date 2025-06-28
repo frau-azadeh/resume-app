@@ -109,7 +109,7 @@ const EducationHistory: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow" dir="rtl">
+    <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow" dir="rtl">
       <h1 className="text-2xl font-bold mb-4 text-center">سوابق تحصیلی</h1>
       <EducationForm
         initialData={formInitialData}
