@@ -16,7 +16,7 @@ const ResumeUpload: React.FC = () => {
       const reader = new FileReader();
       reader.onload = () => {
         dispatch(
-          setResumeFile({ name: file.name, base64: reader.result as string }),
+          setResumeFile({ name: file.name, base64: reader.result as string })
         );
         toast.success("فایل رزومه با موفقیت بارگذاری شد.");
       };
@@ -29,9 +29,9 @@ const ResumeUpload: React.FC = () => {
   return (
     <div
       dir="rtl"
-      className="mx-auto bg-white p-6 rounded-lg shadow-md space-y-8 mb-10"
+      className="mx-auto bg-white p-6 rounded-lg shadow-md border-t border-gray-200 pt-6 mb-10 space-y-8"
     >
-      <h3 className="text-lg font-semibold mb-4 text-gray-800">
+      <h3 className="text-lg font-semibold text-gray-800 mb-4">
         رزومه (فقط PDF)
       </h3>
 
@@ -43,7 +43,8 @@ const ResumeUpload: React.FC = () => {
           >
             {resumeFile.name}
           </div>
-          <div className="flex gap-3">
+
+          <div className="flex gap-3 items-center">
             <a
               href={resumeFile.base64}
               target="_blank"
@@ -52,6 +53,7 @@ const ResumeUpload: React.FC = () => {
             >
               مشاهده
             </a>
+
             <Button
               variant="destructive"
               onClick={() => {
@@ -69,7 +71,7 @@ const ResumeUpload: React.FC = () => {
           type="file"
           accept="application/pdf"
           onChange={handleFileUpload}
-          className="w-full border border-gray-200 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition shadow-sm bg-white"
+          className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition shadow-sm bg-white"
         />
       )}
     </div>
