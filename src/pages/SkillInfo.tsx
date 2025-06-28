@@ -6,7 +6,6 @@ import type { RootState, AppDispatch } from "../store/store";
 import SkillForm from "../components/skill/SkillForm";
 import LanguageSkillForm from "../components/skill/LanguageSkillForm";
 import ManagementSkillForm from "../components/skill/ManagementSkillForm";
-import SkillList from "../components/skill/SkillList";
 import ResumeUpload from "../components/skill/ResumeUpload";
 
 import {
@@ -50,25 +49,12 @@ const SkillInfo: React.FC = () => {
     else navigate("/form/work");
   };
 
-  const renderStars = (level: number): JSX.Element => (
-    <span className="text-yellow-500">
-      {"★".repeat(level)}
-      {"☆".repeat(5 - level)}
-    </span>
-  );
-
   return (
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow" dir="rtl">
-      <h1 className="text-2xl font-bold mb-6 text-center">مهارت‌ها</h1>
-
       {/* فرم مهارت‌های فنی */}
-      <SkillForm onAdd={(data) => dispatch(addSkill(data))} />
-      <SkillList
-        title="مهارت‌های فنی"
-        items={skillList.map((skill) => ({
-          label: skill.name,
-          description: renderStars(skill.level),
-        }))}
+      <SkillForm
+        onAdd={(data) => dispatch(addSkill(data))}
+        skills={skillList}
         onDelete={(index) => dispatch(deleteSkill(index))}
       />
 
@@ -77,23 +63,11 @@ const SkillInfo: React.FC = () => {
         managementSkills={managementSkills}
         onAdd={handleManagementSkillChange}
       />
-      <SkillList
-        title="مهارت‌های مدیریتی"
-        items={managementSkills.map((skill) => ({
-          label: skill.name,
-          description: renderStars(skill.level),
-        }))}
-        onDelete={(index) => dispatch(deleteManagementSkill(index))}
-      />
 
       {/* فرم مهارت‌های زبانی */}
-      <LanguageSkillForm onAdd={(data) => dispatch(addLanguageSkill(data))} />
-      <SkillList
-        title="مهارت‌های زبانی"
-        items={languageSkills.map((lang) => ({
-          label: lang.language,
-          description: `درک: ${lang.comprehension}، صحبت: ${lang.speaking}، خواندن: ${lang.reading}، نوشتن: ${lang.writing}`,
-        }))}
+      <LanguageSkillForm
+        onAdd={(data) => dispatch(addLanguageSkill(data))}
+        languageSkills={languageSkills}
         onDelete={(index) => dispatch(deleteLanguageSkill(index))}
       />
 
