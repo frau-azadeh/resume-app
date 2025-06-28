@@ -4,7 +4,6 @@ A sleek and modern **Resume Builder Web Application** developed to demonstrate a
 
 This app features a structured multi-step form where users can enter their personal details, educational background, technical and language skills, management experience, and more — all with intuitive validation and responsive design.
 
-
 ---
 
 ## 🚀 Tech Stack
