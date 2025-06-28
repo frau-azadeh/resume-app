@@ -1,20 +1,25 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { skillSchema } from "../../validation/skillSchema";
-import type { SkillFormData } from "../../validation/skillSchema";
+import { skillSchema, type SkillFormData } from "../../validation/skillSchema";
+import Button from "../ui/Button";
+import { Input } from "../ui";
+import SkillList from "./SkillList";
 
 interface Props {
   onAdd: (data: SkillFormData) => void;
+  skills: SkillFormData[];
+  onDelete: (index: number) => void;
 }
 
-const SkillForm: React.FC<Props> = ({ onAdd }) => {
+const SkillForm: React.FC<Props> = ({ onAdd, skills, onDelete }) => {
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
-  } = useForm<SkillFormData>({
+  } = useForm({
     resolver: zodResolver(skillSchema),
     defaultValues: { name: "", level: 1 },
   });
@@ -24,36 +29,82 @@ const SkillForm: React.FC<Props> = ({ onAdd }) => {
     reset();
   };
 
+  const selectedLevel = Number(watch("level")) || 1;
+
+  const renderStars = (level: number): JSX.Element => (
+    <span className="text-yellow-500">
+      {"★".repeat(level)}
+      {"☆".repeat(5 - level)}
+    </span>
+  );
+
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6"
-    >
-      <input
-        {...register("name")}
-        placeholder="نام مهارت فنی"
-        className="input"
-      />
-      {errors.name && (
-        <p className="text-red-500 text-sm">{errors.name.message}</p>
-      )}
+    <div dir="rtl" className="mx-auto bg-white p-6 rounded-lg shadow-md space-y-8 mb-10">
+      <h3 className="font-semibold mb-4 text-gray-800 text-right">مهارت‌های تخصصی</h3>
 
-      <input
-        type="number"
-        {...register("level")}
-        min={1}
-        max={5}
-        placeholder="میزان تسلط (۱ تا ۵)"
-        className="input"
-      />
-      {errors.level && (
-        <p className="text-red-500 text-sm">{errors.level.message}</p>
-      )}
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6"
+      >
+        {/* نام مهارت */}
+        <div className="md:col-span-2">
+          <Input
+            {...register("name")}
+            placeholder="نام مهارت فنی"
+            className="w-full border border-gray-300 rounded-md px-4 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition"
+          />
+          {errors.name && (
+            <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+          )}
+        </div>
 
-      <button type="submit" className="btn btn-primary col-span-2">
-        افزودن مهارت فنی
-      </button>
-    </form>
+        {/* سطح مهارت */}
+        <div className="md:col-span-2">
+          <label className="block text-sm font-semibold mb-2 text-gray-700">
+            سطح مهارت:
+          </label>
+          <div className="flex items-center gap-4 justify-end">
+            {[1, 2, 3, 4, 5].map((star) => (
+              <label key={star} className="cursor-pointer select-none text-3xl">
+                <input
+                  type="radio"
+                  value={star}
+                  {...register("level")}
+                  className="hidden"
+                />
+                <span
+                  className={
+                    selectedLevel >= star ? "text-yellow-400" : "text-gray-300"
+                  }
+                  aria-label={`${star} ستاره`}
+                >
+                  ★
+                </span>
+              </label>
+            ))}
+          </div>
+          {errors.level && (
+            <p className="text-red-500 text-sm mt-1">{errors.level.message}</p>
+          )}
+        </div>
+
+        {/* دکمه افزودن */}
+        <div className="md:col-span-2">
+          <Button type="submit" variant="primary">
+            افزودن مهارت فنی
+          </Button>
+        </div>
+      </form>
+
+      <SkillList
+        title="مهارت‌های فنی"
+        items={skills.map((skill) => ({
+          label: skill.name,
+          description: renderStars(skill.level),
+        }))}
+        onDelete={onDelete}
+      />
+    </div>
   );
 };
 
