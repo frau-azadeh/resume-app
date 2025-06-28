@@ -111,7 +111,7 @@ const PersonalInfoForm: React.FC<Props> = ({ defaultValues, onSubmit }) => {
         <EmergencyContactSection register={register} errors={errors} />
 
         <div className="flex justify-center mt-6">
-          <Button type="submit">ذخیره و ادامه</Button>
+          <Button type="submit" variant="add">ذخیره و ادامه</Button>
         </div>
       </form>
     </>
