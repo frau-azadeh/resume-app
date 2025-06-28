@@ -13,24 +13,30 @@ interface Props {
 
 const SkillList: React.FC<Props> = ({ title, items, onDelete }) => {
   return (
-    <div className="mb-6">
-      <h2 className="font-bold text-lg mb-2">{title}</h2>
+    <div className="mb-6" dir="rtl">
+      <h2 className="font-bold text-lg mb-3 text-gray-800">{title}</h2>
       {items.length === 0 ? (
-        <p className="text-sm text-gray-500">هیچ آیتمی ثبت نشده است</p>
+        <p className="text-sm text-gray-500 italic">هیچ آیتمی ثبت نشده است</p>
       ) : (
-        <ul className="space-y-2">
+        <ul className="space-y-3">
           {items.map((item, idx) => (
             <li
               key={idx}
-              className="border p-3 rounded flex justify-between items-center"
+              className="border border-gray-300 rounded-lg p-4 flex justify-between items-center shadow-sm hover:shadow-md transition"
             >
               <div>
-                <p className="font-medium">{item.label}</p>
+                <p className="font-semibold text-gray-900">{item.label}</p>
                 {item.description && (
-                  <p className="text-sm text-gray-500">{item.description}</p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    {item.description}
+                  </p>
                 )}
               </div>
-              <Button onClick={() => onDelete(idx)} variant="destructive">
+              <Button
+                onClick={() => onDelete(idx)}
+                variant="destructive"
+                className="min-w-[70px]"
+              >
                 حذف
               </Button>
             </li>

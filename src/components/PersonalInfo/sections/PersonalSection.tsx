@@ -1,11 +1,10 @@
-// PersonalSection.tsx
 import React from "react";
 import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import { Controller } from "react-hook-form";
 
 import dayjs from "dayjs";
 
-import { Input } from "../../ui";
+import Input from "../../ui/Input";
 import JalaliDateInput from "../../ui/JalaliDatePicker";
 import type { PersonalInfoFormData } from "../PersonalInfoForm";
 
@@ -17,7 +16,7 @@ interface Props {
 
 const PersonalSection: React.FC<Props> = ({ register, errors, control }) => {
   return (
-    <section className="border rounded-lg p-4 shadow-sm">
+    <section className="border border-gray-300 rounded-lg p-4 shadow-sm">
       <h2 className="text-lg font-semibold mb-4">اطلاعات فردی</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Input
@@ -49,6 +48,7 @@ const PersonalSection: React.FC<Props> = ({ register, errors, control }) => {
                 }
                 error={errors.birthDate?.message}
                 disabled={false}
+                className="border border-gray-300 rounded-md px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
             );
           }}
@@ -80,7 +80,7 @@ const PersonalSection: React.FC<Props> = ({ register, errors, control }) => {
         />
 
         <div>
-          <label className="font-medium mb-1 block">جنسیت</label>
+          <label className="font-medium mb-1 block text-gray-700">جنسیت</label>
           <div className="flex gap-4">
             <label className="flex items-center gap-1">
               <input type="radio" value="مرد" {...register("gender")} /> مرد
@@ -90,12 +90,12 @@ const PersonalSection: React.FC<Props> = ({ register, errors, control }) => {
             </label>
           </div>
           {errors.gender && (
-            <p className="text-red-500 text-sm mt-1">{errors.gender.message}</p>
+            <p className="text-red-600 text-sm mt-1">{errors.gender.message}</p>
           )}
         </div>
 
         <div>
-          <label className="font-medium mb-1 block">دین</label>
+          <label className="font-medium mb-1 block text-gray-700">دین</label>
           <div className="flex gap-4 flex-wrap">
             {["اسلام", "یهودی", "مسیحی", "سایر"].map((val) => (
               <label key={val} className="flex items-center gap-1">
@@ -105,17 +105,19 @@ const PersonalSection: React.FC<Props> = ({ register, errors, control }) => {
             ))}
           </div>
           {errors.religion && (
-            <p className="text-red-500 text-sm mt-1">
+            <p className="text-red-600 text-sm mt-1">
               {errors.religion.message}
             </p>
           )}
         </div>
 
         <div>
-          <label className="font-medium mb-1 block">وضعیت تاهل</label>
+          <label className="font-medium mb-1 block text-gray-700">
+            وضعیت تاهل
+          </label>
           <select
             {...register("maritalStatus")}
-            className="w-full border rounded p-2"
+            className="w-full border border-gray-300 rounded-md p-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">انتخاب کنید</option>
             <option value="مجرد">مجرد</option>
@@ -123,7 +125,7 @@ const PersonalSection: React.FC<Props> = ({ register, errors, control }) => {
             <option value="طلاق گرفته">طلاق گرفته</option>
           </select>
           {errors.maritalStatus && (
-            <p className="text-red-500 text-sm mt-1">
+            <p className="text-red-600 text-sm mt-1">
               {errors.maritalStatus.message}
             </p>
           )}

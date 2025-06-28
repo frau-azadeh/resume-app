@@ -10,30 +10,30 @@ interface WorkListProps {
 
 const WorkList: React.FC<WorkListProps> = ({ workList, onEdit, onDelete }) => {
   return (
-    <div className="mt-8 space-y-4">
+    <div className="mt-8 space-y-4" dir="rtl">
       {workList.map((item, index) => (
         <div
           key={index}
-          className="p-4 border rounded flex justify-between items-center"
+          className="p-5 border border-gray-300 rounded-lg shadow-sm flex justify-between items-center hover:shadow-md transition-shadow duration-200"
         >
           <div>
-            <p className="font-semibold">
+            <p className="font-semibold text-gray-900">
               {item.companyName} - {item.position}
             </p>
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 mt-1">
               {item.startDate?.format("YYYY-MM-DD")} تا{" "}
-              {item.isWorking ? "شاغل" : item.endDate?.format("YYYY-MM-DD")}
+              {item.isWorking ? (
+                <span className="text-green-600 font-medium">شاغل</span>
+              ) : (
+                item.endDate?.format("YYYY-MM-DD")
+              )}
             </p>
           </div>
-          <div className="flex gap-2">
-            <Button onClick={() => onEdit(index)} variant="outline">
+          <div className="flex gap-3">
+            <Button onClick={() => onEdit(index)} variant="primary">
               ویرایش
             </Button>
-            <Button
-              onClick={() => onDelete(index)}
-              variant="outline"
-              color="red"
-            >
+            <Button onClick={() => onDelete(index)} variant="destructive">
               حذف
             </Button>
           </div>

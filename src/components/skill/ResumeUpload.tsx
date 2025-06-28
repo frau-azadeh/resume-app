@@ -1,9 +1,10 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { setResumeFile } from "../../store/slices/skillSlice"; // <-- use skillSlice here
+import { setResumeFile } from "../../store/slices/skillSlice";
 import type { RootState, AppDispatch } from "../../store/store";
 import Button from "../ui/Button";
+import { Input } from "../ui";
 
 const ResumeUpload: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -17,25 +18,37 @@ const ResumeUpload: React.FC = () => {
         dispatch(
           setResumeFile({ name: file.name, base64: reader.result as string }),
         );
+        toast.success("فایل رزومه با موفقیت بارگذاری شد.");
       };
       reader.readAsDataURL(file);
     } else {
-      toast.error("لطفا فقط فایل PDF انتخاب کنید.");
+      toast.error("لطفاً فقط فایل PDF انتخاب کنید.");
     }
   };
 
   return (
-    <div className="mt-8" dir="rtl">
-      <h3 className="text-lg font-semibold mb-2">رزومه (فقط PDF)</h3>
+    <div
+      dir="rtl"
+      className="mx-auto bg-white p-6 rounded-lg shadow-md space-y-8 mb-10"
+    >
+      <h3 className="text-lg font-semibold mb-4 text-gray-800">
+        رزومه (فقط PDF)
+      </h3>
+
       {resumeFile ? (
-        <div className="border p-3 rounded flex justify-between items-center">
-          <div className="text-sm">{resumeFile.name}</div>
+        <div className="flex justify-between items-center border border-gray-200 rounded-lg p-4 shadow-sm bg-white">
+          <div
+            className="text-sm text-gray-700 truncate max-w-xs"
+            title={resumeFile.name}
+          >
+            {resumeFile.name}
+          </div>
           <div className="flex gap-3">
             <a
               href={resumeFile.base64}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-500 underline"
+              className="text-blue-600 hover:text-blue-800 underline transition-colors"
             >
               مشاهده
             </a>
@@ -43,19 +56,20 @@ const ResumeUpload: React.FC = () => {
               variant="destructive"
               onClick={() => {
                 dispatch(setResumeFile(null));
-                toast.info("فایل رزومه حذف شد");
+                toast.info("فایل رزومه حذف شد.");
               }}
+              className="px-3 py-1"
             >
               حذف
             </Button>
           </div>
         </div>
       ) : (
-        <input
+        <Input
           type="file"
           accept="application/pdf"
           onChange={handleFileUpload}
-          className="w-full border p-2 rounded"
+          className="w-full border border-gray-200 rounded-lg px-4 py-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-400 transition shadow-sm bg-white"
         />
       )}
     </div>
