@@ -34,7 +34,7 @@ const MAX_SKILLS = 3;
 
 const renderStars = (
   currentLevel: number | unknown,
-  onChange: (lvl: number) => void
+  onChange: (lvl: number) => void,
 ) => {
   const level =
     typeof currentLevel === "number" && !isNaN(currentLevel) ? currentLevel : 1;
@@ -103,7 +103,10 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
   };
 
   return (
-    <div dir="rtl" className="mb-10 mx-auto bg-white p-6 rounded-lg shadow-md border-t border-gray-200 pt-6 space-y-6">
+    <div
+      dir="rtl"
+      className="mb-10 mx-auto bg-white p-6 rounded-lg shadow-md border-t border-gray-200 pt-6 space-y-6"
+    >
       <h3 className=" font-semibold text-gray-800">مهارت‌های مدیریتی</h3>
 
       <form
@@ -130,7 +133,7 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
               disabled={managementSkills.some(
                 (s, i) =>
                   s.name === skill &&
-                  (editingIndex === null || editingIndex !== i)
+                  (editingIndex === null || editingIndex !== i),
               )}
             >
               {skill}
@@ -167,8 +170,7 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
             type="submit"
             disabled={
               !nameValue ||
-              (editingIndex === null &&
-                managementSkills.length >= MAX_SKILLS)
+              (editingIndex === null && managementSkills.length >= MAX_SKILLS)
             }
             className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md shadow transition"
           >

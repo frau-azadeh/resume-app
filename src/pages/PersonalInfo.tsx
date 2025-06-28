@@ -19,7 +19,7 @@ const PersonalInfo: React.FC = () => {
   const formDefaultValues: Partial<PersonalInfoFormData> = {
     ...savedInfo,
     avatar: savedInfo.avatar ?? "",
-    birthDate: savedInfo.birthDate ?? "", 
+    birthDate: savedInfo.birthDate ?? "",
     siblingsCount: savedInfo.siblingsCount ?? 0,
     childrenCount: savedInfo.childrenCount ?? 0,
   };

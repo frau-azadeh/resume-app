@@ -65,7 +65,10 @@ const LanguageSkillForm: React.FC<Props> = ({
 
         {skillFields.map(({ key, label }) => (
           <div key={key}>
-            <label htmlFor={key} className="block mb-1 font-semibold text-gray-700">
+            <label
+              htmlFor={key}
+              className="block mb-1 font-semibold text-gray-700"
+            >
               سطح {label}
             </label>
             <select

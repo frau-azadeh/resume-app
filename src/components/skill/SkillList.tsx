@@ -2,7 +2,7 @@ import { Button } from "../ui";
 
 type Item = {
   label: string;
-  description: React.ReactNode; 
+  description: React.ReactNode;
 };
 
 interface Props {

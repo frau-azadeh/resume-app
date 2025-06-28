@@ -51,7 +51,7 @@ const SkillInfo: React.FC = () => {
 
   return (
     <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow" dir="rtl">
-            <h1 className="text-2xl font-bold mb-4 text-center">مهارتها</h1>
+      <h1 className="text-2xl font-bold mb-4 text-center">مهارتها</h1>
 
       <SkillForm
         onAdd={(data) => dispatch(addSkill(data))}
@@ -73,10 +73,9 @@ const SkillInfo: React.FC = () => {
       <ResumeUpload />
 
       <div className="flex justify-between mt-8">
-         <Button onClick={() => handleNavigation("prev")} variant="outline">
-                 قبلی
-               </Button>
-        
+        <Button onClick={() => handleNavigation("prev")} variant="outline">
+          قبلی
+        </Button>
       </div>
     </div>
   );
