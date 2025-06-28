@@ -38,29 +38,26 @@ const renderStars = (
 ) => {
   const level =
     typeof currentLevel === "number" && !isNaN(currentLevel) ? currentLevel : 1;
-  const stars = [];
-  for (let i = 1; i <= 5; i++) {
-    stars.push(
-      <span
-        key={i}
-        onClick={() => onChange(i)}
-        className={`cursor-pointer select-none text-3xl transition-colors duration-200 ${
-          i <= level ? "text-yellow-400" : "text-gray-300"
-        }`}
-        aria-label={`${i} stars`}
-        role="button"
-        tabIndex={0}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            onChange(i);
-          }
-        }}
-      >
-        ★
-      </span>,
-    );
-  }
-  return stars;
+
+  return Array.from({ length: 5 }, (_, i) => i + 1).map((i) => (
+    <span
+      key={i}
+      onClick={() => onChange(i)}
+      className={`cursor-pointer select-none text-3xl transition-colors duration-200 ${
+        i <= level ? "text-yellow-400" : "text-gray-300"
+      }`}
+      role="button"
+      tabIndex={0}
+      aria-label={`${i} stars`}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          onChange(i);
+        }
+      }}
+    >
+      ★
+    </span>
+  ));
 };
 
 const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
@@ -106,13 +103,15 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
   };
 
   return (
-    <div dir="rtl" className="mb-8 mx-auto bg-white p-6 rounded-lg shadow-md ">
-      <h3 className=" font-semibold mb-4 text-gray-800 text-right">
-        مهارت‌های مدیریتی
-      </h3>
+    <div
+      dir="rtl"
+      className="mb-10 mx-auto bg-white p-6 rounded-lg shadow-md border-t border-gray-200 pt-6 space-y-6"
+    >
+      <h3 className=" font-semibold text-gray-800">مهارت‌های مدیریتی</h3>
+
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6"
+        className="grid grid-cols-1 md:grid-cols-2 gap-6"
       >
         <select
           {...register("name")}
@@ -142,7 +141,7 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
           ))}
         </select>
         {errors.name && (
-          <p className="md:col-span-2 text-red-600 text-sm mt-1 text-right">
+          <p className="md:col-span-2 text-red-600 text-sm text-right">
             {errors.name.message}
           </p>
         )}
@@ -152,7 +151,7 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
           name="level"
           render={({ field: { value, onChange } }) => (
             <div
-              className="md:col-span-2 flex justify-center select-none"
+              className="md:col-span-2 flex justify-center"
               aria-label="سطح مهارت"
               role="radiogroup"
             >
@@ -161,7 +160,7 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
           )}
         />
         {errors.level && (
-          <p className="md:col-span-2 text-red-600 text-sm mt-1 text-right">
+          <p className="md:col-span-2 text-red-600 text-sm text-right">
             {errors.level.message}
           </p>
         )}
@@ -173,7 +172,7 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
               !nameValue ||
               (editingIndex === null && managementSkills.length >= MAX_SKILLS)
             }
-            className="bg-blue-600 hover:bg-blue-700 transition-colors text-white px-5 py-2 rounded-md shadow"
+            className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-md shadow transition"
           >
             {editingIndex !== null ? "ویرایش مهارت" : "افزودن مهارت"}
           </Button>
@@ -189,7 +188,7 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
         {managementSkills.map((m, index) => (
           <div
             key={index}
-            className="flex justify-between items-center border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+            className="flex justify-between items-center border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition bg-white"
             dir="rtl"
           >
             <div className="text-right">

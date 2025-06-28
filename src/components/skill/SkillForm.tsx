@@ -41,17 +41,16 @@ const SkillForm: React.FC<Props> = ({ onAdd, skills, onDelete }) => {
   return (
     <div
       dir="rtl"
-      className="mx-auto bg-white p-6 rounded-lg shadow-md space-y-8 mb-10"
+      className="mx-auto bg-white p-6 rounded-lg shadow-md border-t border-gray-200 pt-6 mb-10 space-y-8"
     >
+      {" "}
       <h3 className="font-semibold mb-4 text-gray-800 text-right">
         مهارت‌های تخصصی
       </h3>
-
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6"
       >
-        {/* نام مهارت */}
         <div className="md:col-span-2">
           <Input
             {...register("name")}
@@ -63,7 +62,6 @@ const SkillForm: React.FC<Props> = ({ onAdd, skills, onDelete }) => {
           )}
         </div>
 
-        {/* سطح مهارت */}
         <div className="md:col-span-2">
           <label className="block text-sm font-semibold mb-2 text-gray-700">
             سطح مهارت:
@@ -93,14 +91,12 @@ const SkillForm: React.FC<Props> = ({ onAdd, skills, onDelete }) => {
           )}
         </div>
 
-        {/* دکمه افزودن */}
         <div className="md:col-span-2">
-          <Button type="submit" variant="primary">
+          <Button type="submit" variant="add">
             افزودن مهارت فنی
           </Button>
         </div>
       </form>
-
       <SkillList
         title="مهارت‌های فنی"
         items={skills.map((skill) => ({

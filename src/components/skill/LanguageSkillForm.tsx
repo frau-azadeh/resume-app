@@ -14,6 +14,13 @@ interface Props {
 
 const levels = ["ضعیف", "متوسط", "عالی"] as const;
 
+const skillFields = [
+  { key: "reading", label: "خواندن" },
+  { key: "writing", label: "نوشتن" },
+  { key: "speaking", label: "صحبت کردن" },
+  { key: "comprehension", label: "درک مطلب" },
+] as const;
+
 const LanguageSkillForm: React.FC<Props> = ({
   onAdd,
   languageSkills,
@@ -38,15 +45,13 @@ const LanguageSkillForm: React.FC<Props> = ({
       dir="rtl"
       className="mx-auto bg-white p-6 rounded-lg shadow-md space-y-8 mb-10"
     >
-      <h3 className=" font-semibold mb-4 text-gray-800 text-right">
-        مهارت‌های زبان خارجی
-      </h3>
+      <h3 className=" font-semibold text-gray-800">مهارت‌های زبان خارجی</h3>
 
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         <div>
           <Input
             {...register("language")}
-            placeholder="نام زبان"
+            placeholder="نام زبان (مثلاً انگلیسی، آلمانی...)"
             className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 ${
               errors.language ? "border-red-500" : "border-gray-300"
             }`}
@@ -58,26 +63,24 @@ const LanguageSkillForm: React.FC<Props> = ({
           )}
         </div>
 
-        {["reading", "writing", "speaking", "comprehension"].map((field) => (
-          <div key={field}>
+        {skillFields.map(({ key, label }) => (
+          <div key={key}>
             <label
-              htmlFor={field}
+              htmlFor={key}
               className="block mb-1 font-semibold text-gray-700"
             >
-              سطح {field}
+              سطح {label}
             </label>
             <select
-              id={field}
-              {...register(field as keyof LanguageSkillData)}
-              className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 ${
-                errors[field as keyof LanguageSkillData]
-                  ? "border-red-500"
-                  : "border-gray-300"
-              }`}
+              id={key}
+              {...register(key)}
               defaultValue=""
+              className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 ${
+                errors[key] ? "border-red-500" : "border-gray-300"
+              }`}
             >
               <option value="" disabled>
-                انتخاب سطح {field}
+                انتخاب سطح {label}
               </option>
               {levels.map((level) => (
                 <option key={level} value={level}>
@@ -85,15 +88,15 @@ const LanguageSkillForm: React.FC<Props> = ({
                 </option>
               ))}
             </select>
-            {errors[field as keyof LanguageSkillData] && (
+            {errors[key] && (
               <p className="text-red-600 text-sm mt-1">
-                {errors[field as keyof LanguageSkillData]?.message}
+                {errors[key]?.message}
               </p>
             )}
           </div>
         ))}
 
-        <Button type="submit" variant="primary">
+        <Button type="submit" variant="add">
           افزودن مهارت زبانی
         </Button>
       </form>

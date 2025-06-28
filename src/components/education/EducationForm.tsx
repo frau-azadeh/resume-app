@@ -122,7 +122,19 @@ const EducationForm: React.FC<Props> = ({
       </div>
 
       <div className="col-span-2 flex flex-col">
-        <Input label="توضیحات" {...register("description")} />
+        <label
+          htmlFor="description"
+          className="mb-1 text-sm font-medium text-gray-700"
+        >
+          توضیحات
+        </label>
+        <textarea
+          id="description"
+          {...register("description")}
+          rows={4} // اینجا ارتفاع رو تعیین می‌کنیم
+          className="w-full rounded-md border border-gray-300 px-3 py-2 text-right text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-y min-h-[6rem]"
+          placeholder="توضیحاتی درباره مهارت یا تجربه شما..."
+        />
         <p className="text-red-600 text-sm mt-1 min-h-[1.25rem]">
           {errors.description?.message}
         </p>

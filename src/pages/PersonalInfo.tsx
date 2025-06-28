@@ -16,17 +16,15 @@ const PersonalInfo: React.FC = () => {
     (state: RootState) => state.personalInfo.personalInfo,
   );
 
-  // برای اطمینان از مقداردهی درست به فرم
   const formDefaultValues: Partial<PersonalInfoFormData> = {
     ...savedInfo,
     avatar: savedInfo.avatar ?? "",
-    birthDate: savedInfo.birthDate ?? "", // تبدیل null به رشته خالی
+    birthDate: savedInfo.birthDate ?? "",
     siblingsCount: savedInfo.siblingsCount ?? 0,
     childrenCount: savedInfo.childrenCount ?? 0,
   };
 
   const handleSubmit = (data: PersonalInfoFormData) => {
-    // avatar را اطمینان بده که رشته است
     dispatch(setPersonalInfo({ ...data, avatar: data.avatar ?? "" }));
     toast.success("اطلاعات با موفقیت ثبت شد!");
     navigate("/form/education");

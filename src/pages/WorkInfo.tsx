@@ -83,7 +83,6 @@ const WorkInfo: React.FC = () => {
   const startDate = watch("startDate");
   const endDate = watch("endDate");
 
-  // تبدیل داده‌های ذخیره شده به فرمت درست با dayjs
   useEffect(() => {
     setWorkList(
       (workListInStore || []).map((item) => ({
@@ -181,7 +180,7 @@ const WorkInfo: React.FC = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow" dir="rtl">
+    <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow" dir="rtl">
       <h1 className="text-2xl font-bold mb-4 text-center">سوابق کاری</h1>
 
       <form
@@ -208,7 +207,6 @@ const WorkInfo: React.FC = () => {
 
         <div className="flex flex-col">
           <Input label="زمینه فعالیت شرکت" {...register("field")} />
-          {/* چون ممکنه خطایی نداشته باشه، برای حفظ فضا min-h میذاریم */}
           <p className="min-h-[1.25rem]"></p>
         </div>
 
@@ -235,7 +233,6 @@ const WorkInfo: React.FC = () => {
           )}
         </div>
 
-        {/* برای JalaliDateInput هم مشابه */}
         <div className="flex flex-col">
           <JalaliDateInput
             label="تاریخ شروع"
@@ -288,14 +285,23 @@ const WorkInfo: React.FC = () => {
           <p className="min-h-[1.25rem]"></p>
         </div>
 
-        <div className="flex flex-col">
-          <Input label="علت خاتمه کار" {...register("terminationReason")} />
-          <p className="min-h-[1.25rem]"></p>
-        </div>
-
         <div className="col-span-2 flex flex-col">
-          <Input label="توضیحات" {...register("description")} />
-          <p className="min-h-[1.25rem]"></p>
+          <label
+            htmlFor="description"
+            className="mb-1 text-sm font-medium text-gray-700"
+          >
+            توضیحات
+          </label>
+          <textarea
+            id="description"
+            {...register("description")}
+            rows={4}
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-right text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-y min-h-[6rem]"
+            placeholder="توضیحات درباره شرح وظایف در محل کار قبلی"
+          />
+          <p className="text-red-600 text-sm mt-1 min-h-[1.25rem]">
+            {errors.description?.message}
+          </p>
         </div>
 
         <div className="col-span-2 text-center">
