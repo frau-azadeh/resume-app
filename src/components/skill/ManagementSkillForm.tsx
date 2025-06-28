@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  managementSkillSchema,
-  type ManagementSkillData,
-} from "../../validation/skillSchema";
+import { managementSkillSchema, type ManagementSkillData } from "../../validation/skillSchema";
 import Button from "../ui/Button";
 
 const allManagerialSkills: string[] = [
@@ -32,21 +29,31 @@ interface Props {
 
 const MAX_SKILLS = 3;
 
-const renderStars = (currentLevel: number, onChange: (lvl: number) => void) => {
+const renderStars = (
+  currentLevel: number | unknown,
+  onChange: (lvl: number) => void
+) => {
+  const level = typeof currentLevel === "number" && !isNaN(currentLevel) ? currentLevel : 1;
   const stars = [];
   for (let i = 1; i <= 5; i++) {
     stars.push(
       <span
         key={i}
         onClick={() => onChange(i)}
-        style={{
-          cursor: "pointer",
-          color: i <= currentLevel ? "#FACC15" : "#DDD",
-        }}
+        className={`cursor-pointer select-none text-3xl transition-colors duration-200 ${
+          i <= level ? "text-yellow-400" : "text-gray-300"
+        }`}
         aria-label={`${i} stars`}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            onChange(i);
+          }
+        }}
       >
         ★
-      </span>,
+      </span>
     );
   }
   return stars;
@@ -54,6 +61,7 @@ const renderStars = (currentLevel: number, onChange: (lvl: number) => void) => {
 
 const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
+
   const {
     register,
     handleSubmit,
@@ -62,14 +70,13 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
     control,
     watch,
     formState: { errors },
-  } = useForm<ManagementSkillData>({
+  } = useForm({
     resolver: zodResolver(managementSkillSchema),
     defaultValues: { name: "", level: 1 },
   });
 
-  const nameValue = watch("name");
+  const nameValue = watch("name") || "";
 
-  // When editing a skill, fill the form
   useEffect(() => {
     if (editingIndex !== null) {
       const skill = managementSkills[editingIndex];
@@ -78,7 +85,6 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
     }
   }, [editingIndex, managementSkills, setValue]);
 
-  // Clear form on reset or after add
   const onSubmit = (data: ManagementSkillData) => {
     if (editingIndex === null && managementSkills.length >= MAX_SKILLS) {
       alert(`شما فقط می‌توانید تا ${MAX_SKILLS} مهارت مدیریتی اضافه کنید.`);
@@ -90,34 +96,32 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
     setEditingIndex(null);
   };
 
-  // Handle cancel edit
   const onCancelEdit = () => {
     reset();
     setEditingIndex(null);
   };
 
   return (
-    <div dir="rtl" className="mb-6">
-      <h3 className="text-lg font-semibold mb-2">مهارت‌های مدیریتی</h3>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 max-w-md">
+    <div dir="rtl" className="mb-8 mx-auto bg-white p-6 rounded-lg shadow-md ">
+      <h3 className=" font-semibold mb-4 text-gray-800 text-right">مهارت‌های مدیریتی</h3>
+      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
         <select
           {...register("name")}
-          className="border p-2 rounded w-full"
-          disabled={
-            editingIndex === null && managementSkills.length >= MAX_SKILLS
-          }
+          disabled={editingIndex === null && managementSkills.length >= MAX_SKILLS}
           defaultValue=""
+          className={`md:col-span-2 w-full border rounded-md px-4 py-3 text-gray-700 text-right focus:outline-none focus:ring-2 focus:ring-blue-400 transition ${
+            errors.name ? "border-red-500" : "border-gray-200"
+          }`}
         >
-          <option value="">انتخاب مهارت</option>
+          <option value="" disabled>
+            انتخاب مهارت
+          </option>
           {allManagerialSkills.map((skill) => (
             <option
               key={skill}
               value={skill}
               disabled={managementSkills.some(
-                (s) =>
-                  s.name === skill &&
-                  (editingIndex === null ||
-                    managementSkills[editingIndex!].name !== skill),
+                (s, i) => s.name === skill && (editingIndex === null || editingIndex !== i)
               )}
             >
               {skill}
@@ -125,65 +129,73 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
           ))}
         </select>
         {errors.name && (
-          <p className="text-red-500 text-sm">{errors.name.message}</p>
+          <p className="md:col-span-2 text-red-600 text-sm mt-1 text-right">{errors.name.message}</p>
         )}
 
         <Controller
           control={control}
           name="level"
           render={({ field: { value, onChange } }) => (
-            <div className="text-yellow-400 text-2xl select-none">
+            <div
+              className="md:col-span-2 flex justify-center select-none"
+              aria-label="سطح مهارت"
+              role="radiogroup"
+            >
               {renderStars(value, onChange)}
             </div>
           )}
         />
         {errors.level && (
-          <p className="text-red-500 text-sm">{errors.level.message}</p>
+          <p className="md:col-span-2 text-red-600 text-sm mt-1 text-right">{errors.level.message}</p>
         )}
 
-        <div className="flex gap-2">
+        <div className="md:col-span-2 flex gap-3 justify-end">
           <Button
             type="submit"
             disabled={
-              !nameValue ||
-              (editingIndex === null && managementSkills.length >= MAX_SKILLS)
+              !nameValue || (editingIndex === null && managementSkills.length >= MAX_SKILLS)
             }
+            className="bg-blue-600 hover:bg-blue-700 transition-colors text-white px-5 py-2 rounded-md shadow"
           >
             {editingIndex !== null ? "ویرایش مهارت" : "افزودن مهارت"}
           </Button>
           {editingIndex !== null && (
-            <Button type="button" variant="outline" onClick={onCancelEdit}>
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onCancelEdit}
+            >
               انصراف
             </Button>
           )}
         </div>
       </form>
 
-      <div className="mt-4 space-y-3 max-w-md">
+      <div className="space-y-4">
         {managementSkills.map((m, index) => (
           <div
             key={index}
-            className="border p-3 rounded flex justify-between items-center"
+            className="flex justify-between items-center border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+            dir="rtl"
           >
-            <div>
-              <p className="font-bold">{m.name}</p>
-              <p className="text-yellow-500 text-xl">
+            <div className="text-right">
+              <p className="font-bold text-gray-800">{m.name}</p>
+              <p className="text-yellow-400 text-xl select-none">
                 {"★".repeat(m.level)}
                 {"☆".repeat(5 - m.level)}
               </p>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-3">
               <Button
-                onClick={() => {
-                  setEditingIndex(index);
-                }}
-              >
+                onClick={() => setEditingIndex(index)}
+variant="primary"
+>
                 ویرایش
               </Button>
               <Button
                 variant="destructive"
                 onClick={() => {
-                  onAdd(null, index); // we'll handle deletion on caller side by passing null + index
+                  onAdd(null, index);
                   if (editingIndex === index) setEditingIndex(null);
                 }}
               >
