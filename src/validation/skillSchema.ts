@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-
 // مهارت زبان
 export const languageSkillSchema = z.object({
   language: z.string().min(1, "نام زبان الزامی است"),
@@ -16,7 +15,7 @@ export const skillSchema = z.object({
   name: z.string().min(1, "نام مهارت الزامی است"),
   level: z.preprocess(
     (val) => Number(val),
-    z.number().min(1, "حداقل امتیاز 1").max(5, "حداکثر امتیاز 5")
+    z.number().min(1, "حداقل امتیاز 1").max(5, "حداکثر امتیاز 5"),
   ),
 });
 
@@ -34,9 +33,10 @@ export const managementSkillSchema = z.object({
       if (typeof val === "number") return val;
       return NaN;
     },
-    z.number()
+    z
+      .number()
       .min(1, "حداقل یک ستاره لازم است")
-      .max(5, "حداکثر ۵ ستاره مجاز است")
+      .max(5, "حداکثر ۵ ستاره مجاز است"),
   ),
 });
 

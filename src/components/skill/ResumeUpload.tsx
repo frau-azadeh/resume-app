@@ -27,8 +27,13 @@ const ResumeUpload: React.FC = () => {
   };
 
   return (
-    <div dir="rtl" className="mx-auto bg-white p-6 rounded-lg shadow-md space-y-8 mb-10">
-      <h3 className="text-lg font-semibold mb-4 text-gray-800">رزومه (فقط PDF)</h3>
+    <div
+      dir="rtl"
+      className="mx-auto bg-white p-6 rounded-lg shadow-md space-y-8 mb-10"
+    >
+      <h3 className="text-lg font-semibold mb-4 text-gray-800">
+        رزومه (فقط PDF)
+      </h3>
 
       {resumeFile ? (
         <div className="flex justify-between items-center border border-gray-200 rounded-lg p-4 shadow-sm bg-white">

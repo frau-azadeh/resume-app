@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { managementSkillSchema, type ManagementSkillData } from "../../validation/skillSchema";
+import {
+  managementSkillSchema,
+  type ManagementSkillData,
+} from "../../validation/skillSchema";
 import Button from "../ui/Button";
 
 const allManagerialSkills: string[] = [
@@ -31,9 +34,10 @@ const MAX_SKILLS = 3;
 
 const renderStars = (
   currentLevel: number | unknown,
-  onChange: (lvl: number) => void
+  onChange: (lvl: number) => void,
 ) => {
-  const level = typeof currentLevel === "number" && !isNaN(currentLevel) ? currentLevel : 1;
+  const level =
+    typeof currentLevel === "number" && !isNaN(currentLevel) ? currentLevel : 1;
   const stars = [];
   for (let i = 1; i <= 5; i++) {
     stars.push(
@@ -53,7 +57,7 @@ const renderStars = (
         }}
       >
         ★
-      </span>
+      </span>,
     );
   }
   return stars;
@@ -103,11 +107,18 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
 
   return (
     <div dir="rtl" className="mb-8 mx-auto bg-white p-6 rounded-lg shadow-md ">
-      <h3 className=" font-semibold mb-4 text-gray-800 text-right">مهارت‌های مدیریتی</h3>
-      <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <h3 className=" font-semibold mb-4 text-gray-800 text-right">
+        مهارت‌های مدیریتی
+      </h3>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6"
+      >
         <select
           {...register("name")}
-          disabled={editingIndex === null && managementSkills.length >= MAX_SKILLS}
+          disabled={
+            editingIndex === null && managementSkills.length >= MAX_SKILLS
+          }
           defaultValue=""
           className={`md:col-span-2 w-full border rounded-md px-4 py-3 text-gray-700 text-right focus:outline-none focus:ring-2 focus:ring-blue-400 transition ${
             errors.name ? "border-red-500" : "border-gray-200"
@@ -121,7 +132,9 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
               key={skill}
               value={skill}
               disabled={managementSkills.some(
-                (s, i) => s.name === skill && (editingIndex === null || editingIndex !== i)
+                (s, i) =>
+                  s.name === skill &&
+                  (editingIndex === null || editingIndex !== i),
               )}
             >
               {skill}
@@ -129,7 +142,9 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
           ))}
         </select>
         {errors.name && (
-          <p className="md:col-span-2 text-red-600 text-sm mt-1 text-right">{errors.name.message}</p>
+          <p className="md:col-span-2 text-red-600 text-sm mt-1 text-right">
+            {errors.name.message}
+          </p>
         )}
 
         <Controller
@@ -146,25 +161,24 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
           )}
         />
         {errors.level && (
-          <p className="md:col-span-2 text-red-600 text-sm mt-1 text-right">{errors.level.message}</p>
+          <p className="md:col-span-2 text-red-600 text-sm mt-1 text-right">
+            {errors.level.message}
+          </p>
         )}
 
         <div className="md:col-span-2 flex gap-3 justify-end">
           <Button
             type="submit"
             disabled={
-              !nameValue || (editingIndex === null && managementSkills.length >= MAX_SKILLS)
+              !nameValue ||
+              (editingIndex === null && managementSkills.length >= MAX_SKILLS)
             }
             className="bg-blue-600 hover:bg-blue-700 transition-colors text-white px-5 py-2 rounded-md shadow"
           >
             {editingIndex !== null ? "ویرایش مهارت" : "افزودن مهارت"}
           </Button>
           {editingIndex !== null && (
-            <Button
-              type="button"
-              variant="outline"
-              onClick={onCancelEdit}
-            >
+            <Button type="button" variant="outline" onClick={onCancelEdit}>
               انصراف
             </Button>
           )}
@@ -186,10 +200,7 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
               </p>
             </div>
             <div className="flex gap-3">
-              <Button
-                onClick={() => setEditingIndex(index)}
-variant="primary"
->
+              <Button onClick={() => setEditingIndex(index)} variant="primary">
                 ویرایش
               </Button>
               <Button

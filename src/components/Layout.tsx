@@ -117,8 +117,7 @@ const Layout: React.FC = () => {
 
       <main className="bg-[#d9eafd]">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-            <Outlet />
-          
+          <Outlet />
         </div>
       </main>
     </div>

@@ -39,8 +39,13 @@ const SkillForm: React.FC<Props> = ({ onAdd, skills, onDelete }) => {
   );
 
   return (
-    <div dir="rtl" className="mx-auto bg-white p-6 rounded-lg shadow-md space-y-8 mb-10">
-      <h3 className="font-semibold mb-4 text-gray-800 text-right">مهارت‌های تخصصی</h3>
+    <div
+      dir="rtl"
+      className="mx-auto bg-white p-6 rounded-lg shadow-md space-y-8 mb-10"
+    >
+      <h3 className="font-semibold mb-4 text-gray-800 text-right">
+        مهارت‌های تخصصی
+      </h3>
 
       <form
         onSubmit={handleSubmit(onSubmit)}

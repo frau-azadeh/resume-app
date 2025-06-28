@@ -18,11 +18,10 @@ const EducationList: React.FC<Props> = ({
     <h2 className="font-bold mb-2">لیست سوابق</h2>
     {educationList.length === 0 && <p>هیچ سابقه تحصیلی ثبت نشده است.</p>}
     {educationList.map((item, index) => (
-     <div
-     key={index}
-     className="border border-gray-300 rounded-lg p-4 mb-3 flex justify-between items-center shadow-sm bg-white"
-   >
-   
+      <div
+        key={index}
+        className="border border-gray-300 rounded-lg p-4 mb-3 flex justify-between items-center shadow-sm bg-white"
+      >
         <div>
           <div>
             {item.degree} - {item.field}

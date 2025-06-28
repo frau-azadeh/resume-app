@@ -80,9 +80,7 @@ const PersonalSection: React.FC<Props> = ({ register, errors, control }) => {
         />
 
         <div>
-          <label className="font-medium mb-1 block text-gray-700">
-            جنسیت
-          </label>
+          <label className="font-medium mb-1 block text-gray-700">جنسیت</label>
           <div className="flex gap-4">
             <label className="flex items-center gap-1">
               <input type="radio" value="مرد" {...register("gender")} /> مرد
@@ -101,12 +99,15 @@ const PersonalSection: React.FC<Props> = ({ register, errors, control }) => {
           <div className="flex gap-4 flex-wrap">
             {["اسلام", "یهودی", "مسیحی", "سایر"].map((val) => (
               <label key={val} className="flex items-center gap-1">
-                <input type="radio" value={val} {...register("religion")} /> {val}
+                <input type="radio" value={val} {...register("religion")} />{" "}
+                {val}
               </label>
             ))}
           </div>
           {errors.religion && (
-            <p className="text-red-600 text-sm mt-1">{errors.religion.message}</p>
+            <p className="text-red-600 text-sm mt-1">
+              {errors.religion.message}
+            </p>
           )}
         </div>
 

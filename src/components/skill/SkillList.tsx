@@ -27,7 +27,9 @@ const SkillList: React.FC<Props> = ({ title, items, onDelete }) => {
               <div>
                 <p className="font-semibold text-gray-900">{item.label}</p>
                 {item.description && (
-                  <p className="text-sm text-gray-600 mt-1">{item.description}</p>
+                  <p className="text-sm text-gray-600 mt-1">
+                    {item.description}
+                  </p>
                 )}
               </div>
               <Button

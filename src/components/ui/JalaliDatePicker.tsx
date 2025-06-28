@@ -61,8 +61,8 @@ const JalaliDateInput: React.FC<JalaliDateInputProps> = ({
 
   return (
     <div className="relative flex flex-col" ref={wrapperRef}>
-<label className="mb-1 text-sm font-medium text-gray-700">{label}</label>
-<input
+      <label className="mb-1 text-sm font-medium text-gray-700">{label}</label>
+      <input
         type="text"
         className={`border rounded p-2 w-full cursor-pointer ${className || ""}`} // اینجا ترکیب شد
         onClick={() => !disabled && setIsOpen(!isOpen)}

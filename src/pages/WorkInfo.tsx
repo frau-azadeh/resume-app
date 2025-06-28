@@ -184,122 +184,126 @@ const WorkInfo: React.FC = () => {
     <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow" dir="rtl">
       <h1 className="text-2xl font-bold mb-4 text-center">سوابق کاری</h1>
 
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+      >
+        <div className="flex flex-col">
+          <Input label="نام شرکت" {...register("companyName")} />
+          {errors.companyName && (
+            <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
+              {errors.companyName.message}
+            </p>
+          )}
+        </div>
 
-<form
-  onSubmit={handleSubmit(onSubmit)}
-  className="grid grid-cols-1 md:grid-cols-2 gap-4"
->
-  <div className="flex flex-col">
-    <Input label="نام شرکت" {...register("companyName")} />
-    {errors.companyName && (
-      <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
-        {errors.companyName.message}
-      </p>
-    )}
-  </div>
+        <div className="flex flex-col">
+          <Input label="عنوان شغلی" {...register("position")} />
+          {errors.position && (
+            <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
+              {errors.position.message}
+            </p>
+          )}
+        </div>
 
-  <div className="flex flex-col">
-    <Input label="عنوان شغلی" {...register("position")} />
-    {errors.position && (
-      <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
-        {errors.position.message}
-      </p>
-    )}
-  </div>
+        <div className="flex flex-col">
+          <Input label="زمینه فعالیت شرکت" {...register("field")} />
+          {/* چون ممکنه خطایی نداشته باشه، برای حفظ فضا min-h میذاریم */}
+          <p className="min-h-[1.25rem]"></p>
+        </div>
 
-  <div className="flex flex-col">
-    <Input label="زمینه فعالیت شرکت" {...register("field")} />
-    {/* چون ممکنه خطایی نداشته باشه، برای حفظ فضا min-h میذاریم */}
-    <p className="min-h-[1.25rem]"></p>
-  </div>
+        <div className="flex flex-col">
+          <Input label="رده سازمانی" {...register("level")} />
+          <p className="min-h-[1.25rem]"></p>
+        </div>
 
-  <div className="flex flex-col">
-    <Input label="رده سازمانی" {...register("level")} />
-    <p className="min-h-[1.25rem]"></p>
-  </div>
+        <div className="flex flex-col">
+          <Input label="نوع همکاری" {...register("cooperationType")} />
+          <p className="min-h-[1.25rem]"></p>
+        </div>
 
-  <div className="flex flex-col">
-    <Input label="نوع همکاری" {...register("cooperationType")} />
-    <p className="min-h-[1.25rem]"></p>
-  </div>
+        <div className="flex flex-col">
+          <Input
+            label="سابقه بیمه (ماه)"
+            type="number"
+            {...register("insuranceMonths")}
+          />
+          {errors.insuranceMonths && (
+            <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
+              {errors.insuranceMonths.message}
+            </p>
+          )}
+        </div>
 
-  <div className="flex flex-col">
-    <Input
-      label="سابقه بیمه (ماه)"
-      type="number"
-      {...register("insuranceMonths")}
-    />
-    {errors.insuranceMonths && (
-      <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
-        {errors.insuranceMonths.message}
-      </p>
-    )}
-  </div>
+        {/* برای JalaliDateInput هم مشابه */}
+        <div className="flex flex-col">
+          <JalaliDateInput
+            label="تاریخ شروع"
+            value={startDate}
+            onChange={(v) => setValue("startDate", v)}
+            className="border border-gray-300 rounded-md px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+          {errors.startDate && (
+            <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
+              {errors.startDate.message}
+            </p>
+          )}
+        </div>
 
-  {/* برای JalaliDateInput هم مشابه */}
-  <div className="flex flex-col">
-    <JalaliDateInput
-      label="تاریخ شروع"
-      value={startDate}
-      onChange={(v) => setValue("startDate", v)}
-      className="border border-gray-300 rounded-md px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        <div className="flex flex-col">
+          <JalaliDateInput
+            label="تاریخ پایان"
+            value={endDate}
+            onChange={(v) => setValue("endDate", v)}
+            disabled={isWorking}
+            className="border border-gray-300 rounded-md px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          />
+          {errors.endDate && (
+            <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
+              {errors.endDate.message}
+            </p>
+          )}
+        </div>
 
-    />
-    {errors.startDate && (
-      <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
-        {errors.startDate.message}
-      </p>
-    )}
-  </div>
+        <div className="col-span-2 flex items-center gap-2">
+          <input type="checkbox" {...register("isWorking")} id="isWorking" />
+          <label
+            className="mb-1 text-sm font-medium text-gray-700"
+            htmlFor="isWorking"
+          >
+            شاغل هستم
+          </label>
+        </div>
 
-  <div className="flex flex-col">
-    <JalaliDateInput
-      label="تاریخ پایان"
-      value={endDate}
-      onChange={(v) => setValue("endDate", v)}
-      disabled={isWorking}
-      className="border border-gray-300 rounded-md px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        <div className="flex flex-col">
+          <Input label="تلفن محل کار" {...register("workPhone")} />
+          <p className="min-h-[1.25rem]"></p>
+        </div>
 
-    />
-    {errors.endDate && (
-      <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
-        {errors.endDate.message}
-      </p>
-    )}
-  </div>
+        <div className="flex flex-col">
+          <Input
+            label="آخرین حقوق دریافتی (تومان)"
+            {...register("lastSalary")}
+          />
+          <p className="min-h-[1.25rem]"></p>
+        </div>
 
-  <div className="col-span-2 flex items-center gap-2">
-    <input type="checkbox" {...register("isWorking")} id="isWorking" />
-    <label className="mb-1 text-sm font-medium text-gray-700" htmlFor="isWorking">شاغل هستم</label>
-  </div>
+        <div className="flex flex-col">
+          <Input label="علت خاتمه کار" {...register("terminationReason")} />
+          <p className="min-h-[1.25rem]"></p>
+        </div>
 
-  <div className="flex flex-col">
-    <Input label="تلفن محل کار" {...register("workPhone")} />
-    <p className="min-h-[1.25rem]"></p>
-  </div>
+        <div className="col-span-2 flex flex-col">
+          <Input label="توضیحات" {...register("description")} />
+          <p className="min-h-[1.25rem]"></p>
+        </div>
 
-  <div className="flex flex-col">
-    <Input label="آخرین حقوق دریافتی (تومان)" {...register("lastSalary")} />
-    <p className="min-h-[1.25rem]"></p>
-  </div>
-
-  <div className="flex flex-col">
-    <Input label="علت خاتمه کار" {...register("terminationReason")} />
-    <p className="min-h-[1.25rem]"></p>
-  </div>
-
-  <div className="col-span-2 flex flex-col">
-    <Input label="توضیحات" {...register("description")} />
-    <p className="min-h-[1.25rem]"></p>
-  </div>
-
-  <div className="col-span-2 text-center">
-    <Button type="submit">
-      {editingIndex !== null ? "ویرایش سابقه" : "ثبت سابقه"}
-    </Button>
-  </div>
-</form>
-
+        <div className="col-span-2 text-center">
+          <Button type="submit">
+            {editingIndex !== null ? "ویرایش سابقه" : "ثبت سابقه"}
+          </Button>
+        </div>
+      </form>
 
       <WorkList
         workList={workList}
