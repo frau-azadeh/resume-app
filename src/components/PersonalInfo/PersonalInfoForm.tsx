@@ -1,4 +1,3 @@
-// PersonalInfoForm.tsx
 import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -48,9 +47,8 @@ const PersonalInfoForm: React.FC<Props> = ({ defaultValues, onSubmit }) => {
     });
   }, [defaultValues, reset]);
 
-  // Avatar state and handlers
   const [avatarPreview, setAvatarPreview] = React.useState<string>(
-    defaultValues.avatar || "",
+    defaultValues.avatar || ""
   );
 
   const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,7 +56,7 @@ const PersonalInfoForm: React.FC<Props> = ({ defaultValues, onSubmit }) => {
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      alert("فقط فایل تصویر مجاز است."); // جایگزین toast
+      alert("فقط فایل تصویر مجاز است.");
       return;
     }
 
@@ -92,19 +90,17 @@ const PersonalInfoForm: React.FC<Props> = ({ defaultValues, onSubmit }) => {
           accept="image/*"
           onChange={handleAvatarUpload}
           className="mt-2"
+          label="آپلود عکس"
+          error={null}
         />
       </div>
 
       <form
         onSubmit={handleSubmit(internalSubmit)}
-        className="space-y-8"
+        className="space-y-8 mx-auto px-4 sm:px-6 lg:px-8"
         noValidate
       >
-        <PersonalSection
-          register={register}
-          errors={errors}
-          control={control}
-        />
+        <PersonalSection register={register} errors={errors} control={control} />
         <FamilySection register={register} errors={errors} />
         <ResidenceSection register={register} errors={errors} />
         <ContactSection register={register} errors={errors} />
