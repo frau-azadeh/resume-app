@@ -2,13 +2,14 @@ import React, { type ButtonHTMLAttributes, type ReactNode } from "react";
 import { cn } from "../../lib/utils";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "outline" | "destructive";
+  variant?: "primary" | "secondary" | "outline" | "destructive" | "add";
   size?: "sm" | "md" | "lg";
   isLoading?: boolean;
   children: ReactNode;
 }
 
 const variantClasses = {
+  add: "bg-green-600 hover:bg-green-800 text-white",
   primary: "bg-blue-600 hover:bg-blue-800 text-white",
   secondary: "bg-gray-200 hover:bg-gray-300 text-gray-900",
   outline: "border border-gray-300 text-gray-900",
