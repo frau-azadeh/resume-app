@@ -115,11 +115,10 @@ const Layout: React.FC = () => {
         )}
       </Disclosure>
 
-      <main>
+      <main className="bg-[#d9eafd]">
         <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-          <div className="rounded-lg border-2 border-dashed border-gray-200 p-6 bg-white shadow">
             <Outlet />
-          </div>
+          
         </div>
       </main>
     </div>
