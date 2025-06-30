@@ -40,13 +40,12 @@ const SkillForm: React.FC<Props> = ({ onAdd, skills, onDelete }) => {
 
   return (
     <div
-      dir="rtl"
-      className="mx-auto bg-white p-6 rounded-lg shadow-md border-t border-gray-200 pt-6 mb-10 space-y-8"
-    >
-      {" "}
-      <h3 className="font-semibold mb-4 text-gray-800 text-right">
+    dir="rtl"
+    className="mx-auto bg-white p-6 rounded-lg shadow-md border-t border-gray-200 pt-6 mb-10 space-y-8"
+  >      <h3 className="font-semibold mb-4 text-gray-800 text-right">
         مهارت‌های تخصصی
       </h3>
+
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6"
@@ -97,6 +96,7 @@ const SkillForm: React.FC<Props> = ({ onAdd, skills, onDelete }) => {
           </Button>
         </div>
       </form>
+
       <SkillList
         title="مهارت‌های فنی"
         items={skills.map((skill) => ({
