@@ -57,10 +57,10 @@ const WorkInfo: React.FC = () => {
   const navigate = useNavigate();
 
   const workListInStore = useSelector(
-    (state: RootState) => state.work.workList
+    (state: RootState) => state.work.workList,
   );
   const workFormInStore = useSelector(
-    (state: RootState) => state.work.workForm
+    (state: RootState) => state.work.workForm,
   );
 
   const {
@@ -97,7 +97,7 @@ const WorkInfo: React.FC = () => {
         lastSalary: item.lastSalary ?? "",
         terminationReason: item.terminationReason ?? "",
         description: item.description ?? "",
-      }))
+      })),
     );
 
     if (workFormInStore) {
@@ -246,7 +246,10 @@ const WorkInfo: React.FC = () => {
 
         <div className="md:col-span-2 flex items-center gap-2">
           <input type="checkbox" {...register("isWorking")} id="isWorking" />
-          <label htmlFor="isWorking" className="text-sm font-medium text-gray-700">
+          <label
+            htmlFor="isWorking"
+            className="text-sm font-medium text-gray-700"
+          >
             شاغل هستم
           </label>
         </div>
@@ -257,12 +260,18 @@ const WorkInfo: React.FC = () => {
         </div>
 
         <div>
-          <Input label="آخرین حقوق دریافتی (تومان)" {...register("lastSalary")} />
+          <Input
+            label="آخرین حقوق دریافتی (تومان)"
+            {...register("lastSalary")}
+          />
           <p className="min-h-[1.25rem]"></p>
         </div>
 
         <div className="md:col-span-2 flex flex-col">
-          <label htmlFor="description" className="mb-1 text-sm font-medium text-gray-700">
+          <label
+            htmlFor="description"
+            className="mb-1 text-sm font-medium text-gray-700"
+          >
             توضیحات
           </label>
           <textarea
