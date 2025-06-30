@@ -47,49 +47,49 @@ const EducationForm: React.FC<Props> = ({
       onSubmit={handleSubmit(onSubmit)}
       className="grid grid-cols-1 md:grid-cols-2 gap-4"
     >
-      <div className="flex flex-col">
+      <div>
         <Input label="مقطع" {...register("degree")} />
         <p className="text-red-600 text-sm mt-1 min-h-[1.25rem]">
           {errors.degree?.message}
         </p>
       </div>
 
-      <div className="flex flex-col">
+      <div>
         <Input label="رشته" {...register("field")} />
         <p className="text-red-600 text-sm mt-1 min-h-[1.25rem]">
           {errors.field?.message}
         </p>
       </div>
 
-      <div className="flex flex-col">
+      <div>
         <Input label="گرایش" {...register("specialization")} />
         <p className="text-red-600 text-sm mt-1 min-h-[1.25rem]">
           {errors.specialization?.message}
         </p>
       </div>
 
-      <div className="flex flex-col">
+      <div>
         <Input label="نوع موسسه" {...register("institutionType")} />
         <p className="text-red-600 text-sm mt-1 min-h-[1.25rem]">
           {errors.institutionType?.message}
         </p>
       </div>
 
-      <div className="flex flex-col">
+      <div>
         <Input label="نام موسسه" {...register("institutionName")} />
         <p className="text-red-600 text-sm mt-1 min-h-[1.25rem]">
           {errors.institutionName?.message}
         </p>
       </div>
 
-      <div className="flex flex-col">
+      <div>
         <Input label="معدل" {...register("grade")} />
         <p className="text-red-600 text-sm mt-1 min-h-[1.25rem]">
           {errors.grade?.message}
         </p>
       </div>
 
-      <div className="flex flex-col">
+      <div>
         <JalaliDateInput
           label="تاریخ شروع"
           value={startDate}
@@ -101,7 +101,7 @@ const EducationForm: React.FC<Props> = ({
         </p>
       </div>
 
-      <div className="flex flex-col">
+      <div>
         <JalaliDateInput
           label="تاریخ پایان"
           value={endDate}
@@ -114,14 +114,14 @@ const EducationForm: React.FC<Props> = ({
         </p>
       </div>
 
-      <div className="col-span-2">
+      <div className="md:col-span-2">
         <label className="flex items-center gap-2">
           <Input type="checkbox" {...register("isStudying")} />
           در حال تحصیل هستم
         </label>
       </div>
 
-      <div className="col-span-2 flex flex-col">
+      <div className="md:col-span-2 flex flex-col">
         <label
           htmlFor="description"
           className="mb-1 text-sm font-medium text-gray-700"
@@ -131,7 +131,7 @@ const EducationForm: React.FC<Props> = ({
         <textarea
           id="description"
           {...register("description")}
-          rows={4} // اینجا ارتفاع رو تعیین می‌کنیم
+          rows={4}
           className="w-full rounded-md border border-gray-300 px-3 py-2 text-right text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-y min-h-[6rem]"
           placeholder="توضیحاتی درباره مهارت یا تجربه شما..."
         />
@@ -140,7 +140,7 @@ const EducationForm: React.FC<Props> = ({
         </p>
       </div>
 
-      <div className="col-span-2 text-center flex gap-4 justify-center">
+      <div className="md:col-span-2 flex gap-4 justify-center">
         <Button type="submit">
           {isEditing ? "ویرایش سابقه" : "ثبت سابقه"}
         </Button>
