@@ -16,7 +16,7 @@ This app features a structured multi-step form where users can enter their perso
 
 ![Skill Information](https://raw.githubusercontent.com/frau-azadeh/resume-app/master/public/skill.png)
 
-[🔗 Live Demo](https://resume-app-swart.vercel.app/) 
+[🔗 Live Demo](https://resume-app-swart.vercel.app/)
 
 [📂 GitHub Repo](https://github.com/frau-azadeh/resume-app)
 
