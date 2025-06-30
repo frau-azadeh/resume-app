@@ -110,26 +110,18 @@ const WorkInfo: React.FC = () => {
         endDate: workFormInStore.endDate
           ? dayjs(workFormInStore.endDate, "YYYY-MM-DD")
           : todayJalali(),
-        field: workFormInStore.field ?? "",
-        level: workFormInStore.level ?? "",
-        cooperationType: workFormInStore.cooperationType ?? "",
-        insuranceMonths: workFormInStore.insuranceMonths ?? "",
-        workPhone: workFormInStore.workPhone ?? "",
-        lastSalary: workFormInStore.lastSalary ?? "",
-        terminationReason: workFormInStore.terminationReason ?? "",
-        description: workFormInStore.description ?? "",
       });
     }
   }, [workListInStore, workFormInStore, reset]);
 
   const formatForStore = (item: WorkFormData) => ({
     ...item,
+    startDate: item.startDate ? item.startDate.format("YYYY-MM-DD") : "",
+    endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : "",
     field: item.field ?? "",
     level: item.level ?? "",
     cooperationType: item.cooperationType ?? "",
     insuranceMonths: item.insuranceMonths ?? "",
-    startDate: item.startDate ? item.startDate.format("YYYY-MM-DD") : "",
-    endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : "",
     workPhone: item.workPhone ?? "",
     lastSalary: item.lastSalary ?? "",
     terminationReason: item.terminationReason ?? "",
@@ -187,97 +179,87 @@ const WorkInfo: React.FC = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="grid grid-cols-1 md:grid-cols-2 gap-4"
       >
-        <div className="flex flex-col">
+        <div>
           <Input label="نام شرکت" {...register("companyName")} />
-          {errors.companyName && (
-            <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
-              {errors.companyName.message}
-            </p>
-          )}
+          <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
+            {errors.companyName?.message}
+          </p>
         </div>
 
-        <div className="flex flex-col">
+        <div>
           <Input label="عنوان شغلی" {...register("position")} />
-          {errors.position && (
-            <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
-              {errors.position.message}
-            </p>
-          )}
+          <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
+            {errors.position?.message}
+          </p>
         </div>
 
-        <div className="flex flex-col">
+        <div>
           <Input label="زمینه فعالیت شرکت" {...register("field")} />
           <p className="min-h-[1.25rem]"></p>
         </div>
 
-        <div className="flex flex-col">
+        <div>
           <Input label="رده سازمانی" {...register("level")} />
           <p className="min-h-[1.25rem]"></p>
         </div>
 
-        <div className="flex flex-col">
+        <div>
           <Input label="نوع همکاری" {...register("cooperationType")} />
           <p className="min-h-[1.25rem]"></p>
         </div>
 
-        <div className="flex flex-col">
+        <div>
           <Input
             label="سابقه بیمه (ماه)"
             type="number"
             {...register("insuranceMonths")}
           />
-          {errors.insuranceMonths && (
-            <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
-              {errors.insuranceMonths.message}
-            </p>
-          )}
+          <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
+            {errors.insuranceMonths?.message}
+          </p>
         </div>
 
-        <div className="flex flex-col">
+        <div>
           <JalaliDateInput
             label="تاریخ شروع"
             value={startDate}
             onChange={(v) => setValue("startDate", v)}
-            className="border border-gray-300 rounded-md px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="border border-gray-300 rounded-md px-3 py-2 text-sm"
           />
-          {errors.startDate && (
-            <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
-              {errors.startDate.message}
-            </p>
-          )}
+          <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
+            {errors.startDate?.message}
+          </p>
         </div>
 
-        <div className="flex flex-col">
+        <div>
           <JalaliDateInput
             label="تاریخ پایان"
             value={endDate}
             onChange={(v) => setValue("endDate", v)}
             disabled={isWorking}
-            className="border border-gray-300 rounded-md px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            className="border border-gray-300 rounded-md px-3 py-2 text-sm"
           />
-          {errors.endDate && (
-            <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
-              {errors.endDate.message}
-            </p>
-          )}
+          <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
+            {errors.endDate?.message}
+          </p>
         </div>
 
-        <div className="col-span-2 flex items-center gap-2">
+        <div className="md:col-span-2 flex items-center gap-2">
           <input type="checkbox" {...register("isWorking")} id="isWorking" />
           <label
-            className="mb-1 text-sm font-medium text-gray-700"
             htmlFor="isWorking"
+            className="text-sm font-medium text-gray-700"
           >
             شاغل هستم
           </label>
         </div>
 
-        <div className="flex flex-col">
+        <div>
           <Input label="تلفن محل کار" {...register("workPhone")} />
           <p className="min-h-[1.25rem]"></p>
         </div>
 
-        <div className="flex flex-col">
+        <div>
           <Input
             label="آخرین حقوق دریافتی (تومان)"
             {...register("lastSalary")}
@@ -285,7 +267,7 @@ const WorkInfo: React.FC = () => {
           <p className="min-h-[1.25rem]"></p>
         </div>
 
-        <div className="col-span-2 flex flex-col">
+        <div className="md:col-span-2 flex flex-col">
           <label
             htmlFor="description"
             className="mb-1 text-sm font-medium text-gray-700"
@@ -304,7 +286,7 @@ const WorkInfo: React.FC = () => {
           </p>
         </div>
 
-        <div className="col-span-2 text-center">
+        <div className="md:col-span-2 text-center">
           <Button type="submit">
             {editingIndex !== null ? "ویرایش سابقه" : "ثبت سابقه"}
           </Button>
