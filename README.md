@@ -6,6 +6,22 @@ This app features a structured multi-step form where users can enter their perso
 
 ---
 
+## 🖼️ UI Preview
+
+![Personal Information](https://raw.githubusercontent.com/frau-azadeh/resume-app/master/public/information.png)
+
+![Education Information](https://raw.githubusercontent.com/frau-azadeh/resume-app/master/public/education.png)
+
+![Work Information](https://raw.githubusercontent.com/frau-azadeh/resume-app/master/public/work.png)
+
+![Skill Information](https://raw.githubusercontent.com/frau-azadeh/resume-app/master/public/skill.png)
+
+[🔗 Live Demo](https://resume-app-swart.vercel.app/)
+
+[📂 GitHub Repo](https://github.com/frau-azadeh/resume-app)
+
+---
+
 ## 🚀 Tech Stack
 
 - ⚛️ **React (TypeScript)** – Component-based UI development
