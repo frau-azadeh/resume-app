@@ -69,7 +69,7 @@ const EducationHistory: React.FC = () => {
   }, [educationListInStore]);
 
   const handleSubmit = (data: EducationFormDataLocal) => {
-    let updatedList = [...educationList];
+    const updatedList = [...educationList];
     if (editingIndex !== null) {
       updatedList[editingIndex] = data;
       toast.success("سابقه تحصیلی ویرایش شد");
