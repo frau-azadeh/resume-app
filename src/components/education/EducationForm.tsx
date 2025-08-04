@@ -38,9 +38,9 @@ const EducationForm: React.FC<Props> = ({
     reset(initialData);
   }, [initialData, reset]);
 
-  const isStudying = watch("isStudying");
-  const startDate = watch("startDate");
-  const endDate = watch("endDate");
+  const is_studying = watch("is_studying");
+  const start_date = watch("start_date");
+  const end_date = watch("end_date");
 
   return (
     <form
@@ -69,16 +69,16 @@ const EducationForm: React.FC<Props> = ({
       </div>
 
       <div>
-        <Input label="نوع موسسه" {...register("institutionType")} />
+        <Input label="نوع موسسه" {...register("institution_type")} />
         <p className="text-red-600 text-sm mt-1 min-h-[1.25rem]">
-          {errors.institutionType?.message}
+          {errors.institution_type?.message}
         </p>
       </div>
 
       <div>
-        <Input label="نام موسسه" {...register("institutionName")} />
+        <Input label="نام موسسه" {...register("institution_name")} />
         <p className="text-red-600 text-sm mt-1 min-h-[1.25rem]">
-          {errors.institutionName?.message}
+          {errors.institution_name?.message}
         </p>
       </div>
 
@@ -92,31 +92,31 @@ const EducationForm: React.FC<Props> = ({
       <div>
         <JalaliDateInput
           label="تاریخ شروع"
-          value={startDate}
-          onChange={(v) => setValue("startDate", v!)}
+          value={start_date}
+          onChange={(v) => setValue("start_date", v!)}
           className="border border-gray-300 rounded-md px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         />
         <p className="text-red-600 text-sm mt-1 min-h-[1.25rem]">
-          {errors.startDate?.message}
+          {errors.start_date?.message}
         </p>
       </div>
 
       <div>
         <JalaliDateInput
           label="تاریخ پایان"
-          value={endDate}
-          onChange={(v) => setValue("endDate", v)}
-          disabled={isStudying}
+          value={end_date}
+          onChange={(v) => setValue("end_date", v)}
+          disabled={is_studying}
           className="border border-gray-300 rounded-md px-3 py-2 text-sm font-sans shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         />
         <p className="text-red-600 text-sm mt-1 min-h-[1.25rem]">
-          {errors.endDate?.message}
+          {errors.end_date?.message}
         </p>
       </div>
 
       <div className="md:col-span-2">
         <label className="flex items-center gap-2">
-          <Input type="checkbox" {...register("isStudying")} />
+          <Input type="checkbox" {...register("is_studying")} />
           در حال تحصیل هستم
         </label>
       </div>
@@ -145,7 +145,7 @@ const EducationForm: React.FC<Props> = ({
           {isEditing ? "ویرایش سابقه" : "ثبت سابقه"}
         </Button>
         {isEditing && (
-          <Button type="button" onClick={onCancel} variant="secondary">
+          <Button type="button" onClick={onCancel} variant="primary">
             انصراف
           </Button>
         )}
