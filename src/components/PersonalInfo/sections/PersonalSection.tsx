@@ -1,12 +1,11 @@
 import React from "react";
-import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import { Controller } from "react-hook-form";
-
-import dayjs from "dayjs";
-
-import Input from "../../ui/Input";
-import JalaliDateInput from "../../ui/JalaliDatePicker";
+import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
+import DatePicker from "react-multi-date-picker";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
 import type { PersonalInfoFormData } from "../PersonalInfoForm";
+import Input from "../../ui/Input";
 
 interface Props {
   register: UseFormRegister<PersonalInfoFormData>;
@@ -19,64 +18,61 @@ const PersonalSection: React.FC<Props> = ({ register, errors, control }) => {
     <section className="border border-gray-300 rounded-lg p-4 shadow-sm">
       <h2 className="text-lg font-semibold mb-4">اطلاعات فردی</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Input
-          label="نام"
-          {...register("firstName")}
-          error={errors.firstName}
-        />
-        <Input
-          label="نام خانوادگی"
-          {...register("lastName")}
-          error={errors.lastName}
-        />
-        <Input
-          label="کد ملی"
-          {...register("nationalCode")}
-          error={errors.nationalCode}
-        />
-        <Controller
-          name="birthDate"
-          control={control}
-          render={({ field }) => {
-            const dayjsValue = field.value ? dayjs(field.value) : null;
-            return (
-              <JalaliDateInput
-                label="تاریخ تولد"
-                value={dayjsValue}
-                onChange={(date) =>
-                  field.onChange(date ? date.toISOString() : null)
-                }
-                error={errors.birthDate?.message}
-                disabled={false}
-                className="border border-gray-300 rounded-md px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
-            );
-          }}
-        />
+        <Input label="نام" {...register("first_name")} error={errors.first_name} />
+        <Input label="نام خانوادگی" {...register("last_name")} error={errors.last_name} />
+        <Input label="کد ملی" {...register("national_code")} error={errors.national_code} />
+
+        {/* تاریخ تولد شمسی */}
+        <div>
+  <label htmlFor="birth_date" className="text-sm font-medium text-gray-700 mb-1 block">
+    تاریخ تولد
+  </label>
+  <Controller
+    name="birth_date"
+    control={control}
+    render={({ field }) => (
+      <DatePicker
+        containerClassName="w-full" // تا عرض کامل بشه
+        inputClass="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        calendar={persian}
+        locale={persian_fa}
+        format="YYYY-MM-DD"
+        value={field.value}
+        onChange={(date) => field.onChange(date?.format?.("YYYY-MM-DD") || "")}
+      />
+    )}
+  />
+  {errors.birth_date && (
+    <p className="text-red-600 text-sm mt-1">{errors.birth_date.message}</p>
+  )}
+</div>
+
+
+
         <Input
           label="استان محل تولد"
-          {...register("birthProvince")}
-          error={errors.birthProvince}
+          {...register("birth_province")}
+          error={errors.birth_province}
         />
         <Input
           label="شهر محل تولد"
-          {...register("birthCity")}
-          error={errors.birthCity}
+          {...register("birth_city")}
+          error={errors.birth_city}
         />
         <Input
           label="شماره شناسنامه"
-          {...register("idNumber")}
-          error={errors.idNumber}
+          {...register("id_number")}
+          error={errors.id_number}
         />
         <Input
           label="استان محل صدور"
-          {...register("issueProvince")}
-          error={errors.issueProvince}
+          {...register("issue_province")}
+          error={errors.issue_province}
         />
         <Input
           label="شهر محل صدور"
-          {...register("issueCity")}
-          error={errors.issueCity}
+          {...register("issue_city")}
+          error={errors.issue_city}
         />
 
         <div>
@@ -99,24 +95,20 @@ const PersonalSection: React.FC<Props> = ({ register, errors, control }) => {
           <div className="flex gap-4 flex-wrap">
             {["اسلام", "یهودی", "مسیحی", "سایر"].map((val) => (
               <label key={val} className="flex items-center gap-1">
-                <input type="radio" value={val} {...register("religion")} />{" "}
+                <input type="radio" value={val} {...register("religion")} />
                 {val}
               </label>
             ))}
           </div>
           {errors.religion && (
-            <p className="text-red-600 text-sm mt-1">
-              {errors.religion.message}
-            </p>
+            <p className="text-red-600 text-sm mt-1">{errors.religion.message}</p>
           )}
         </div>
 
         <div>
-          <label className="font-medium mb-1 block text-gray-700">
-            وضعیت تاهل
-          </label>
+          <label className="font-medium mb-1 block text-gray-700">وضعیت تاهل</label>
           <select
-            {...register("maritalStatus")}
+            {...register("marital_status")}
             className="w-full border border-gray-300 rounded-md p-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">انتخاب کنید</option>
@@ -124,9 +116,9 @@ const PersonalSection: React.FC<Props> = ({ register, errors, control }) => {
             <option value="متاهل">متاهل</option>
             <option value="طلاق گرفته">طلاق گرفته</option>
           </select>
-          {errors.maritalStatus && (
+          {errors.marital_status && (
             <p className="text-red-600 text-sm mt-1">
-              {errors.maritalStatus.message}
+              {errors.marital_status.message}
             </p>
           )}
         </div>
