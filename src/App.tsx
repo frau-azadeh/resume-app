@@ -9,6 +9,8 @@ import PersonalInfo from "./pages/PersonalInfo";
 import EducationHistory from "./pages/EducationHistory";
 import WorkInfo from "./pages/WorkInfo";
 import SkillForm from "./pages/SkillInfo";
+import Login from "./pages/Login"; // ⬅️ صفحه لاگین را ایمپورت کن
+import SignupPage from "./pages/Signup";
 
 const App: React.FC = () => {
   return (
@@ -29,6 +31,10 @@ const App: React.FC = () => {
           <Route path="work-experience" element={<WorkInfo />} />
           <Route path="skill" element={<SkillForm />} />
         </Route>
+
+        {/* 🔥 اضافه‌شده: مسیر /login */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<SignupPage />} />
       </Routes>
     </BrowserRouter>
   );

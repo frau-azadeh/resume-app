@@ -15,45 +15,45 @@ const FamilySection: React.FC<Props> = ({ register, errors }) => (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       <Input
         label="نام پدر"
-        {...register("fatherName")}
-        error={errors.fatherName}
+        {...register("father_name")}
+        error={errors.father_name}
       />
       <Input
         label="شغل پدر"
-        {...register("fatherJob")}
-        error={errors.fatherJob}
+        {...register("father_job")}
+        error={errors.father_job}
       />
       <Input
         label="تحصیلات پدر"
-        {...register("fatherEducation")}
-        error={errors.fatherEducation}
+        {...register("father_education")}
+        error={errors.father_education}
       />
       <Input
         label="نام مادر"
-        {...register("motherName")}
-        error={errors.motherName}
+        {...register("mother_name")}
+        error={errors.mother_name}
       />
       <Input
         label="شغل مادر"
-        {...register("motherJob")}
-        error={errors.motherJob}
+        {...register("mother_job")}
+        error={errors.mother_job}
       />
       <Input
         label="تحصیلات مادر"
-        {...register("motherEducation")}
-        error={errors.motherEducation}
+        {...register("mother_education")}
+        error={errors.mother_education}
       />
       <Input
         label="تعداد خواهر و برادر"
         type="number"
-        {...register("siblingsCount", { valueAsNumber: true })}
-        error={errors.siblingsCount}
+        {...register("siblings_count", { valueAsNumber: true })}
+        error={errors.siblings_count}
       />
       <Input
         label="تعداد فرزند"
         type="number"
-        {...register("childrenCount", { valueAsNumber: true })}
-        error={errors.childrenCount}
+        {...register("children_count", { valueAsNumber: true })}
+        error={errors.children_count}
       />
     </div>
   </section>

@@ -5,12 +5,12 @@ export interface EducationFormData {
   degree: string;
   field?: string;
   specialization?: string;
-  institutionType?: string;
-  institutionName?: string;
+  institution_type?: string;
+  institution_name?: string;
   grade?: string;
-  startDate: string; // YYYY-MM-DD
-  endDate?: string; // YYYY-MM-DD or undefined
-  isStudying: boolean;
+  start_date: string; // YYYY-MM-DD
+  end_date?: string; // YYYY-MM-DD or undefined
+  is_studying: boolean;
   description?: string;
 }
 

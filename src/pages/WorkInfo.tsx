@@ -21,34 +21,34 @@ import {
 import { workSchema } from "../validation/workSchema";
 
 export interface WorkFormData {
-  companyName: string;
+  company_name: string;
   position: string;
   field?: string;
   level?: string;
-  cooperationType?: string;
-  insuranceMonths?: string;
-  startDate: Dayjs | null;
-  endDate: Dayjs | null;
-  isWorking: boolean;
-  workPhone?: string;
-  lastSalary?: string;
-  terminationReason?: string;
+  cooperation_type?: string;
+  insurance_months?: string;
+  start_date: Dayjs | null;
+  end_date: Dayjs | null;
+  is_working: boolean;
+  work_phone?: string;
+  last_salary?: string;
+  termination_reason?: string;
   description?: string;
 }
 
 const defaultFormValues: WorkFormData = {
-  companyName: "",
+  company_name: "",
   position: "",
   field: "",
   level: "",
-  cooperationType: "",
-  insuranceMonths: "",
-  startDate: todayJalali(),
-  endDate: todayJalali(),
-  isWorking: false,
-  workPhone: "",
-  lastSalary: "",
-  terminationReason: "",
+  cooperation_type: "",
+  insurance_months: "",
+  start_date: todayJalali(),
+  end_date: todayJalali(),
+  is_working: false,
+  work_phone: "",
+  last_salary: "",
+  termination_reason: "",
   description: "",
 };
 
@@ -70,7 +70,6 @@ const WorkInfo: React.FC = () => {
     setValue,
     watch,
     getValues,
-    formState: { errors },
   } = useForm<WorkFormData>({
     resolver: zodResolver(workSchema),
     defaultValues: defaultFormValues,
@@ -79,36 +78,28 @@ const WorkInfo: React.FC = () => {
   const [workList, setWorkList] = useState<WorkFormData[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
 
-  const isWorking = watch("isWorking");
-  const startDate = watch("startDate");
-  const endDate = watch("endDate");
+  const is_working = watch("is_working");
+  const start_date = watch("start_date");
+  const end_date = watch("end_date");
 
   useEffect(() => {
     setWorkList(
       (workListInStore || []).map((item) => ({
         ...item,
-        startDate: item.startDate ? dayjs(item.startDate, "YYYY-MM-DD") : null,
-        endDate: item.endDate ? dayjs(item.endDate, "YYYY-MM-DD") : null,
-        field: item.field ?? "",
-        level: item.level ?? "",
-        cooperationType: item.cooperationType ?? "",
-        insuranceMonths: item.insuranceMonths ?? "",
-        workPhone: item.workPhone ?? "",
-        lastSalary: item.lastSalary ?? "",
-        terminationReason: item.terminationReason ?? "",
-        description: item.description ?? "",
-      })),
+        start_date: item.start_date ? dayjs(item.start_date) : null,
+        end_date: item.end_date ? dayjs(item.end_date) : null,
+      }))
     );
 
     if (workFormInStore) {
       reset({
         ...defaultFormValues,
         ...workFormInStore,
-        startDate: workFormInStore.startDate
-          ? dayjs(workFormInStore.startDate, "YYYY-MM-DD")
+        start_date: workFormInStore.start_date
+          ? dayjs(workFormInStore.start_date)
           : todayJalali(),
-        endDate: workFormInStore.endDate
-          ? dayjs(workFormInStore.endDate, "YYYY-MM-DD")
+        end_date: workFormInStore.end_date
+          ? dayjs(workFormInStore.end_date)
           : todayJalali(),
       });
     }
@@ -116,16 +107,8 @@ const WorkInfo: React.FC = () => {
 
   const formatForStore = (item: WorkFormData) => ({
     ...item,
-    startDate: item.startDate ? item.startDate.format("YYYY-MM-DD") : "",
-    endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : "",
-    field: item.field ?? "",
-    level: item.level ?? "",
-    cooperationType: item.cooperationType ?? "",
-    insuranceMonths: item.insuranceMonths ?? "",
-    workPhone: item.workPhone ?? "",
-    lastSalary: item.lastSalary ?? "",
-    terminationReason: item.terminationReason ?? "",
-    description: item.description ?? "",
+    start_date: item.start_date ? item.start_date.format("YYYY-MM-DD") : "",
+    end_date: item.end_date ? item.end_date.format("YYYY-MM-DD") : "",
   });
 
   const onSubmit: SubmitHandler<WorkFormData> = (data) => {
@@ -179,111 +162,38 @@ const WorkInfo: React.FC = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="grid grid-cols-1 md:grid-cols-2 gap-4"
       >
-        <div>
-          <Input label="نام شرکت" {...register("companyName")} />
-          <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
-            {errors.companyName?.message}
-          </p>
-        </div>
+        <Input label="نام شرکت" {...register("company_name")} />
+        <Input label="عنوان شغلی" {...register("position")} />
+        <Input label="زمینه فعالیت شرکت" {...register("field")} />
+        <Input label="رده سازمانی" {...register("level")} />
+        <Input label="نوع همکاری" {...register("cooperation_type")} />
+        <Input label="سابقه بیمه (ماه)" type="number" {...register("insurance_months")} />
 
-        <div>
-          <Input label="عنوان شغلی" {...register("position")} />
-          <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
-            {errors.position?.message}
-          </p>
-        </div>
+        <JalaliDateInput
+          label="تاریخ شروع"
+          value={start_date}
+          onChange={(v) => setValue("start_date", v)}
+        />
 
-        <div>
-          <Input label="زمینه فعالیت شرکت" {...register("field")} />
-          <p className="min-h-[1.25rem]"></p>
-        </div>
-
-        <div>
-          <Input label="رده سازمانی" {...register("level")} />
-          <p className="min-h-[1.25rem]"></p>
-        </div>
-
-        <div>
-          <Input label="نوع همکاری" {...register("cooperationType")} />
-          <p className="min-h-[1.25rem]"></p>
-        </div>
-
-        <div>
-          <Input
-            label="سابقه بیمه (ماه)"
-            type="number"
-            {...register("insuranceMonths")}
-          />
-          <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
-            {errors.insuranceMonths?.message}
-          </p>
-        </div>
-
-        <div>
-          <JalaliDateInput
-            label="تاریخ شروع"
-            value={startDate}
-            onChange={(v) => setValue("startDate", v)}
-            className="border border-gray-300 rounded-md px-3 py-2 text-sm"
-          />
-          <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
-            {errors.startDate?.message}
-          </p>
-        </div>
-
-        <div>
-          <JalaliDateInput
-            label="تاریخ پایان"
-            value={endDate}
-            onChange={(v) => setValue("endDate", v)}
-            disabled={isWorking}
-            className="border border-gray-300 rounded-md px-3 py-2 text-sm"
-          />
-          <p className="text-red-600 text-xs mt-1 min-h-[1.25rem]">
-            {errors.endDate?.message}
-          </p>
-        </div>
+        <JalaliDateInput
+          label="تاریخ پایان"
+          value={end_date}
+          onChange={(v) => setValue("end_date", v)}
+          disabled={is_working}
+        />
 
         <div className="md:col-span-2 flex items-center gap-2">
-          <input type="checkbox" {...register("isWorking")} id="isWorking" />
-          <label
-            htmlFor="isWorking"
-            className="text-sm font-medium text-gray-700"
-          >
-            شاغل هستم
-          </label>
+          <input type="checkbox" {...register("is_working")} id="is_working" />
+          <label htmlFor="is_working">شاغل هستم</label>
         </div>
 
-        <div>
-          <Input label="تلفن محل کار" {...register("workPhone")} />
-          <p className="min-h-[1.25rem]"></p>
-        </div>
+        <Input label="تلفن محل کار" {...register("work_phone")} />
+        <Input label="آخرین حقوق دریافتی (تومان)" {...register("last_salary")} />
+        <Input label="علت ترک کار" {...register("termination_reason")} />
 
-        <div>
-          <Input
-            label="آخرین حقوق دریافتی (تومان)"
-            {...register("lastSalary")}
-          />
-          <p className="min-h-[1.25rem]"></p>
-        </div>
-
-        <div className="md:col-span-2 flex flex-col">
-          <label
-            htmlFor="description"
-            className="mb-1 text-sm font-medium text-gray-700"
-          >
-            توضیحات
-          </label>
-          <textarea
-            id="description"
-            {...register("description")}
-            rows={4}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-right text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-y min-h-[6rem]"
-            placeholder="توضیحات درباره شرح وظایف در محل کار قبلی"
-          />
-          <p className="text-red-600 text-sm mt-1 min-h-[1.25rem]">
-            {errors.description?.message}
-          </p>
+        <div className="md:col-span-2">
+          <label htmlFor="description">توضیحات</label>
+          <textarea {...register("description")} id="description" rows={4} className="w-full border p-2 rounded" />
         </div>
 
         <div className="md:col-span-2 text-center">
@@ -293,11 +203,7 @@ const WorkInfo: React.FC = () => {
         </div>
       </form>
 
-      <WorkList
-        workList={workList}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-      />
+      <WorkList workList={workList} onEdit={handleEdit} onDelete={handleDelete} />
 
       <div className="flex justify-between mt-8">
         <Button onClick={() => handleNavigation("prev")} variant="outline">

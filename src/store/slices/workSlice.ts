@@ -1,48 +1,51 @@
+// store/slices/workSlice.ts
 import { createSlice } from "@reduxjs/toolkit";
-import type { PayloadAction } from "@reduxjs/toolkit";
+import type{  PayloadAction } from "@reduxjs/toolkit";
 
-export interface workFormData {
-  companyName: string;
+
+// ⬅️ تایپ مناسب ذخیره در Redux (فقط string و boolean)
+export interface WorkFormPersisted {
+  company_name: string;
   position: string;
-  field: string;
-  level: string;
-  cooperationType: string;
-  insuranceMonths: string;
-  startDate: string;
-  endDate: string;
-  isWorking: boolean;
-  workPhone: string;
-  lastSalary: string;
-  terminationReason: string;
-  description: string;
+  field?: string;
+  level?: string;
+  cooperation_type?: string;
+  insurance_months?: string;
+  start_date: string; // YYYY-MM-DD
+  end_date: string;   // YYYY-MM-DD
+  is_working: boolean;
+  work_phone?: string;
+  last_salary?: string;
+  termination_reason?: string;
+  description?: string;
 }
 
-interface workState {
-  workList: workFormData[];
-  workForm: Partial<workFormData> | null;
+interface WorkState {
+  workList: WorkFormPersisted[];
+  workForm: Partial<WorkFormPersisted>;
 }
 
-const initialState: workState = {
+const initialState: WorkState = {
   workList: [],
-  workForm: null,
+  workForm: {},
 };
 
 const workSlice = createSlice({
   name: "work",
   initialState,
   reducers: {
-    setworkList(state, action: PayloadAction<workFormData[]>) {
+    setworkList(state, action: PayloadAction<WorkFormPersisted[]>) {
       state.workList = action.payload;
     },
-    setworkForm(state, action: PayloadAction<Partial<workFormData>>) {
+    setworkForm(state, action: PayloadAction<Partial<WorkFormPersisted>>) {
       state.workForm = action.payload;
     },
-    clearworkData(state) {
+    clearWorkData(state) {
       state.workList = [];
-      state.workForm = null;
+      state.workForm = {};
     },
   },
 });
 
-export const { setworkList, setworkForm, clearworkData } = workSlice.actions;
+export const { setworkList, setworkForm, clearWorkData } = workSlice.actions;
 export default workSlice.reducer;

@@ -16,12 +16,12 @@ const mapFromStoreToLocal = (
   item: EducationFormData,
 ): EducationFormDataLocal => ({
   ...item,
-  startDate: dayjs(item.startDate),
-  endDate: item.endDate ? dayjs(item.endDate) : null,
+  start_date: dayjs(item.start_date),
+  end_date: item.end_date ? dayjs(item.end_date) : null,
   field: item.field ?? "",
   specialization: item.specialization ?? "",
-  institutionType: item.institutionType ?? "",
-  institutionName: item.institutionName ?? "",
+  institution_type: item.institution_type ?? "",
+  institution_name: item.institution_name ?? "",
   grade: item.grade ?? "",
   description: item.description ?? "",
 });
@@ -31,20 +31,20 @@ const mapFromLocalToStore = (
   item: EducationFormDataLocal,
 ): EducationFormData => ({
   ...item,
-  startDate: item.startDate.format("YYYY-MM-DD"),
-  endDate: item.endDate ? item.endDate.format("YYYY-MM-DD") : undefined,
+  start_date: item.start_date.format("YYYY-MM-DD"),
+  end_date: item.end_date ? item.end_date.format("YYYY-MM-DD") : undefined,
 });
 
 const defaultFormValues: EducationFormDataLocal = {
   degree: "",
   field: "",
   specialization: "",
-  institutionType: "",
-  institutionName: "",
+  institution_type: "",
+  institution_name: "",
   grade: "",
-  startDate: todayJalali(),
-  endDate: null,
-  isStudying: false,
+  start_date: todayJalali(),
+  end_date: null,
+  is_studying: false,
   description: "",
 };
 

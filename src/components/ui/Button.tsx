@@ -1,49 +1,40 @@
+import clsx from "clsx";
+import { Loader } from "lucide-react";
 import React, { type ButtonHTMLAttributes, type ReactNode } from "react";
-import { cn } from "../../lib/utils";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: "primary" | "secondary" | "outline" | "destructive" | "add";
-  size?: "sm" | "md" | "lg";
-  isLoading?: boolean;
-  children: ReactNode;
+  loading?: boolean;
+  variant?: "primary" | "outline" | "destructive" | "success";
+  icon?: ReactNode;
 }
-
-const variantClasses = {
-  add: "bg-green-600 hover:bg-green-800 text-white",
-  primary: "bg-blue-600 hover:bg-blue-800 text-white",
-  secondary: "bg-gray-200 hover:bg-gray-300 text-gray-900",
-  outline: "border border-gray-300 text-gray-900",
-  destructive: "bg-red-600 hover:bg-red-700 text-white",
-};
-
-const sizeClasses = {
-  sm: "px-3 py-1 text-sm",
-  md: "px-4 py-2 text-base",
-  lg: "px-5 py-3 text-lg",
-};
 
 const Button: React.FC<ButtonProps> = ({
   children,
-  isLoading = false,
+  loading = false,
   variant = "primary",
-  size = "sm",
+  icon,
   className,
   disabled,
   ...props
 }) => {
   return (
     <button
-      className={cn(
-        "rounded-lg transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2",
-        variantClasses[variant],
-        sizeClasses[size],
-        disabled && "opacity-50 cursor-not-allowed",
-        className,
-      )}
-      disabled={disabled || isLoading}
+      disabled={loading || disabled}
       {...props}
+      className={clsx(
+        "w-full flex items-center justify-center gap-2 px-4 py-2 rounded-md font-medium transition duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2",
+        {
+          "bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500": variant === "primary",
+          "border border-gray-300 text-gray-700 hover:bg-gray-100 focus:ring-gray-400": variant === "outline",
+          "bg-red-600 text-white hover:bg-red-700 focus:ring-red-500": variant === "destructive",
+          "bg-green-600 text-white hover:bg-green-700 focus:ring-green-500": variant === "success",
+          "opacity-50 cursor-not-allowed": loading || disabled,
+        },
+        className
+      )}
     >
-      {isLoading ? "Loading ..." : children}
+      {loading ? <Loader className="animate-spin w-4 h-4" /> : icon}
+      {children}
     </button>
   );
 };
