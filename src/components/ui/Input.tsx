@@ -31,7 +31,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       className = "",
       ...props
     },
-    ref
+    ref,
   ) => {
     const [showPassword, setShowPassword] = useState(false);
 
@@ -48,7 +48,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <label
             className={cn(
               "text-sm font-medium",
-              error ? "text-red-600" : "text-gray-700"
+              error ? "text-red-600" : "text-gray-700",
             )}
           >
             {label}
@@ -56,7 +56,9 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
 
         <div className="relative">
-          {icon && <div className="absolute left-3 top-2.5 text-gray-400">{icon}</div>}
+          {icon && (
+            <div className="absolute left-3 top-2.5 text-gray-400">{icon}</div>
+          )}
 
           <input
             ref={ref}
@@ -67,7 +69,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               error
                 ? "border-red-500 focus:ring-red-500 focus:border-red-500"
                 : "border-gray-300 focus:ring-blue-500 focus:border-blue-500",
-              className
+              className,
             )}
           />
 
@@ -91,7 +93,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
         )}
       </div>
     );
-  }
+  },
 );
 
 Input.displayName = "Input";

@@ -18,36 +18,53 @@ const PersonalSection: React.FC<Props> = ({ register, errors, control }) => {
     <section className="border border-gray-300 rounded-lg p-4 shadow-sm">
       <h2 className="text-lg font-semibold mb-4">اطلاعات فردی</h2>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Input label="نام" {...register("first_name")} error={errors.first_name} />
-        <Input label="نام خانوادگی" {...register("last_name")} error={errors.last_name} />
-        <Input label="کد ملی" {...register("national_code")} error={errors.national_code} />
+        <Input
+          label="نام"
+          {...register("first_name")}
+          error={errors.first_name}
+        />
+        <Input
+          label="نام خانوادگی"
+          {...register("last_name")}
+          error={errors.last_name}
+        />
+        <Input
+          label="کد ملی"
+          {...register("national_code")}
+          error={errors.national_code}
+        />
 
         {/* تاریخ تولد شمسی */}
         <div>
-  <label htmlFor="birth_date" className="text-sm font-medium text-gray-700 mb-1 block">
-    تاریخ تولد
-  </label>
-  <Controller
-    name="birth_date"
-    control={control}
-    render={({ field }) => (
-      <DatePicker
-        containerClassName="w-full" // تا عرض کامل بشه
-        inputClass="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        calendar={persian}
-        locale={persian_fa}
-        format="YYYY-MM-DD"
-        value={field.value}
-        onChange={(date) => field.onChange(date?.format?.("YYYY-MM-DD") || "")}
-      />
-    )}
-  />
-  {errors.birth_date && (
-    <p className="text-red-600 text-sm mt-1">{errors.birth_date.message}</p>
-  )}
-</div>
-
-
+          <label
+            htmlFor="birth_date"
+            className="text-sm font-medium text-gray-700 mb-1 block"
+          >
+            تاریخ تولد
+          </label>
+          <Controller
+            name="birth_date"
+            control={control}
+            render={({ field }) => (
+              <DatePicker
+                containerClassName="w-full" // تا عرض کامل بشه
+                inputClass="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                calendar={persian}
+                locale={persian_fa}
+                format="YYYY-MM-DD"
+                value={field.value}
+                onChange={(date) =>
+                  field.onChange(date?.format?.("YYYY-MM-DD") || "")
+                }
+              />
+            )}
+          />
+          {errors.birth_date && (
+            <p className="text-red-600 text-sm mt-1">
+              {errors.birth_date.message}
+            </p>
+          )}
+        </div>
 
         <Input
           label="استان محل تولد"
@@ -101,12 +118,16 @@ const PersonalSection: React.FC<Props> = ({ register, errors, control }) => {
             ))}
           </div>
           {errors.religion && (
-            <p className="text-red-600 text-sm mt-1">{errors.religion.message}</p>
+            <p className="text-red-600 text-sm mt-1">
+              {errors.religion.message}
+            </p>
           )}
         </div>
 
         <div>
-          <label className="font-medium mb-1 block text-gray-700">وضعیت تاهل</label>
+          <label className="font-medium mb-1 block text-gray-700">
+            وضعیت تاهل
+          </label>
           <select
             {...register("marital_status")}
             className="w-full border border-gray-300 rounded-md p-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"

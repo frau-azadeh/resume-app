@@ -35,10 +35,12 @@ export const fetchPersonalInfo = createAsyncThunk(
     if (existingError) return rejectWithValue(existingError.message);
 
     if (!existing || existing.length === 0) {
-      const { error: insertError } = await supabase.from("personal_infos").insert({
-        user_id: user.id,
-        ...emptyPersonalInfo,
-      });
+      const { error: insertError } = await supabase
+        .from("personal_infos")
+        .insert({
+          user_id: user.id,
+          ...emptyPersonalInfo,
+        });
 
       if (insertError) return rejectWithValue(insertError.message);
     }
@@ -52,7 +54,7 @@ export const fetchPersonalInfo = createAsyncThunk(
     if (error) return rejectWithValue(error.message);
 
     return data;
-  }
+  },
 );
 
 export const savePersonalInfo = createAsyncThunk(
@@ -68,22 +70,24 @@ export const savePersonalInfo = createAsyncThunk(
     const { birth_date, ...rest } = data;
 
     const formattedBirthDate =
-  typeof birth_date === "string"
-    ? birth_date
-    : birth_date instanceof DateObject
-    ? birth_date.format("YYYY-MM-DD")
-    : null;
+      typeof birth_date === "string"
+        ? birth_date
+        : birth_date instanceof DateObject
+          ? birth_date.format("YYYY-MM-DD")
+          : null;
 
-    const { error: upsertError } = await supabase.from("personal_infos").upsert({
-      user_id: user.id,
-      birth_date: formattedBirthDate,
-      ...rest,
-    });
+    const { error: upsertError } = await supabase
+      .from("personal_infos")
+      .upsert({
+        user_id: user.id,
+        birth_date: formattedBirthDate,
+        ...rest,
+      });
 
     if (upsertError) return rejectWithValue(upsertError.message);
 
     return data;
-  }
+  },
 );
 const personalInfoSlice = createSlice({
   name: "personalInfo",

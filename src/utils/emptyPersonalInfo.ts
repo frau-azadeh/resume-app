@@ -1,6 +1,8 @@
-import type{ PersonalInfoForm } from "../types/types";
+import type { PersonalInfoForm } from "../types/types";
 
-export const emptyPersonalInfo: Omit<PersonalInfoForm, "birth_date"> & { birth_date: string } = {
+export const emptyPersonalInfo: Omit<PersonalInfoForm, "birth_date"> & {
+  birth_date: string;
+} = {
   first_name: "",
   last_name: "",
   national_code: "",
