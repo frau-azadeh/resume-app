@@ -27,12 +27,12 @@ const EducationList: React.FC<Props> = ({
             {item.degree} - {item.field}
           </div>
           <div>
-            {item.startDate ? dayjs(item.startDate).format("YYYY-MM-DD") : ""}
+            {item.start_date ? dayjs(item.start_date).format("YYYY-MM-DD") : ""}
             تا{" "}
-            {item.isStudying
+            {item.is_studying
               ? "در حال تحصیل"
-              : item.endDate
-                ? dayjs(item.endDate).format("YYYY-MM-DD")
+              : item.end_date
+                ? dayjs(item.end_date).format("YYYY-MM-DD")
                 : ""}
           </div>
         </div>
