@@ -15,19 +15,19 @@ const ResidenceSection: React.FC<Props> = ({ register, errors }) => (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <Input
         label="استان محل سکونت"
-        {...register("residenceProvince")}
-        error={errors.residenceProvince}
+        {...register("residence_province")}
+        error={errors.residence_province}
       />
       <Input
         label="شهر محل سکونت"
-        {...register("residenceCity")}
-        error={errors.residenceCity}
+        {...register("residence_city")}
+        error={errors.residence_city}
       />
       <Input label="آدرس" {...register("address")} error={errors.address} />
       <Input
         label="کد پستی"
-        {...register("postalCode")}
-        error={errors.postalCode}
+        {...register("postal_code")}
+        error={errors.postal_code}
       />
     </div>
   </section>
