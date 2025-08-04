@@ -18,14 +18,14 @@ const WorkList: React.FC<WorkListProps> = ({ workList, onEdit, onDelete }) => {
         >
           <div>
             <p className="font-semibold text-gray-900">
-              {item.companyName} - {item.position}
+              {item.company_name} - {item.position}
             </p>
             <p className="text-sm text-gray-500 mt-1">
-              {item.startDate?.format("YYYY-MM-DD")} تا{" "}
-              {item.isWorking ? (
+              {item.start_date?.format("YYYY-MM-DD")} تا{" "}
+              {item.is_working ? (
                 <span className="text-green-600 font-medium">شاغل</span>
               ) : (
-                item.endDate?.format("YYYY-MM-DD")
+                item.end_date?.format("YYYY-MM-DD")
               )}
             </p>
           </div>
