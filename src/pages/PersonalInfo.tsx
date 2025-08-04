@@ -20,21 +20,18 @@ const PersonalInfoPage: React.FC = () => {
     <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow" dir="rtl">
       <h1 className="text-2xl font-bold text-center mb-6">اطلاعات فردی</h1>
       <PersonalInfoForm
-  defaultValues={{
-    ...personalInfo,
-    birth_date: personalInfo.birth_date
-      ? new DateObject({
-          date: personalInfo.birth_date,
-          format: "YYYY-MM-DD",
-          calendar: persian,
-          locale: persian_fa,
-        }).format("YYYY-MM-DD") // ✅ تبدیل به string
-      : "",
-  }}
-/>
-
-
-
+        defaultValues={{
+          ...personalInfo,
+          birth_date: personalInfo.birth_date
+            ? new DateObject({
+                date: personalInfo.birth_date,
+                format: "YYYY-MM-DD",
+                calendar: persian,
+                locale: persian_fa,
+              }).format("YYYY-MM-DD") // ✅ تبدیل به string
+            : "",
+        }}
+      />
     </div>
   );
 };

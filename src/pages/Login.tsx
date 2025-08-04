@@ -7,7 +7,7 @@ import Input from "../components/ui/Input";
 import Button from "../components/ui/Button";
 import { supabase } from "../lib/supabase";
 import { Mail, Lock } from "lucide-react";
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link } from "react-router-dom";
 
 import { showSuccess, showError } from "../lib/toast";
 
@@ -33,8 +33,8 @@ export default function LoginPage() {
       showError("ورود ناموفق بود. لطفاً ایمیل یا رمز عبور را بررسی کنید.");
     } else {
       showSuccess("ورود موفقیت‌آمیز بود!");
-      navigate('/form/personal-info');
-    }    
+      navigate("/form/personal-info");
+    }
   };
 
   return (
@@ -68,10 +68,11 @@ export default function LoginPage() {
 
         <p className="text-sm text-center text-gray-600">
           حساب ندارید؟{" "}
-          <Link to="/signup" className="text-blue-600 hover:underline font-medium">
-  ثبت‌نام کنید
-
-            ثبت‌نام کنید
+          <Link
+            to="/signup"
+            className="text-blue-600 hover:underline font-medium"
+          >
+            ثبت‌نام کنید ثبت‌نام کنید
           </Link>
         </p>
       </form>

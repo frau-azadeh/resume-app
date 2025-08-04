@@ -63,17 +63,11 @@ const WorkInfo: React.FC = () => {
     (state: RootState) => state.work.workForm,
   );
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setValue,
-    watch,
-    getValues,
-  } = useForm<WorkFormData>({
-    resolver: zodResolver(workSchema),
-    defaultValues: defaultFormValues,
-  });
+  const { register, handleSubmit, reset, setValue, watch, getValues } =
+    useForm<WorkFormData>({
+      resolver: zodResolver(workSchema),
+      defaultValues: defaultFormValues,
+    });
 
   const [workList, setWorkList] = useState<WorkFormData[]>([]);
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
@@ -88,7 +82,7 @@ const WorkInfo: React.FC = () => {
         ...item,
         start_date: item.start_date ? dayjs(item.start_date) : null,
         end_date: item.end_date ? dayjs(item.end_date) : null,
-      }))
+      })),
     );
 
     if (workFormInStore) {
@@ -167,7 +161,11 @@ const WorkInfo: React.FC = () => {
         <Input label="زمینه فعالیت شرکت" {...register("field")} />
         <Input label="رده سازمانی" {...register("level")} />
         <Input label="نوع همکاری" {...register("cooperation_type")} />
-        <Input label="سابقه بیمه (ماه)" type="number" {...register("insurance_months")} />
+        <Input
+          label="سابقه بیمه (ماه)"
+          type="number"
+          {...register("insurance_months")}
+        />
 
         <JalaliDateInput
           label="تاریخ شروع"
@@ -188,12 +186,20 @@ const WorkInfo: React.FC = () => {
         </div>
 
         <Input label="تلفن محل کار" {...register("work_phone")} />
-        <Input label="آخرین حقوق دریافتی (تومان)" {...register("last_salary")} />
+        <Input
+          label="آخرین حقوق دریافتی (تومان)"
+          {...register("last_salary")}
+        />
         <Input label="علت ترک کار" {...register("termination_reason")} />
 
         <div className="md:col-span-2">
           <label htmlFor="description">توضیحات</label>
-          <textarea {...register("description")} id="description" rows={4} className="w-full border p-2 rounded" />
+          <textarea
+            {...register("description")}
+            id="description"
+            rows={4}
+            className="w-full border p-2 rounded"
+          />
         </div>
 
         <div className="md:col-span-2 text-center">
@@ -203,7 +209,11 @@ const WorkInfo: React.FC = () => {
         </div>
       </form>
 
-      <WorkList workList={workList} onEdit={handleEdit} onDelete={handleDelete} />
+      <WorkList
+        workList={workList}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
 
       <div className="flex justify-between mt-8">
         <Button onClick={() => handleNavigation("prev")} variant="outline">

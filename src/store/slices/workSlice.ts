@@ -1,7 +1,6 @@
 // store/slices/workSlice.ts
 import { createSlice } from "@reduxjs/toolkit";
-import type{  PayloadAction } from "@reduxjs/toolkit";
-
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 // ⬅️ تایپ مناسب ذخیره در Redux (فقط string و boolean)
 export interface WorkFormPersisted {
@@ -12,7 +11,7 @@ export interface WorkFormPersisted {
   cooperation_type?: string;
   insurance_months?: string;
   start_date: string; // YYYY-MM-DD
-  end_date: string;   // YYYY-MM-DD
+  end_date: string; // YYYY-MM-DD
   is_working: boolean;
   work_phone?: string;
   last_salary?: string;

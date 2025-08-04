@@ -53,7 +53,7 @@ const PersonalInfoForm: React.FC<Props> = ({ defaultValues }) => {
   }, [defaultValues, reset]);
 
   const [avatarPreview, setAvatarPreview] = React.useState<string>(
-    defaultValues.avatar_url || ""
+    defaultValues.avatar_url || "",
   );
 
   const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
