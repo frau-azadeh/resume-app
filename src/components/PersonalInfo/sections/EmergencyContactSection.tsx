@@ -15,18 +15,18 @@ const EmergencyContactSection: React.FC<Props> = ({ register, errors }) => (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       <Input
         label="نام تماس اضطراری"
-        {...register("emergencyContactName")}
-        error={errors.emergencyContactName}
+        {...register("emergency_contact_name")}
+        error={errors.emergency_contact_name}
       />
       <Input
         label="نسبت تماس اضطراری"
-        {...register("emergencyContactRelation")}
-        error={errors.emergencyContactRelation}
+        {...register("emergency_contact_relation")}
+        error={errors.emergency_contact_relation}
       />
       <Input
         label="شماره تماس اضطراری"
-        {...register("emergencyContactPhone")}
-        error={errors.emergencyContactPhone}
+        {...register("emergency_contact_phone")}
+        error={errors.emergency_contact_phone}
       />
     </div>
   </section>
