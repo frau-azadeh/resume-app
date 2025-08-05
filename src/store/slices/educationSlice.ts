@@ -12,12 +12,14 @@ export interface EducationFormData {
   end_date?: string; // YYYY-MM-DD or undefined
   is_studying: boolean;
   description?: string;
+  user_id: string;
 }
 
 interface EducationState {
   educationList: EducationFormData[];
   educationForm: Partial<EducationFormData> | null;
 }
+
 
 const initialState: EducationState = {
   educationList: [],
