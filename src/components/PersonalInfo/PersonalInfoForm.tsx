@@ -57,7 +57,7 @@ const PersonalInfoForm: React.FC<Props> = ({ defaultValues }) => {
   }, [defaultValues, reset]);
 
   const [avatarPreview, setAvatarPreview] = React.useState<string>(
-    defaultValues.avatar_url || ""
+    defaultValues.avatar_url || "",
   );
 
   const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,19 +78,19 @@ const PersonalInfoForm: React.FC<Props> = ({ defaultValues }) => {
 
   const toEnglishDigits = (str: string) =>
     str.replace(/[۰-۹]/g, (d) => "۰۱۲۳۴۵۶۷۸۹".indexOf(d).toString());
-  
+
   const internalSubmit = async (data: PersonalInfoFormData) => {
     try {
       const {
         data: { user },
         error: userError,
       } = await supabase.auth.getUser();
-  
+
       if (userError || !user) {
         showError("کاربر یافت نشد.");
         return;
       }
-  
+
       // 👇 تبدیل تاریخ شمسی با ارقام فارسی → تاریخ میلادی با فرمت YYYY-MM-DD
       const birthDateMiladi = new DateObject({
         date: toEnglishDigits(data.birth_date),
@@ -100,21 +100,18 @@ const PersonalInfoForm: React.FC<Props> = ({ defaultValues }) => {
       })
         .convert(gregorian)
         .format("YYYY-MM-DD");
-      
+
       const formattedData = {
         ...data,
         birth_date: toEnglishDigits(birthDateMiladi), // ✅ همین جا اصلاح کن
         avatar_url: avatarPreview,
       };
-      
+
       console.log("تاریخ قبل از ارسال:", data.birth_date);
       console.log("تاریخ میلادی نهایی:", birthDateMiladi);
       console.log("تاریخ نهایی ارسال شده:", formattedData.birth_date);
-      
-  
-      const { error } = await supabase
-      .from("personal_infos")
-      .upsert(
+
+      const { error } = await supabase.from("personal_infos").upsert(
         [
           {
             user_id: user.id,
@@ -123,10 +120,9 @@ const PersonalInfoForm: React.FC<Props> = ({ defaultValues }) => {
         ],
         {
           onConflict: "user_id", // 👈 کلید اصلی برای جلوگیری از درج تکراری
-        }
+        },
       );
-    
-  
+
       if (error) {
         console.error("خطا در ذخیره:", error);
         showError("ذخیره‌سازی ناموفق بود.");

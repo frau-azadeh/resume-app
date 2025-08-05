@@ -2,11 +2,9 @@ import { z } from "zod";
 import DateObject from "react-date-object";
 
 // Custom Zod schema برای DateObject
-const dateObjectSchema = z
-  .instanceof(DateObject)
-  .refine((d) => d.isValid, {
-    message: "تاریخ نامعتبر است",
-  });
+const dateObjectSchema = z.instanceof(DateObject).refine((d) => d.isValid, {
+  message: "تاریخ نامعتبر است",
+});
 
 export const educationSchema = z.object({
   degree: z.string().min(1, "وارد کردن مقطع الزامی است"),

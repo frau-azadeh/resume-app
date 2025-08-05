@@ -54,8 +54,6 @@ export interface ManagementSkill {
   level: number;
 }
 
-
-
 export interface EducationFormDataLocal {
   degree: string;
   field: string;
@@ -68,5 +66,3 @@ export interface EducationFormDataLocal {
   is_studying: boolean;
   description: string;
 }
-
-

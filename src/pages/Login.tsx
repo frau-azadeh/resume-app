@@ -72,7 +72,7 @@ export default function LoginPage() {
             to="/signup"
             className="text-blue-600 hover:underline font-medium"
           >
-             ثبت‌نام کنید
+            ثبت‌نام کنید
           </Link>
         </p>
       </form>

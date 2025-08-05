@@ -51,14 +51,28 @@ const EducationForm: React.FC<Props> = ({
     >
       <Input label="مقطع" {...register("degree")} error={errors.degree} />
       <Input label="رشته" {...register("field")} error={errors.field} />
-      <Input label="گرایش" {...register("specialization")} error={errors.specialization} />
-      <Input label="نوع موسسه" {...register("institution_type")} error={errors.institution_type} />
-      <Input label="نام موسسه" {...register("institution_name")} error={errors.institution_name} />
+      <Input
+        label="گرایش"
+        {...register("specialization")}
+        error={errors.specialization}
+      />
+      <Input
+        label="نوع موسسه"
+        {...register("institution_type")}
+        error={errors.institution_type}
+      />
+      <Input
+        label="نام موسسه"
+        {...register("institution_name")}
+        error={errors.institution_name}
+      />
       <Input label="معدل" {...register("grade")} error={errors.grade} />
 
       {/* تاریخ شروع */}
       <div>
-        <label className="text-sm font-medium text-gray-700 block mb-1">تاریخ شروع</label>
+        <label className="text-sm font-medium text-gray-700 block mb-1">
+          تاریخ شروع
+        </label>
         <Controller
           control={control}
           name="start_date"
@@ -82,13 +96,17 @@ const EducationForm: React.FC<Props> = ({
           )}
         />
         {errors.start_date && (
-          <p className="text-red-600 text-sm mt-1">{errors.start_date.message}</p>
+          <p className="text-red-600 text-sm mt-1">
+            {errors.start_date.message}
+          </p>
         )}
       </div>
 
       {/* تاریخ پایان */}
       <div>
-        <label className="text-sm font-medium text-gray-700 block mb-1">تاریخ پایان</label>
+        <label className="text-sm font-medium text-gray-700 block mb-1">
+          تاریخ پایان
+        </label>
         <Controller
           control={control}
           name="end_date"
@@ -102,13 +120,13 @@ const EducationForm: React.FC<Props> = ({
                 field.value instanceof DateObject
                   ? field.value
                   : field.value
-                  ? new DateObject({
-                      date: field.value,
-                      format: "YYYY-MM-DD",
-                      calendar: persian,
-                      locale: persian_fa,
-                    })
-                  : null
+                    ? new DateObject({
+                        date: field.value,
+                        format: "YYYY-MM-DD",
+                        calendar: persian,
+                        locale: persian_fa,
+                      })
+                    : null
               }
               onChange={(date) => field.onChange(date || null)}
             />
@@ -129,7 +147,10 @@ const EducationForm: React.FC<Props> = ({
 
       {/* توضیحات */}
       <div className="md:col-span-2 flex flex-col">
-        <label htmlFor="description" className="mb-1 text-sm font-medium text-gray-700">
+        <label
+          htmlFor="description"
+          className="mb-1 text-sm font-medium text-gray-700"
+        >
           توضیحات
         </label>
         <textarea

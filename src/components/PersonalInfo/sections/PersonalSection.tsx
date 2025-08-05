@@ -8,7 +8,6 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import type { PersonalInfoFormData } from "../PersonalInfoForm";
 import Input from "../../ui/Input";
 
-
 interface Props {
   register: UseFormRegister<PersonalInfoFormData>;
   errors: FieldErrors<PersonalInfoFormData>;
@@ -45,34 +44,34 @@ const PersonalSection: React.FC<Props> = ({ register, errors, control }) => {
             تاریخ تولد
           </label>
           <Controller
-  name="birth_date"
-  control={control}
-  render={({ field }) => (
-    <DatePicker
-      calendar={persian}
-      locale={persian_fa}
-      format="YYYY-MM-DD"
-      value={
-        field.value
-          ? new DateObject({
-              date: field.value,
-              format: "YYYY-MM-DD",
-              calendar: persian,
-              locale: persian_fa,
-            })
-          : ""
-      }
-      onChange={(date) =>
-        field.onChange(date?.format?.("YYYY-MM-DD") || "")
-      }
-    />
-  )}
-/>
-{errors?.birth_date && (
-  <p className="text-red-600 text-sm mt-1">
-    {errors.birth_date.message}
-  </p>
-)}
+            name="birth_date"
+            control={control}
+            render={({ field }) => (
+              <DatePicker
+                calendar={persian}
+                locale={persian_fa}
+                format="YYYY-MM-DD"
+                value={
+                  field.value
+                    ? new DateObject({
+                        date: field.value,
+                        format: "YYYY-MM-DD",
+                        calendar: persian,
+                        locale: persian_fa,
+                      })
+                    : ""
+                }
+                onChange={(date) =>
+                  field.onChange(date?.format?.("YYYY-MM-DD") || "")
+                }
+              />
+            )}
+          />
+          {errors?.birth_date && (
+            <p className="text-red-600 text-sm mt-1">
+              {errors.birth_date.message}
+            </p>
+          )}
 
           {errors?.birth_date && (
             <p className="text-red-600 text-sm mt-1">

@@ -35,10 +35,13 @@ const EducationHistory: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [user, setUser] = useState<{ id: string } | null>(null);
-  const [formInitialData, setFormInitialData] = useState<EducationFormDataLocal>(defaultFormValues);
+  const [formInitialData, setFormInitialData] =
+    useState<EducationFormDataLocal>(defaultFormValues);
   const [editingId, setEditingId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
-  const [educationListState, setEducationListState] = useState<(EducationFormData & { id: number })[]>([]);
+  const [educationListState, setEducationListState] = useState<
+    (EducationFormData & { id: number })[]
+  >([]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -81,15 +84,20 @@ const EducationHistory: React.FC = () => {
       ...data,
       user_id: user.id,
       start_date: toGregorianDateString(data.start_date),
-      end_date: data.end_date ? toGregorianDateString(data.end_date) : undefined,
+      end_date: data.end_date
+        ? toGregorianDateString(data.end_date)
+        : undefined,
     };
 
     if (editingId) {
-      const { error } = await supabase.from("educations").update(record).eq("id", editingId);
+      const { error } = await supabase
+        .from("educations")
+        .update(record)
+        .eq("id", editingId);
       if (error) return toast.error("خطا در ویرایش");
 
       const updatedList = educationListState.map((item) =>
-        item.id === editingId ? { ...record, id: editingId } : item
+        item.id === editingId ? { ...record, id: editingId } : item,
       );
       setEducationListState(updatedList);
       dispatch(setEducationList(updatedList));
@@ -141,58 +149,77 @@ const EducationHistory: React.FC = () => {
         isEditing={!!editingId}
       />
 
-<h2 className="text-lg font-semibold mt-6 mb-2">لیست سوابق</h2>
-{educationListState.map((edu) => {
-  const start = new DateObject({ date: edu.start_date, calendar: gregorian }).convert(persian).format("YYYY/MM/DD");
-  const end = edu.end_date
-    ? new DateObject({ date: edu.end_date, calendar: gregorian }).convert(persian).format("YYYY/MM/DD")
-    : "ادامه دارد";
+      <h2 className="text-lg font-semibold mt-6 mb-2">لیست سوابق</h2>
+      {educationListState.map((edu) => {
+        const start = new DateObject({
+          date: edu.start_date,
+          calendar: gregorian,
+        })
+          .convert(persian)
+          .format("YYYY/MM/DD");
+        const end = edu.end_date
+          ? new DateObject({ date: edu.end_date, calendar: gregorian })
+              .convert(persian)
+              .format("YYYY/MM/DD")
+          : "ادامه دارد";
 
-  return (
-    <div key={edu.id} className="border p-4 rounded mb-3 flex justify-between items-center">
-      <div>
-        <p className="font-medium">
-          {edu.degree} - {edu.field || ""}
-        </p>
-        <p className="text-sm text-gray-600">
-          {start} تا {end}
-        </p>
-      </div>
-      <div className="flex gap-2">
-        <Button
-          onClick={() => {
-            setFormInitialData({
-              degree: edu.degree || "",
-              field: edu.field || "",
-              specialization: edu.specialization || "",
-              institution_type: edu.institution_type || "",
-              institution_name: edu.institution_name || "",
-              grade: edu.grade || "",
-              description: edu.description || "",
-              is_studying: edu.is_studying,
-              start_date: new DateObject({ date: edu.start_date, calendar: gregorian }).convert(persian),
-              end_date: edu.end_date
-                ? new DateObject({ date: edu.end_date, calendar: gregorian }).convert(persian)
-                : null,
-            });
-            setEditingId(edu.id);
-          }}
-        >
-          ویرایش
-        </Button>
-        <Button onClick={() => handleDelete(edu.id)} variant="destructive">
-          حذف
-        </Button>
-      </div>
-    </div>
-  );
-})}
-
-
-
+        return (
+          <div
+            key={edu.id}
+            className="border p-4 rounded mb-3 flex justify-between items-center"
+          >
+            <div>
+              <p className="font-medium">
+                {edu.degree} - {edu.field || ""}
+              </p>
+              <p className="text-sm text-gray-600">
+                {start} تا {end}
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                onClick={() => {
+                  setFormInitialData({
+                    degree: edu.degree || "",
+                    field: edu.field || "",
+                    specialization: edu.specialization || "",
+                    institution_type: edu.institution_type || "",
+                    institution_name: edu.institution_name || "",
+                    grade: edu.grade || "",
+                    description: edu.description || "",
+                    is_studying: edu.is_studying,
+                    start_date: new DateObject({
+                      date: edu.start_date,
+                      calendar: gregorian,
+                    }).convert(persian),
+                    end_date: edu.end_date
+                      ? new DateObject({
+                          date: edu.end_date,
+                          calendar: gregorian,
+                        }).convert(persian)
+                      : null,
+                  });
+                  setEditingId(edu.id);
+                }}
+              >
+                ویرایش
+              </Button>
+              <Button
+                onClick={() => handleDelete(edu.id)}
+                variant="destructive"
+              >
+                حذف
+              </Button>
+            </div>
+          </div>
+        );
+      })}
 
       <div className="flex justify-between mt-6">
-        <Button onClick={() => navigate("/form/personal-info")} variant="outline">
+        <Button
+          onClick={() => navigate("/form/personal-info")}
+          variant="outline"
+        >
           قبلی
         </Button>
         <Button onClick={() => navigate("/form/work-experience")}>بعدی</Button>

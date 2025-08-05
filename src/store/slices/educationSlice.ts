@@ -20,7 +20,6 @@ interface EducationState {
   educationForm: Partial<EducationFormData> | null;
 }
 
-
 const initialState: EducationState = {
   educationList: [],
   educationForm: null,

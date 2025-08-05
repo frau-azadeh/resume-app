@@ -9,7 +9,7 @@ export const personalInfoSchema = z.object({
     .length(10, "کد ملی باید ۱۰ رقم باشد")
     .regex(/^\d+$/, "کد ملی باید فقط عدد باشد"),
 
-    birth_date: z.string().nonempty("تاریخ تولد الزامی است"),
+  birth_date: z.string().nonempty("تاریخ تولد الزامی است"),
 
   birth_province: z.string().min(1, "استان محل تولد ضروری است"),
   birth_city: z.string().min(1, "شهر محل تولد ضروری است"),

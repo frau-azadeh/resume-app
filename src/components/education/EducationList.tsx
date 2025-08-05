@@ -9,8 +9,8 @@ interface Props {
   onDelete: (index: number) => void;
 }
 
-
-export interface EducationFormData extends Omit<EducationFormDataLocal, "start_date" | "end_date"> {
+export interface EducationFormData
+  extends Omit<EducationFormDataLocal, "start_date" | "end_date"> {
   id?: number; // 👈 این رو اضافه کن برای شناسایی رکوردها
   user_id: string;
   start_date: string;
@@ -41,9 +41,7 @@ const EducationList: React.FC<Props> = ({
           </div>
           <div>
             {formatDate(item.start_date)} تا{" "}
-            {item.is_studying
-              ? "در حال تحصیل"
-              : formatDate(item.end_date)}
+            {item.is_studying ? "در حال تحصیل" : formatDate(item.end_date)}
           </div>
         </div>
         <div className="flex gap-2">
