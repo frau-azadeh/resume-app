@@ -1,5 +1,5 @@
-import type { Dayjs } from "dayjs";
 import DateObject from "react-date-object";
+
 export interface PersonalInfoForm {
   first_name: string;
   last_name: string;
@@ -54,6 +54,8 @@ export interface ManagementSkill {
   level: number;
 }
 
+
+
 export interface EducationFormDataLocal {
   degree: string;
   field: string;
@@ -61,8 +63,10 @@ export interface EducationFormDataLocal {
   institution_type: string;
   institution_name: string;
   grade: string;
-  start_date: Dayjs | null;
-  end_date: Dayjs | null;
+  start_date: DateObject;
+  end_date: DateObject | null;
   is_studying: boolean;
   description: string;
 }
+
+
