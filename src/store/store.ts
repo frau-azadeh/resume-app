@@ -6,10 +6,11 @@ import personalInfoReducer from "./slices/personalInfoSlice";
 import educationReducer from "./slices/educationSlice";
 import workReducer from "./slices/workSlice";
 import skillReducer from "./slices/skillSlice";
+import userReducer from "./slices/userSlice";
 
 const rootReducer = combineReducers({
   personalInfo: personalInfoReducer,
-
+  user: userReducer,
   education: educationReducer,
   work: workReducer,
   skill: skillReducer,

@@ -2,6 +2,7 @@ import React from "react";
 import { Controller } from "react-hook-form";
 import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
 import DatePicker from "react-multi-date-picker";
+import DateObject from "react-date-object";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
 import type { PersonalInfoFormData } from "../PersonalInfoForm";
@@ -47,19 +48,32 @@ const PersonalSection: React.FC<Props> = ({ register, errors, control }) => {
             control={control}
             render={({ field }) => (
               <DatePicker
-                containerClassName="w-full" // تا عرض کامل بشه
-                inputClass="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 calendar={persian}
                 locale={persian_fa}
                 format="YYYY-MM-DD"
-                value={field.value}
+                value={
+                  field.value
+                    ? new DateObject({
+                        date: field.value,
+                        format: "YYYY-MM-DD",
+                        calendar: persian,
+                        locale: persian_fa,
+                      })
+                    : ""
+                }
                 onChange={(date) =>
                   field.onChange(date?.format?.("YYYY-MM-DD") || "")
                 }
               />
             )}
           />
-          {errors.birth_date && (
+          {errors?.birth_date && (
+            <p className="text-red-600 text-sm mt-1">
+              {errors.birth_date.message}
+            </p>
+          )}
+
+          {errors?.birth_date && (
             <p className="text-red-600 text-sm mt-1">
               {errors.birth_date.message}
             </p>

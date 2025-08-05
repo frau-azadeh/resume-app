@@ -1,5 +1,5 @@
 import React from "react";
-import dayjs from "dayjs";
+import DateObject from "react-date-object";
 import type { EducationFormDataLocal } from "../../validation/educationSchema";
 import { Button } from "../ui";
 
@@ -8,6 +8,19 @@ interface Props {
   onEdit: (index: number) => void;
   onDelete: (index: number) => void;
 }
+
+export interface EducationFormData
+  extends Omit<EducationFormDataLocal, "start_date" | "end_date"> {
+  id?: number; // 👈 این رو اضافه کن برای شناسایی رکوردها
+  user_id: string;
+  start_date: string;
+  end_date?: string;
+}
+
+const formatDate = (date: DateObject | null): string => {
+  if (!date) return "";
+  return date.format("YYYY-MM-DD"); // میلادی
+};
 
 const EducationList: React.FC<Props> = ({
   educationList,
@@ -27,13 +40,8 @@ const EducationList: React.FC<Props> = ({
             {item.degree} - {item.field}
           </div>
           <div>
-            {item.start_date ? dayjs(item.start_date).format("YYYY-MM-DD") : ""}
-            تا{" "}
-            {item.is_studying
-              ? "در حال تحصیل"
-              : item.end_date
-                ? dayjs(item.end_date).format("YYYY-MM-DD")
-                : ""}
+            {formatDate(item.start_date)} تا{" "}
+            {item.is_studying ? "در حال تحصیل" : formatDate(item.end_date)}
           </div>
         </div>
         <div className="flex gap-2">
