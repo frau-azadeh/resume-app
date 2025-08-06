@@ -16,7 +16,10 @@ const ResumeUpload: React.FC = () => {
       const reader = new FileReader();
       reader.onload = () => {
         dispatch(
-          setResumeFile({ name: file.name, base64: reader.result as string }),
+          setResumeFile({
+            resume_name: file.name,
+            resume_base64: reader.result as string,
+          }),
         );
         toast.success("فایل رزومه با موفقیت بارگذاری شد.");
       };
@@ -39,14 +42,14 @@ const ResumeUpload: React.FC = () => {
         <div className="flex justify-between items-center border border-gray-200 rounded-lg p-4 shadow-sm bg-white">
           <div
             className="text-sm text-gray-700 truncate max-w-xs"
-            title={resumeFile.name}
+            title={resumeFile.resume_name}
           >
-            {resumeFile.name}
+            {resumeFile.resume_name}
           </div>
 
           <div className="flex gap-3 items-center">
             <a
-              href={resumeFile.base64}
+              href={resumeFile.resume_base64}
               target="_blank"
               rel="noopener noreferrer"
               className="text-blue-600 hover:text-blue-800 underline transition-colors"

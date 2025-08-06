@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
 import type { AppDispatch } from "../store/store";
 import { Button } from "../components/ui";
-import WorkForm from "../components/work/WorkForm"
+import WorkForm from "../components/work/WorkForm";
 import DateObject from "react-date-object";
 import gregorian from "react-date-object/calendars/gregorian";
 import persian from "react-date-object/calendars/persian";
@@ -14,8 +14,6 @@ import type { WorkFormData } from "../store/slices/workSlice";
 import type { WorkFormDataType } from "../types/types";
 
 const defaultFormValues: WorkFormDataType = {
-
-
   company_name: "",
   position: "",
   field: "",
@@ -29,7 +27,6 @@ const defaultFormValues: WorkFormDataType = {
   last_salary: "",
   termination_reason: "",
   description: "",
-
 };
 
 const toGregorianDateString = (date: DateObject): string => {
@@ -91,10 +88,10 @@ const WorkInfo: React.FC = () => {
       user_id: user.id,
       start_date: toGregorianDateString(data.start_date),
       end_date: data.is_working
-    ? ""
-    : data.end_date
-    ? toGregorianDateString(data.end_date)
-    : "",
+        ? ""
+        : data.end_date
+          ? toGregorianDateString(data.end_date)
+          : "",
     };
 
     if (workId) {
@@ -192,7 +189,7 @@ const WorkInfo: React.FC = () => {
                     position: wo.position || "",
                     field: wo.field || "",
                     level: wo.level || "",
-                    cooperation_type: wo.cooperation_type|| "",
+                    cooperation_type: wo.cooperation_type || "",
                     insurance_months: wo.insurance_months || "",
                     description: wo.description || "",
                     work_phone: wo.work_phone || "",
@@ -215,10 +212,7 @@ const WorkInfo: React.FC = () => {
               >
                 ویرایش
               </Button>
-              <Button
-                onClick={() => handleDelete(wo.id)}
-                variant="destructive"
-              >
+              <Button onClick={() => handleDelete(wo.id)} variant="destructive">
                 حذف
               </Button>
             </div>

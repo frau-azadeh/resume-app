@@ -2,7 +2,6 @@
 import { z } from "zod";
 import DateObject from "react-date-object";
 
-
 const dateObjectSchema = z.instanceof(DateObject).refine((d) => d.isValid, {
   message: "تاریخ نامعتبر است",
 });
@@ -26,4 +25,3 @@ export const workSchema = z.object({
   termination_reason: z.string().optional().or(z.literal("")),
   description: z.string().optional().or(z.literal("")),
 });
-

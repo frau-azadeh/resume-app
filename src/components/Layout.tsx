@@ -1,13 +1,14 @@
 // src/components/Layout.tsx
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import "../styles/fonts.css";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store/store";
+import { supabase } from "../lib/supabase";
 
-const tabs = [
+const baseTabs = [
   { id: "personal-info", label: "اطلاعات فردی" },
   { id: "education", label: "سوابق تحصیلی" },
   { id: "work-experience", label: "سوابق کاری" },
@@ -22,16 +23,42 @@ const Layout: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // خواندن اطلاعات شخصی از Redux
   const personalInfo = useSelector(
     (state: RootState) => state.personalInfo.personalInfo,
   );
+
+  const [showSummaryTab, setShowSummaryTab] = useState(false);
 
   const currentTab = location.pathname.split("/").pop();
 
   const handleTabClick = (tabId: string) => {
     navigate(`/form/${tabId}`);
   };
+
+  // ✅ بررسی کامل بودن اطلاعات برای نمایش تب "خلاصه"
+  useEffect(() => {
+    const checkCompletion = async () => {
+      const { data: userData } = await supabase.auth.getUser();
+      const userId = userData?.user?.id;
+
+      if (!userId) return;
+
+      const { data } = await supabase
+        .from("skill")
+        .select("id")
+        .eq("user_id", userId);
+
+      if (data && data.length > 0) {
+        setShowSummaryTab(true);
+      }
+    };
+
+    checkCompletion();
+  }, []);
+
+  const allTabs = showSummaryTab
+    ? [...baseTabs, { id: "summary", label: "اطلاع رسانی" }]
+    : baseTabs;
 
   return (
     <div className="min-h-full" dir="rtl">
@@ -49,7 +76,7 @@ const Layout: React.FC = () => {
                       داشبورد
                     </span>
                     <div className="flex gap-2">
-                      {tabs.map((tab) => (
+                      {allTabs.map((tab) => (
                         <button
                           key={tab.id}
                           onClick={() => handleTabClick(tab.id)}
@@ -67,19 +94,19 @@ const Layout: React.FC = () => {
                   </div>
                 </div>
 
-                {/* بخش نام و عکس کاربر */}
                 <div className="hidden md:flex items-center gap-2">
                   <span className="text-white text-sm whitespace-nowrap">
-                    {personalInfo?.firstName || "کاربر"}{" "}
-                    {personalInfo?.lastName || ""}
+                    {personalInfo?.first_name || "کاربر"}{" "}
+                    {personalInfo?.last_name || ""}
                   </span>
-                  {personalInfo?.avatar && personalInfo.avatar !== "" && (
-                    <img
-                      className="w-8 h-8 rounded-full object-cover"
-                      src={personalInfo.avatar}
-                      alt="آواتار کاربر"
-                    />
-                  )}
+                  {personalInfo?.avatar_url &&
+                    personalInfo.avatar_url !== "" && (
+                      <img
+                        className="w-8 h-8 rounded-full object-cover"
+                        src={personalInfo.avatar_url}
+                        alt="آواتار کاربر"
+                      />
+                    )}
                 </div>
 
                 <div className="-mr-2 flex md:hidden">
@@ -96,7 +123,7 @@ const Layout: React.FC = () => {
             </div>
 
             <Disclosure.Panel className="md:hidden px-2 pt-2 pb-3 space-y-1">
-              {tabs.map((tab) => (
+              {allTabs.map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => handleTabClick(tab.id)}
