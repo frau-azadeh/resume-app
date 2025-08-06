@@ -10,3 +10,33 @@ body {
   text-align: right;
   direction: rtl;
 }
+
+.custom-datepicker-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;                /* px-3 py-2 */
+  border: 1px solid #d1d5db;              /* border-gray-300 */
+  border-radius: 0.375rem;                /* rounded-md */
+  font-size: 0.875rem;                    /* text-sm */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);/* shadow-md */
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  background-color: white;               /* ⬅ جلوگیری از رنگ تیره داخل input */
+  color: #111827;                        /* ⬅ text-gray-900 */
+  caret-color: #2563eb;                  /* ⬅ آبی مثل سایر input ها */
+  line-height: 1.5;
+  appearance: none;                      /* رفع استایل‌های خاص برخی مرورگرها */
+  display: block;
+}
+
+.custom-datepicker-input:focus {
+  border-color: #3b82f6;                 /* border-blue-500 */
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* focus:ring-blue-500 */
+  background-color: white;               /* ⬅ جلوگیری از تیره شدن هنگام focus */
+}
+
+
+.rmdp-container{
+  display: block!important;
+}
+
