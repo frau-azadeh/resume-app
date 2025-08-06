@@ -24,7 +24,7 @@ const Layout: React.FC = () => {
   const location = useLocation();
 
   const personalInfo = useSelector(
-    (state: RootState) => state.personalInfo.personalInfo
+    (state: RootState) => state.personalInfo.personalInfo,
   );
 
   const [showSummaryTab, setShowSummaryTab] = useState(false);
@@ -84,7 +84,7 @@ const Layout: React.FC = () => {
                             currentTab === tab.id
                               ? "bg-blue-600 text-white"
                               : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                            "px-3 py-2 rounded-md text-sm font-medium"
+                            "px-3 py-2 rounded-md text-sm font-medium",
                           )}
                         >
                           {tab.label}
@@ -99,13 +99,14 @@ const Layout: React.FC = () => {
                     {personalInfo?.first_name || "کاربر"}{" "}
                     {personalInfo?.last_name || ""}
                   </span>
-                  {personalInfo?.avatar_url && personalInfo.avatar_url !== "" && (
-                    <img
-                      className="w-8 h-8 rounded-full object-cover"
-                      src={personalInfo.avatar_url}
-                      alt="آواتار کاربر"
-                    />
-                  )}
+                  {personalInfo?.avatar_url &&
+                    personalInfo.avatar_url !== "" && (
+                      <img
+                        className="w-8 h-8 rounded-full object-cover"
+                        src={personalInfo.avatar_url}
+                        alt="آواتار کاربر"
+                      />
+                    )}
                 </div>
 
                 <div className="-mr-2 flex md:hidden">
@@ -130,7 +131,7 @@ const Layout: React.FC = () => {
                     currentTab === tab.id
                       ? "bg-blue-600 text-white"
                       : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block w-full text-right px-3 py-2 rounded-md text-base font-medium"
+                    "block w-full text-right px-3 py-2 rounded-md text-base font-medium",
                   )}
                 >
                   {tab.label}

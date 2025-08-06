@@ -16,7 +16,10 @@ const ResumeUpload: React.FC = () => {
       const reader = new FileReader();
       reader.onload = () => {
         dispatch(
-          setResumeFile({ resume_name: file.name, resume_base64: reader.result as string }),
+          setResumeFile({
+            resume_name: file.name,
+            resume_base64: reader.result as string,
+          }),
         );
         toast.success("فایل رزومه با موفقیت بارگذاری شد.");
       };

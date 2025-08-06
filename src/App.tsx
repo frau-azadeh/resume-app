@@ -30,8 +30,7 @@ const App: React.FC = () => {
           <Route path="education" element={<EducationHistory />} />
           <Route path="work-experience" element={<WorkInfo />} />
           <Route path="skill" element={<SkillForm />} />
-          <Route path="summary" element={<Summary/>}/>
-
+          <Route path="summary" element={<Summary />} />
         </Route>
 
         {/* 🔥 اضافه‌شده: مسیر /login */}

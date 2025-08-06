@@ -58,7 +58,9 @@ const SkillForm: React.FC<Props> = ({ onAdd, skills, onDelete }) => {
             className="w-full border border-gray-300 rounded-md px-4 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition"
           />
           {errors.skill_name && (
-            <p className="text-red-500 text-sm mt-1">{errors.skill_name.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.skill_name.message}
+            </p>
           )}
         </div>
 
@@ -87,7 +89,9 @@ const SkillForm: React.FC<Props> = ({ onAdd, skills, onDelete }) => {
             ))}
           </div>
           {errors.skill_level && (
-            <p className="text-red-500 text-sm mt-1">{errors.skill_level.message}</p>
+            <p className="text-red-500 text-sm mt-1">
+              {errors.skill_level.message}
+            </p>
           )}
         </div>
 

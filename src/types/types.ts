@@ -67,7 +67,6 @@ export interface EducationFormDataLocal {
   description: string;
 }
 
-
 export interface WorkFormDataType {
   company_name: string;
   position: string;
