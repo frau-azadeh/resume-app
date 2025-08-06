@@ -19,28 +19,23 @@ const PasswordStrengthMeter: React.FC<PasswordStrengthMeter> = ({
     Boolean,
   ).length;
 
-  let strength = "";
   let color = "";
   let percent = 0;
   switch (score) {
     case 0:
     case 1:
-      strength = "ضعیف";
       color = "bg-red-500";
       percent = 25;
       break;
     case 2:
-      strength = "متوسط";
       color = "bg-yellow-500";
       percent = 50;
       break;
     case 3:
-      strength = "خوب";
       color = "bg-blue-500";
       percent = 75;
       break;
     case 4:
-      strength = "قوی";
       color = "bg-green-600";
       percent = 100;
       break;
