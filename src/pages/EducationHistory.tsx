@@ -167,7 +167,7 @@ const EducationHistory: React.FC = () => {
         return (
           <div
             key={edu.id}
-            className="border p-4 rounded mb-3 flex justify-between items-center"
+            className="border p-4 rounded-md mb-3 flex justify-between items-center  border-gray-200 shadow-md"
           >
             <div>
               <p className="font-medium">
