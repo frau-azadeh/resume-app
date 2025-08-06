@@ -113,7 +113,7 @@ export default function SignupPage() {
           error={errors.confirmPassword?.message}
         />
 
-        <Button type="submit" loading={isSubmitting}>
+        <Button type="submit" loading={isSubmitting} className="w-full">
           ثبت‌نام
         </Button>
 
