@@ -27,14 +27,14 @@ const EducationList: React.FC<Props> = ({
   onEdit,
   onDelete,
 }) => (
-  <div className="mt-6">
+  <div className="mb-6 border-t border-gray-200 pt-6" dir="rtl">
     <h2 className="font-bold mb-2">لیست سوابق</h2>
     {educationList.length === 0 && <p>هیچ سابقه تحصیلی ثبت نشده است.</p>}
     {educationList.map((item, index) => (
       <div
         key={index}
-        className="border border-gray-300 rounded-lg p-4 mb-3 flex justify-between items-center shadow-sm bg-white"
-      >
+        className="bg-white border border-gray-300 rounded-lg p-4 flex justify-between items-center shadow-sm hover:shadow-md transition"
+        >
         <div>
           <div>
             {item.degree} - {item.field}
@@ -45,10 +45,10 @@ const EducationList: React.FC<Props> = ({
           </div>
         </div>
         <div className="flex gap-2">
-          <Button onClick={() => onEdit(index)} variant="primary">
+          <Button onClick={() => onEdit(index)} variant="primary" size="md">
             ویرایش
           </Button>
-          <Button onClick={() => onDelete(index)} variant="destructive">
+          <Button onClick={() => onDelete(index)} variant="destructive" size="md">
             حذف
           </Button>
         </div>
