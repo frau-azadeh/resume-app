@@ -7,12 +7,11 @@ import DatePicker from "react-multi-date-picker";
 import DateObject from "react-date-object";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import type { WorkFormData } from "../../types/types";
-import { workSchema } from "../../validation/workSchema";
+import { workSchema, type WorkFormDataType} from "../../validation/workSchema";
 
 interface Props {
-  initialData: WorkFormData;
-  onSubmit: (data: WorkFormData) => void;
+  initialData: WorkFormDataType;
+  onSubmit: (data: WorkFormDataType) => void;
   onCancel: () => void;
   isEditing: boolean;
 }
@@ -30,7 +29,7 @@ const EducationForm: React.FC<Props> = ({
     reset,
     watch,
     formState: { errors },
-  } = useForm<WorkFormData>({
+  } = useForm<WorkFormDataType>({
     defaultValues: initialData,
     resolver: zodResolver(workSchema),
   });
@@ -79,6 +78,7 @@ const EducationForm: React.FC<Props> = ({
                     })
               }
               onChange={(date) => field.onChange(date || null)}
+             inputClass="custom-datepicker-input"
             />
           )}
         />
@@ -116,6 +116,7 @@ const EducationForm: React.FC<Props> = ({
                     : null
               }
               onChange={(date) => field.onChange(date || null)}
+             inputClass="custom-datepicker-input"
             />
           )}
         />
@@ -139,11 +140,12 @@ const EducationForm: React.FC<Props> = ({
           {...register("description")}
           id="description"
           rows={4}
-          className="w-full border p-2 rounded"
+          className="w-full rounded-md border border-gray-300 px-3 py-2 text-right text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 resize-y min-h-[6rem]"
+          placeholder="توضیحاتی درباره سوابق کاری ..."
         />
       </div>
       <div className="md:col-span-2 flex gap-4 justify-center">
-        <Button type="submit">
+        <Button type="submit" variant="success" size="md">
           {isEditing ? "ویرایش سابقه" : "ثبت سابقه"}
         </Button>
         {isEditing && (
