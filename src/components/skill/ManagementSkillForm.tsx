@@ -73,16 +73,16 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(managementSkillSchema),
-    defaultValues: { name: "", level: 1 },
+    defaultValues: { manage_name: "", manage_level: 1 },
   });
 
-  const nameValue = watch("name") || "";
+  const nameValue = watch("manage_name") || "";
 
   useEffect(() => {
     if (editingIndex !== null) {
       const skill = managementSkills[editingIndex];
-      setValue("name", skill.name);
-      setValue("level", skill.level);
+      setValue("manage_name", skill.manage_name);
+      setValue("manage_level", skill.manage_level);
     }
   }, [editingIndex, managementSkills, setValue]);
 
@@ -114,13 +114,13 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
         className="grid grid-cols-1 md:grid-cols-2 gap-6"
       >
         <select
-          {...register("name")}
+          {...register("manage_name")}
           disabled={
             editingIndex === null && managementSkills.length >= MAX_SKILLS
           }
           defaultValue=""
           className={`md:col-span-2 w-full border rounded-md px-4 py-3 text-gray-700 text-right focus:outline-none focus:ring-2 focus:ring-blue-400 transition ${
-            errors.name ? "border-red-500" : "border-gray-200"
+            errors.manage_name ? "border-red-500" : "border-gray-200"
           }`}
         >
           <option value="" disabled>
@@ -132,7 +132,7 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
               value={skill}
               disabled={managementSkills.some(
                 (s, i) =>
-                  s.name === skill &&
+                  s.manage_name === skill &&
                   (editingIndex === null || editingIndex !== i),
               )}
             >
@@ -140,15 +140,15 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
             </option>
           ))}
         </select>
-        {errors.name && (
+        {errors.manage_name && (
           <p className="md:col-span-2 text-red-600 text-sm text-right">
-            {errors.name.message}
+            {errors.manage_name.message}
           </p>
         )}
 
         <Controller
           control={control}
-          name="level"
+          name="manage_level"
           render={({ field: { value, onChange } }) => (
             <div
               className="md:col-span-2 flex justify-center"
@@ -159,9 +159,9 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
             </div>
           )}
         />
-        {errors.level && (
+        {errors.manage_level && (
           <p className="md:col-span-2 text-red-600 text-sm text-right">
-            {errors.level.message}
+            {errors.manage_level.message}
           </p>
         )}
 
@@ -192,10 +192,10 @@ const ManagementSkillForm: React.FC<Props> = ({ onAdd, managementSkills }) => {
             dir="rtl"
           >
             <div className="text-right">
-              <p className="font-bold text-gray-800">{m.name}</p>
+              <p className="font-bold text-gray-800">{m.manage_name}</p>
               <p className="text-yellow-400 text-xl select-none">
-                {"★".repeat(m.level)}
-                {"☆".repeat(5 - m.level)}
+                {"★".repeat(m.manage_level)}
+                {"☆".repeat(5 - m.manage_level)}
               </p>
             </div>
             <div className="flex gap-3">
