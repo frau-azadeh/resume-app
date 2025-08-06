@@ -9,7 +9,8 @@ export interface WorkFormData {
   field?: string;
   level?: string;
   cooperation_type?: string;
-  insurance_months?: number | string;
+  insurance_months?: string;
+
 
   start_date: string; // YYYY-MM-DD
   end_date?: string; // YYYY-MM-DD
