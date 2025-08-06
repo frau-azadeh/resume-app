@@ -33,12 +33,12 @@ export interface PersonalInfoForm {
   avatar_url: string;
 }
 
-export type Proficiency = "ضعیف" | "متوسط" | "عالی";
+export type Proficiency = "ضعیف" | "متوسط" | "عالی" | null;
 
 // types/index.ts
 export interface SkillFormData {
-  name: string;
-  level: "beginner" | "intermediate" | "advanced";
+  skill_name: string;
+  skill_level: "beginner" | "intermediate" | "advanced";
 }
 
 export interface LanguageSkill {
@@ -50,8 +50,8 @@ export interface LanguageSkill {
 }
 
 export interface ManagementSkill {
-  name: string;
-  level: number;
+  manage_name: string;
+  manage_level: number;
 }
 
 export interface EducationFormDataLocal {
