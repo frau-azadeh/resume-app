@@ -3,11 +3,11 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 // Types
 export interface SkillItem {
-  name: string;
-  level: number;
+  skill_name: string;
+  skill_level: number;
 }
 
-export type Proficiency = "ضعیف" | "متوسط" | "عالی";
+export type Proficiency = "ضعیف" | "متوسط" | "عالی" | null;
 
 export interface LanguageSkill {
   language: string;
@@ -18,13 +18,13 @@ export interface LanguageSkill {
 }
 
 export interface ManagementSkill {
-  name: string;
-  level: number;
+  manage_name: string;
+  manage_level: number;
 }
 
 export interface ResumeFile {
-  name: string;
-  base64: string;
+  resume_name: string;
+  resume_base64: string;
 }
 
 export interface SkillState {
