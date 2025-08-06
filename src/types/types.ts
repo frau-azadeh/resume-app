@@ -73,7 +73,7 @@ export interface WorkFormDataType {
   field?: string;
   level?: string;
   cooperation_type?: string;
-  insurance_months?: number | string;
+  insurance_months?: string;
 
   start_date: DateObject;
   end_date: DateObject | null;
