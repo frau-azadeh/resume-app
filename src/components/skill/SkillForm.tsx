@@ -96,7 +96,7 @@ const SkillForm: React.FC<Props> = ({ onAdd, skills, onDelete }) => {
         </div>
 
         <div className="md:col-span-2">
-          <Button type="submit" variant="primary">
+          <Button type="submit" variant="success" size="md">
             افزودن مهارت فنی
           </Button>
         </div>
