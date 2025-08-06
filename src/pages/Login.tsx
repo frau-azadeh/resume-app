@@ -8,7 +8,6 @@ import Button from "../components/ui/Button";
 import { supabase } from "../lib/supabase";
 import { Mail, Lock } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
-
 import { showSuccess, showError } from "../lib/toast";
 
 export default function LoginPage() {
@@ -24,17 +23,27 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   const onSubmit = async (data: LoginSchema) => {
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data: loginData, error } = await supabase.auth.signInWithPassword({
       email: data.email,
       password: data.password,
     });
 
     if (error) {
       showError("ورود ناموفق بود. لطفاً ایمیل یا رمز عبور را بررسی کنید.");
-    } else {
-      showSuccess("ورود موفقیت‌آمیز بود!");
-      navigate("/form/personal-info");
+      return;
     }
+
+    const user = loginData.user;
+
+    if (!user) {
+      showError("دریافت اطلاعات کاربر ممکن نشد.");
+      return;
+    }
+
+    showSuccess("ورود موفقیت‌آمیز بود!");
+
+
+    navigate("/form/personal-info");
   };
 
   return (
@@ -62,7 +71,7 @@ export default function LoginPage() {
           error={errors.password?.message}
         />
 
-        <Button type="submit" loading={isSubmitting}>
+        <Button type="submit" loading={isSubmitting} className="w-full">
           ورود
         </Button>
 
