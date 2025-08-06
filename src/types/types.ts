@@ -66,3 +66,21 @@ export interface EducationFormDataLocal {
   is_studying: boolean;
   description: string;
 }
+
+
+export interface WorkFormDataType {
+  company_name: string;
+  position: string;
+  field?: string;
+  level?: string;
+  cooperation_type?: string;
+  insurance_months?: number | string;
+
+  start_date: DateObject;
+  end_date: DateObject | null;
+  is_working: boolean;
+  work_phone?: string;
+  last_salary?: string;
+  termination_reason?: string;
+  description?: string;
+}

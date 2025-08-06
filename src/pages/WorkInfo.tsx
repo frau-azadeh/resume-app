@@ -1,225 +1,239 @@
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import type { SubmitHandler } from "react-hook-form";
-
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import dayjs, { Dayjs } from "dayjs";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "../lib/supabase";
+import type { AppDispatch } from "../store/store";
+import { Button } from "../components/ui";
+import WorkForm from "../components/work/WorkForm"
+import DateObject from "react-date-object";
+import gregorian from "react-date-object/calendars/gregorian";
+import persian from "react-date-object/calendars/persian";
+import { setWorkList } from "../store/slices/workSlice";
+import type { WorkFormData } from "../store/slices/workSlice";
+import type { WorkFormDataType } from "../types/types";
 
-import Input from "../components/ui/Input";
-import Button from "../components/ui/Button";
-import JalaliDateInput from "../components/ui/JalaliDatePicker";
-import WorkList from "../components/work/WorkList";
-import { todayJalali } from "../utils/date";
-import type { RootState, AppDispatch } from "../store/store";
-import {
-  setworkList as saveWorkList,
-  setworkForm as saveWorkForm,
-} from "../store/slices/workSlice";
-import { workSchema } from "../validation/workSchema";
+const defaultFormValues: WorkFormDataType = {
 
-export interface WorkFormData {
-  company_name: string;
-  position: string;
-  field?: string;
-  level?: string;
-  cooperation_type?: string;
-  insurance_months?: string;
-  start_date: Dayjs | null;
-  end_date: Dayjs | null;
-  is_working: boolean;
-  work_phone?: string;
-  last_salary?: string;
-  termination_reason?: string;
-  description?: string;
-}
 
-const defaultFormValues: WorkFormData = {
   company_name: "",
   position: "",
   field: "",
   level: "",
   cooperation_type: "",
   insurance_months: "",
-  start_date: todayJalali(),
-  end_date: todayJalali(),
+  start_date: new DateObject({ calendar: persian }),
+  end_date: null,
   is_working: false,
   work_phone: "",
   last_salary: "",
   termination_reason: "",
   description: "",
+
+};
+
+const toGregorianDateString = (date: DateObject): string => {
+  const g = date.convert(gregorian);
+  return `${g.year}-${String(g.month).padStart(2, "0")}-${String(g.day).padStart(2, "0")}`;
 };
 
 const WorkInfo: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
-
-  const workListInStore = useSelector(
-    (state: RootState) => state.work.workList,
-  );
-  const workFormInStore = useSelector(
-    (state: RootState) => state.work.workForm,
-  );
-
-  const { register, handleSubmit, reset, setValue, watch, getValues } =
-    useForm<WorkFormData>({
-      resolver: zodResolver(workSchema),
-      defaultValues: defaultFormValues,
-    });
-
-  const [workList, setWorkList] = useState<WorkFormData[]>([]);
-  const [editingIndex, setEditingIndex] = useState<number | null>(null);
-
-  const is_working = watch("is_working");
-  const start_date = watch("start_date");
-  const end_date = watch("end_date");
+  const [user, setUser] = useState<{ id: string } | null>(null);
+  const [formInitialData, setFormInitialData] =
+    useState<WorkFormDataType>(defaultFormValues);
+  const [workId, setWorkId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [workListState, setWorkListState] = useState<
+    (WorkFormData & { id: number })[]
+  >([]);
 
   useEffect(() => {
-    setWorkList(
-      (workListInStore || []).map((item) => ({
-        ...item,
-        start_date: item.start_date ? dayjs(item.start_date) : null,
-        end_date: item.end_date ? dayjs(item.end_date) : null,
-      })),
-    );
+    const fetchUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      if (data?.user) {
+        setUser(data.user);
+      } else {
+        toast.error("کاربر یافت نشد");
+      }
+    };
+    fetchUser();
+  }, []);
 
-    if (workFormInStore) {
-      reset({
-        ...defaultFormValues,
-        ...workFormInStore,
-        start_date: workFormInStore.start_date
-          ? dayjs(workFormInStore.start_date)
-          : todayJalali(),
-        end_date: workFormInStore.end_date
-          ? dayjs(workFormInStore.end_date)
-          : todayJalali(),
-      });
-    }
-  }, [workListInStore, workFormInStore, reset]);
+  useEffect(() => {
+    if (!user) return;
 
-  const formatForStore = (item: WorkFormData) => ({
-    ...item,
-    start_date: item.start_date ? item.start_date.format("YYYY-MM-DD") : "",
-    end_date: item.end_date ? item.end_date.format("YYYY-MM-DD") : "",
-  });
+    const fetchData = async () => {
+      const { data, error } = await supabase
+        .from("work_infos")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("start_date", { ascending: false });
 
-  const onSubmit: SubmitHandler<WorkFormData> = (data) => {
-    const updatedList = [...workList];
-    if (editingIndex !== null) {
-      updatedList[editingIndex] = data;
-      toast.success("سابقه کاری ویرایش شد");
+      if (error) {
+        toast.error("خطا در دریافت اطلاعات تحصیلی");
+      } else {
+        setWorkListState(data);
+        dispatch(setWorkList(data));
+      }
+      setLoading(false);
+    };
+
+    fetchData();
+  }, [user, dispatch]);
+
+  const handleSubmit = async (data: WorkFormDataType) => {
+    if (!user?.id) return toast.error("کاربر یافت نشد");
+
+    const record: WorkFormData = {
+      ...data,
+      user_id: user.id,
+      start_date: toGregorianDateString(data.start_date),
+      end_date: data.is_working
+    ? ""
+    : data.end_date
+    ? toGregorianDateString(data.end_date)
+    : "",
+    };
+
+    if (workId) {
+      const { error } = await supabase
+        .from("work_infos")
+        .update(record)
+        .eq("id", workId);
+      if (error) return toast.error("خطا در ویرایش");
+
+      const workList = workListState.map((item) =>
+        item.id === workId ? { ...record, id: workId } : item,
+      );
+      setWorkListState(workList);
+      dispatch(setWorkList(workList));
+      toast.success("ویرایش انجام شد");
     } else {
-      updatedList.push(data);
-      toast.success("سابقه کاری ثبت شد");
+      const { data: newRecord, error } = await supabase
+        .from("work_infos")
+        .insert(record)
+        .select()
+        .single();
+
+      if (error || !newRecord) return toast.error("خطا در ثبت");
+
+      const updatedList = [...workListState, newRecord];
+      setWorkListState(updatedList);
+      dispatch(setWorkList(updatedList));
+      toast.success("ثبت انجام شد");
     }
-    setWorkList(updatedList);
-    dispatch(saveWorkList(updatedList.map(formatForStore)));
-    dispatch(saveWorkForm({}));
-    setEditingIndex(null);
-    reset(defaultFormValues);
+
+    setWorkId(null);
+    setFormInitialData(defaultFormValues);
   };
 
-  const handleEdit = (index: number) => {
-    const item = workList[index];
-    setEditingIndex(index);
-    reset(item);
-    dispatch(saveWorkForm(formatForStore(item)));
-  };
-
-  const handleDelete = (index: number) => {
-    const updated = workList.filter((_, i) => i !== index);
-    setWorkList(updated);
-    dispatch(saveWorkList(updated.map(formatForStore)));
-    toast.info("سابقه کاری حذف شد");
-    if (editingIndex === index) {
-      setEditingIndex(null);
-      reset(defaultFormValues);
+  const handleDelete = async (id: number) => {
+    const { error } = await supabase.from("work_infos").delete().eq("id", id);
+    if (error) {
+      toast.error("خطا در حذف");
+      return;
     }
+    const updatedList = workListState.filter((item) => item.id !== id);
+    setWorkListState(updatedList);
+    dispatch(setWorkList(updatedList));
+    toast.success("حذف شد");
   };
 
-  const handleNavigation = (direction: "next" | "prev") => {
-    const currentFormData = getValues();
-    dispatch(saveWorkList(workList.map(formatForStore)));
-    dispatch(saveWorkForm(formatForStore(currentFormData)));
-
-    if (direction === "next") navigate("/form/skill");
-    else navigate("/form/education");
-  };
+  if (loading) return <p className="text-center">در حال بارگذاری...</p>;
 
   return (
-    <div className="max-w-5xl mx-auto p-6 bg-white rounded-lg shadow" dir="rtl">
-      <h1 className="text-2xl font-bold mb-4 text-center">سوابق کاری</h1>
+    <div className="max-w-4xl mx-auto bg-white p-6 rounded shadow" dir="rtl">
+      <h1 className="text-xl font-bold mb-4 text-center">سوابق تحصیلی</h1>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="grid grid-cols-1 md:grid-cols-2 gap-4"
-      >
-        <Input label="نام شرکت" {...register("company_name")} />
-        <Input label="عنوان شغلی" {...register("position")} />
-        <Input label="زمینه فعالیت شرکت" {...register("field")} />
-        <Input label="رده سازمانی" {...register("level")} />
-        <Input label="نوع همکاری" {...register("cooperation_type")} />
-        <Input
-          label="سابقه بیمه (ماه)"
-          type="number"
-          {...register("insurance_months")}
-        />
-
-        <JalaliDateInput
-          label="تاریخ شروع"
-          value={start_date}
-          onChange={(v) => setValue("start_date", v)}
-        />
-
-        <JalaliDateInput
-          label="تاریخ پایان"
-          value={end_date}
-          onChange={(v) => setValue("end_date", v)}
-          disabled={is_working}
-        />
-
-        <div className="md:col-span-2 flex items-center gap-2">
-          <input type="checkbox" {...register("is_working")} id="is_working" />
-          <label htmlFor="is_working">شاغل هستم</label>
-        </div>
-
-        <Input label="تلفن محل کار" {...register("work_phone")} />
-        <Input
-          label="آخرین حقوق دریافتی (تومان)"
-          {...register("last_salary")}
-        />
-        <Input label="علت ترک کار" {...register("termination_reason")} />
-
-        <div className="md:col-span-2">
-          <label htmlFor="description">توضیحات</label>
-          <textarea
-            {...register("description")}
-            id="description"
-            rows={4}
-            className="w-full border p-2 rounded"
-          />
-        </div>
-
-        <div className="md:col-span-2 text-center">
-          <Button type="submit">
-            {editingIndex !== null ? "ویرایش سابقه" : "ثبت سابقه"}
-          </Button>
-        </div>
-      </form>
-
-      <WorkList
-        workList={workList}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
+      <WorkForm
+        initialData={formInitialData}
+        onSubmit={handleSubmit}
+        onCancel={() => {
+          setFormInitialData(defaultFormValues);
+          setWorkId(null);
+        }}
+        isEditing={!!workId}
       />
 
-      <div className="flex justify-between mt-8">
-        <Button onClick={() => handleNavigation("prev")} variant="outline">
+      <h2 className="text-lg font-semibold mt-6 mb-2">لیست سوابق</h2>
+      {workListState.map((wo) => {
+        const start = new DateObject({
+          date: wo.start_date,
+          calendar: gregorian,
+        })
+          .convert(persian)
+          .format("YYYY/MM/DD");
+        const end = wo.end_date
+          ? new DateObject({ date: wo.end_date, calendar: gregorian })
+              .convert(persian)
+              .format("YYYY/MM/DD")
+          : "ادامه دارد";
+
+        return (
+          <div
+            key={wo.id}
+            className="border p-4 rounded mb-3 flex justify-between items-center"
+          >
+            <div>
+              <p className="font-medium">
+                {wo.company_name} - {wo.position || ""}
+              </p>
+              <p className="text-sm text-gray-600">
+                {start} تا {end}
+              </p>
+            </div>
+            <div className="flex gap-2">
+              <Button
+                onClick={() => {
+                  setFormInitialData({
+                    company_name: wo.company_name || "",
+                    position: wo.position || "",
+                    field: wo.field || "",
+                    level: wo.level || "",
+                    cooperation_type: wo.cooperation_type|| "",
+                    insurance_months: wo.insurance_months || "",
+                    description: wo.description || "",
+                    work_phone: wo.work_phone || "",
+                    last_salary: wo.last_salary || "",
+                    termination_reason: wo.termination_reason || "",
+                    is_working: wo.is_working,
+                    start_date: new DateObject({
+                      date: wo.start_date,
+                      calendar: gregorian,
+                    }).convert(persian),
+                    end_date: wo.end_date
+                      ? new DateObject({
+                          date: wo.end_date,
+                          calendar: gregorian,
+                        }).convert(persian)
+                      : null,
+                  });
+                  setWorkId(wo.id);
+                }}
+              >
+                ویرایش
+              </Button>
+              <Button
+                onClick={() => handleDelete(wo.id)}
+                variant="destructive"
+              >
+                حذف
+              </Button>
+            </div>
+          </div>
+        );
+      })}
+
+      <div className="flex justify-between mt-6">
+        <Button
+          onClick={() => navigate("/form/work-experience")}
+          variant="outline"
+        >
           قبلی
         </Button>
-        <Button onClick={() => handleNavigation("next")}>بعدی</Button>
+        <Button onClick={() => navigate("/form/skill")}>بعدی</Button>
       </div>
     </div>
   );

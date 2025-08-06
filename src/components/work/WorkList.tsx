@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "../ui/Button";
-import type { WorkFormData } from "../../pages/WorkInfo";
+import type { WorkFormData } from "../../types/types";
 
 interface WorkListProps {
   workList: WorkFormData[];
