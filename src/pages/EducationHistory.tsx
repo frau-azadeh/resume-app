@@ -137,7 +137,7 @@ const EducationHistory: React.FC = () => {
   if (loading) return <p className="text-center">در حال بارگذاری...</p>;
 
   return (
-    <div className="max-w-4xl mx-auto bg-white p-6 rounded shadow" dir="rtl">
+    <div className="max-w-5xl mx-auto bg-white p-6 rounded shadow" dir="rtl">
       <h1 className="text-xl font-bold mb-4 text-center">سوابق تحصیلی</h1>
 
       <EducationForm
