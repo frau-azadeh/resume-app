@@ -25,3 +25,5 @@ export const workSchema = z.object({
   termination_reason: z.string().optional().or(z.literal("")),
   description: z.string().optional().or(z.literal("")),
 });
+
+export type WorkFormDataType = z.infer<typeof workSchema>;
