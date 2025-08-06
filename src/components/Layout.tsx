@@ -7,6 +7,8 @@ import "../styles/fonts.css";
 import { useSelector } from "react-redux";
 import type { RootState } from "../store/store";
 import { supabase } from "../lib/supabase";
+import { LogOut } from "lucide-react";
+import Footer from "../pages/Footer";
 
 const baseTabs = [
   { id: "personal-info", label: "اطلاعات فردی" },
@@ -28,14 +30,18 @@ const Layout: React.FC = () => {
   );
 
   const [showSummaryTab, setShowSummaryTab] = useState(false);
-
   const currentTab = location.pathname.split("/").pop();
 
   const handleTabClick = (tabId: string) => {
     navigate(`/form/${tabId}`);
   };
 
-  // ✅ بررسی کامل بودن اطلاعات برای نمایش تب "خلاصه"
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    navigate("/login");
+  };
+
+  // بررسی کامل بودن فرم برای نمایش تب "خلاصه"
   useEffect(() => {
     const checkCompletion = async () => {
       const { data: userData } = await supabase.auth.getUser();
@@ -94,21 +100,29 @@ const Layout: React.FC = () => {
                   </div>
                 </div>
 
+                {/* ✅ اطلاعات کاربر و خروج در حالت دسکتاپ */}
                 <div className="hidden md:flex items-center gap-2">
                   <span className="text-white text-sm whitespace-nowrap">
                     {personalInfo?.first_name || "کاربر"}{" "}
                     {personalInfo?.last_name || ""}
                   </span>
-                  {personalInfo?.avatar_url &&
-                    personalInfo.avatar_url !== "" && (
-                      <img
-                        className="w-8 h-8 rounded-full object-cover"
-                        src={personalInfo.avatar_url}
-                        alt="آواتار کاربر"
-                      />
-                    )}
+                  {personalInfo?.avatar_url && personalInfo.avatar_url !== "" && (
+                    <img
+                      className="w-8 h-8 rounded-full object-cover"
+                      src={personalInfo.avatar_url}
+                      alt="آواتار کاربر"
+                    />
+                  )}
+                  <button
+                    onClick={handleLogout}
+                    className="text-gray-300 hover:text-white transition"
+                    title="خروج از حساب"
+                  >
+                    <LogOut className="w-5 h-5" />
+                  </button>
                 </div>
 
+                {/* دکمه منو در حالت موبایل */}
                 <div className="-mr-2 flex md:hidden">
                   <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                     <span className="sr-only">باز کردن منو</span>
@@ -122,6 +136,7 @@ const Layout: React.FC = () => {
               </div>
             </div>
 
+            {/* ✅ منوی موبایل شامل تب‌ها و دکمه خروج */}
             <Disclosure.Panel className="md:hidden px-2 pt-2 pb-3 space-y-1">
               {allTabs.map((tab) => (
                 <button
@@ -137,6 +152,15 @@ const Layout: React.FC = () => {
                   {tab.label}
                 </button>
               ))}
+
+              {/* 🔥 دکمه خروج فقط در موبایل */}
+              <button
+                onClick={handleLogout}
+                className="flex items-center gap-2 text-gray-300 hover:bg-red-600 hover:text-white w-full text-right px-3 py-2 rounded-md text-base font-medium"
+              >
+                <LogOut className="w-5 h-5" />
+                <span>خروج از حساب</span>
+              </button>
             </Disclosure.Panel>
           </>
         )}
@@ -147,6 +171,7 @@ const Layout: React.FC = () => {
           <Outlet />
         </div>
       </main>
+      <Footer/>
     </div>
   );
 };
