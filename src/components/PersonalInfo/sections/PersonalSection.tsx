@@ -36,7 +36,7 @@ const PersonalSection: React.FC<Props> = ({ register, errors, control }) => {
         />
 
         {/* تاریخ تولد شمسی */}
-        <div>
+        <div className="w-full">
           <label
             htmlFor="birth_date"
             className="text-sm font-medium text-gray-700 mb-1 block"
@@ -64,6 +64,7 @@ const PersonalSection: React.FC<Props> = ({ register, errors, control }) => {
                 onChange={(date) =>
                   field.onChange(date?.format?.("YYYY-MM-DD") || "")
                 }
+                 inputClass="custom-datepicker-input"
               />
             )}
           />
