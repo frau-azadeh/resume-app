@@ -11,7 +11,7 @@ import gregorian from "react-date-object/calendars/gregorian";
 import persian from "react-date-object/calendars/persian";
 import { setWorkList } from "../store/slices/workSlice";
 import type { WorkFormData } from "../store/slices/workSlice";
-import type { WorkFormDataType } from "../types/types";
+import type { WorkFormDataType } from "../validation/workSchema";
 
 const defaultFormValues: WorkFormDataType = {
   company_name: "",
@@ -171,7 +171,7 @@ const WorkInfo: React.FC = () => {
         return (
           <div
             key={wo.id}
-            className="border p-4 rounded mb-3 flex justify-between items-center"
+            className="border p-4 rounded-md mb-3 flex justify-between items-center border-gray-200 shadow-md"
           >
             <div>
               <p className="font-medium">
@@ -190,7 +190,8 @@ const WorkInfo: React.FC = () => {
                     field: wo.field || "",
                     level: wo.level || "",
                     cooperation_type: wo.cooperation_type || "",
-                    insurance_months: wo.insurance_months || "",
+                    insurance_months: wo.insurance_months?.toString() || "",
+
                     description: wo.description || "",
                     work_phone: wo.work_phone || "",
                     last_salary: wo.last_salary || "",
