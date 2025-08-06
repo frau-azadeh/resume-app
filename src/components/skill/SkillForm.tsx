@@ -21,7 +21,7 @@ const SkillForm: React.FC<Props> = ({ onAdd, skills, onDelete }) => {
     formState: { errors },
   } = useForm({
     resolver: zodResolver(skillSchema),
-    defaultValues: { name: "", level: 1 },
+    defaultValues: { skill_name: "", skill_level: 1 },
   });
 
   const onSubmit = (data: SkillFormData) => {
@@ -29,7 +29,7 @@ const SkillForm: React.FC<Props> = ({ onAdd, skills, onDelete }) => {
     reset();
   };
 
-  const selectedLevel = Number(watch("level")) || 1;
+  const selectedLevel = Number(watch("skill_level")) || 1;
 
   const renderStars = (level: number): JSX.Element => (
     <span className="text-yellow-500">
@@ -53,12 +53,12 @@ const SkillForm: React.FC<Props> = ({ onAdd, skills, onDelete }) => {
       >
         <div className="md:col-span-2">
           <Input
-            {...register("name")}
+            {...register("skill_name")}
             placeholder="نام مهارت فنی"
             className="w-full border border-gray-300 rounded-md px-4 py-2 text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition"
           />
-          {errors.name && (
-            <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+          {errors.skill_name && (
+            <p className="text-red-500 text-sm mt-1">{errors.skill_name.message}</p>
           )}
         </div>
 
@@ -72,7 +72,7 @@ const SkillForm: React.FC<Props> = ({ onAdd, skills, onDelete }) => {
                 <input
                   type="radio"
                   value={star}
-                  {...register("level")}
+                  {...register("skill_level")}
                   className="hidden"
                 />
                 <span
@@ -86,8 +86,8 @@ const SkillForm: React.FC<Props> = ({ onAdd, skills, onDelete }) => {
               </label>
             ))}
           </div>
-          {errors.level && (
-            <p className="text-red-500 text-sm mt-1">{errors.level.message}</p>
+          {errors.skill_level && (
+            <p className="text-red-500 text-sm mt-1">{errors.skill_level.message}</p>
           )}
         </div>
 
@@ -100,8 +100,8 @@ const SkillForm: React.FC<Props> = ({ onAdd, skills, onDelete }) => {
       <SkillList
         title="مهارت‌های فنی"
         items={skills.map((skill) => ({
-          label: skill.name,
-          description: renderStars(skill.level),
+          label: skill.skill_name,
+          description: renderStars(skill.skill_level),
         }))}
         onDelete={onDelete}
       />
