@@ -96,7 +96,7 @@ const LanguageSkillForm: React.FC<Props> = ({
           </div>
         ))}
 
-        <Button type="submit" variant="primary">
+        <Button type="submit" variant="success" size="md">
           افزودن مهارت زبانی
         </Button>
       </form>
