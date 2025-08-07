@@ -15,7 +15,7 @@ export const loginSchema = z.object({
 
 export const signupSchema = z
   .object({
-    fullName: z
+    full_name: z
       .string()
       .min(3, { message: "نام و نام خانوادگی حداقل ۳ حرف باشد" })
       .regex(persianRegex, { message: "فقط از حروف فارسی استفاده کنید" }),
