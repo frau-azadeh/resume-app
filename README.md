@@ -1,8 +1,9 @@
-# 📄 Resume App
+📄 Resume App
+A sleek, production-ready Resume Builder & Application Tracking web app built with React + TypeScript, powered by Supabase (Postgres + Auth), Redux Toolkit, and Tailwind CSS.
+Users can create a resume via a multi-step wizard, submit an application, track status, and download a PDF. Admins can review applications, approve/reject with a message, and manage decisions from a dedicated panel.
 
-A sleek and modern **Resume Builder Web Application** developed to demonstrate advanced front-end skills using React, TypeScript, and Tailwind CSS.
-
-This app features a structured multi-step form where users can enter their personal details, educational background, technical and language skills, management experience, and more — all with intuitive validation and responsive design.
+Live Demo: https://resume-app-swart.vercel.app/
+Repo: https://github.com/frau-azadeh/resume-app
 
 ---
 
@@ -30,27 +31,41 @@ This app features a structured multi-step form where users can enter their perso
 
 - 🧩 **React Hook Form + Zod** – Form state management and schema validation
 
-- 🗂 **Redux Toolkit + Redux Persist** – Global state management with local persistence
+-  🎯 Redux Toolkit + Redux Persist – Global state with local persistence
 
 - 🧼 **Prettier** – Code formatting and consistency
 
+- 🐘 Supabase – Postgres DB, Auth, (optional Storage)
+
+- 🧱 Headless UI & Lucide – Accessible components & icons
+
 ---
 
-## 🏗️ Features
+## ✨ Features
 
-- ✅ Multi-step form wizard
+✅ Multi-step Resume Wizard (Personal, Education, Work, Skills, …)
 
-- ✅ Sections: Personal Info, Education, Skills, Languages, Management Experience, Resume Upload
+✅ Typed forms with Zod validation and RHF
 
-- ✅ Integrated form validation (with Zod)
+✅ Auth with Supabase (email/password)
 
-- ✅ Automatic data persistence (via **Redux Persist**) across browser reloads
+✅ Candidate Panel: build resume, submit application, track status, download PDF
 
-- ✅ Reusable, modular components
+✅ Admin Panel:
 
-- ✅ Fully responsive and RTL-friendly UI
+View applications (search, filter, sort)
 
-- ✅ Clean code structure and best practices
+Approve/Reject with a custom message
+
+Decision metadata (message, decided_at, decided_by)
+
+Nice decision modal with suggested messages
+
+✅ Client-side join for last names (apps + personal info)
+
+✅ State persistence (Redux Persist)
+
+✅ RTL-friendly UI & responsive design
 
 ---
 
@@ -84,63 +99,195 @@ resume-app/
 │
 │   ├── assets/                      # Images, logos, icons
 │
-│   ├── components/                  # Reusable UI and form components
-│   │   ├── ui/                      # Buttons, Inputs, Selects, etc.
+│   ├── components/                  # Reusable UI and domain components
+│   │   ├── admin/                   # Admin-specific components (from 2nd tree)
+│   │   │   ├── AdminDecisionModal.tsx
+│   │   │   ├── ApplicationsTable.tsx
+│   │   │   ├── FilterStatus.tsx
+│   │   │   ├── ResumeModal.tsx
+│   │   │   └── SearchBox.tsx
+│   │   ├── ui/                      # Shared UI widgets (from both trees)
 │   │   │   ├── Button.tsx
 │   │   │   ├── Input.tsx
-│   │   │   └── ...
-│   │   └── skill/                   # Domain-specific components
+│   │   │   └── ...                  # (other UI components)
+│   │   └── skill/                   # Domain-specific (from 1st tree)
 │   │       ├── SkillForm.tsx
 │   │       ├── LanguageSkillForm.tsx
 │   │       ├── ManagementSkillForm.tsx
 │   │       ├── SkillList.tsx
 │   │       └── ResumeUpload.tsx
 │
-│   ├── pages/                       # Page components (Step-based forms)
-│   │   ├── PersonalInfo.tsx
-│   │   ├── Education.tsx
-│   │   ├── SkillInfo.tsx
-│   │   ├── Summary.tsx
-│   │   └── ...
+│   ├── hooks/                       # Custom hooks (from 2nd tree)
 │
-│   ├── store/                       # Redux Toolkit slices and store config
-│   │   ├── slices/
-│   │   │   ├── skillSlice.ts
-│   │   │   └── ...
-│   │   ├── persistConfig.ts         # Redux Persist setup
-│   │   └── store.ts
+│   ├── lib/
+│   │   └── supabase.ts              # Supabase client (from 2nd tree)
 │
-│   ├── validation/                  # Zod schemas
-│   │   └── skillSchema.ts
+│   ├── pages/                       # Route pages (merged)
+│   │   ├── PersonalInfo.tsx         # Candidate-side steps (from 1st tree)
+│   │   ├── Education.tsx            # Candidate-side steps (from 1st tree)
+│   │   ├── SkillInfo.tsx            # Candidate-side steps (from 1st tree)
+│   │   ├── Summary.tsx              # Candidate-side summary (from 1st tree)
+│   │   └── admin/                   # Admin panel pages (from 2nd tree)
+│   │       ├── Dashboard.tsx
+│   │       ├── EducationHistory.tsx
+│   │       ├── Footer.tsx
+│   │       ├── Login.tsx
+│   │       ├── PersonalInfo.tsx     # Admin-side personal info view
+│   │       ├── Signup.tsx
+│   │       ├── SkillInfo.tsx
+│   │       ├── Summary.tsx          # Candidate “status summary” page (admin view)
+│   │       └── WorkInfo.tsx
 │
-│   ├── routes/                      # Route configs
+│   ├── routes/                      # Route configs (from 1st tree)
 │   │   └── AppRouter.tsx
 │
-│   ├── utils/                       # Helper functions (optional)
+│   ├── store/                       # Redux Toolkit + Persist (merged)
+│   │   ├── slices/
+│   │   │   ├── skillSlice.ts        # Example slice (from 1st tree)
+│   │   │   └── ...                  # Other slices (auth, resume, etc.)
+│   │   ├── persistConfig.ts         # Redux Persist setup (from 1st tree)
+│   │   └── store.ts                 # Store config (present in both → kept one path)
+│
+│   ├── styles/
+│   │   └── fonts.css                # From 2nd tree
+│
+│   ├── types/                       # Custom types (merged)
+│   │   ├── admin.ts                 # AppStatus, DecisionStatus, rows... (2nd tree)
+│   │   └── skill.d.ts               # Skill types (1st tree)
+│
+│   ├── utils/                       # Helper functions (from 1st tree)
 │   │   └── stars.ts                 # Example: renderStars helper
 │
-│   ├── types/                       # Custom types & interfaces (optional)
-│   │   └── skill.d.ts
+│   ├── validation/                  # Zod schemas (merged)
+│   │   ├── skillSchema.ts           # From 1st tree
+│   │   └── (other zod schemas)      # From 2nd tree
 │
 │   ├── App.tsx                      # Main app component
-│   ├── main.tsx                     # App entry point
+│   ├── main.tsx                     # Entry point
 │   └── index.css                    # Tailwind base styles
 │
-├── .env                             # Supabase keys (if re-enabled)
-├── .env.example                     # Example environment file
+├── .env                             # From 1st tree (legacy keys if used)
+├── .env.example                     # From 1st tree
+├── .env.local                       # From 2nd tree (Vite + Supabase envs)
+├── package.json                     # From 2nd tree
+├── postcss.config.js
 ├── tailwind.config.js
 ├── tsconfig.json
-├── postcss.config.js
 ├── vite.config.ts
-├── README.md
-└── package.json
+└── README.md
+
 ```
+
+---
+## 🔐 Authentication & Roles
+Supabase Auth (email/password) is used for login/signup.
+
+Admin capability is typically controlled via a profile record (e.g., profiles.role IN ('admin','user')) or by granting the admin user ID in your database.
+
+The Admin panel is visible only to users that your app treats as admins (e.g., after checking role or a secure claim).
+
+Tip: Create a profiles table keyed by auth.users.id and store role ('admin' | 'user'). Load it after login and gate routes/UI accordingly.
+
+---
+
+## 🗄️ Database (Supabase)
+Minimum required tables (simplified):
+
+applications
+
+id uuid pk default gen_random_uuid()
+
+user_id uuid not null (FK to auth.users.id)
+
+status text not null ('pending' | 'approved' | 'rejected')
+
+decision_message text null
+
+decided_at timestamptz null
+
+decided_by uuid null
+
+created_at timestamptz default now()
+
+personal_infos
+
+user_id uuid pk
+
+first_name text, last_name text, … (fields you already have)
+
+educations, work_infos, skill … (your current structure)
+
+If you’re evolving an existing DB, this migration is handy:
+
+        alter table public.applications
+        add column if not exists decision_message text,
+        add column if not exists decided_at timestamptz,
+        add column if not exists decided_by uuid;
+
+        -- Optional: index for admin lists
+        create index if not exists idx_applications_created_at on public.applications (created_at desc);
 
 ---
 
 ## 📦 Local Persistence
 
 This project uses Redux Persist to store the application state in localStorage. This ensures that user inputs are saved even after page refreshes or browser restarts, enhancing the user experience significantly.
+
+RLS
+For local dev you can keep RLS off. In production, enable RLS and add policies that:
+
+allow candidates to read/update their own records,
+
+allow admins to read all applications & personal infos.
+
+---
+
+## 🧪 Getting Started
+
+1) Clone & Install
+
+        git clone https://github.com/frau-azadeh/resume-app.git
+        cd resume-app
+        npm install
+
+2) Environment Variables
+
+Create .env.local in the root:
+
+        VITE_SUPABASE_URL=https://YOUR-SUPABASE-PROJECT.supabase.co
+        VITE_SUPABASE_ANON_KEY=YOUR_PUBLIC_ANON_KEY
+
+3) Run Dev
+
+        npm run dev
+
+4) Build & Preview
+
+        npm run build
+        npm run preview
+
+---
+## 🔧 Notable Implementation Details
+
+Client-side join: the Admin list fetches applications and personal_infos (for last names) and merges client-side.
+
+Decision Modal: when approving/rejecting, admin can edit a message; message & timestamps are saved to applications.
+
+Redux Persist: preserves form steps and candidate data between reloads.
+
+RTL: fully RTL-compatible styles.
+
+---
+
+## 🧭 Roadmap
+
+⬜ File storage for resume uploads (Supabase Storage)
+
+⬜ Email notifications on decision
+
+⬜ Audit log for admin actions
+
+⬜ E2E tests (Playwright/Cypress)
 
 ---
 
