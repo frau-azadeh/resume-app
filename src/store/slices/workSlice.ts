@@ -11,7 +11,6 @@ export interface WorkFormData {
   cooperation_type?: string;
   insurance_months?: string;
 
-
   start_date: string; // YYYY-MM-DD
   end_date?: string; // YYYY-MM-DD
   is_working: boolean;

@@ -31,7 +31,10 @@ const App: React.FC = () => {
       <ToastContainer position="top-center" rtl toastClassName="toast-rtl" />
       <Routes>
         {/* مسیر پیش‌فرض */}
-        <Route path="/" element={<Navigate to="/form/personal-info" replace />} />
+        <Route
+          path="/"
+          element={<Navigate to="/form/personal-info" replace />}
+        />
 
         {/* مسیرهای عمومی کاربران */}
         <Route path="/login" element={<Login />} />

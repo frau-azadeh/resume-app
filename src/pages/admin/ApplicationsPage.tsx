@@ -29,8 +29,10 @@ export default function ApplicationsPage() {
 
   // مودال تصمیم
   const [decisionOpen, setDecisionOpen] = useState<boolean>(false);
-  const [decisionTarget, setDecisionTarget] = useState<ApplicationWithName | null>(null);
-  const [decisionInitialStatus, setDecisionInitialStatus] = useState<DecisionStatus>("approved");
+  const [decisionTarget, setDecisionTarget] =
+    useState<ApplicationWithName | null>(null);
+  const [decisionInitialStatus, setDecisionInitialStatus] =
+    useState<DecisionStatus>("approved");
 
   useEffect(() => {
     void fetchList();
@@ -39,7 +41,9 @@ export default function ApplicationsPage() {
   const fetchList = async (): Promise<void> => {
     const { data: appRows, error: appErr } = await supabase
       .from("applications")
-      .select("id, user_id, status, created_at, decision_message, decided_at, decided_by")
+      .select(
+        "id, user_id, status, created_at, decision_message, decided_at, decided_by",
+      )
       .order("created_at", { ascending: false })
       .returns<ApplicationRow[]>();
 
@@ -74,10 +78,16 @@ export default function ApplicationsPage() {
   };
 
   // باز کردن مودال تصمیم
-  const openDecision = (app: ApplicationWithName, desired: DecisionStatus): void => {
+  const openDecision = (
+    app: ApplicationWithName,
+    desired: DecisionStatus,
+  ): void => {
     // اگر قبلاً تصمیم‌گیری شده بود، همان را پیش‌فرض بگذار؛ وگرنه چیزی که روی دکمه کلیک شده
-    const initStatus: DecisionStatus =
-      (app.status === "approved" || app.status === "rejected" ? app.status : desired) as DecisionStatus;
+    const initStatus: DecisionStatus = (
+      app.status === "approved" || app.status === "rejected"
+        ? app.status
+        : desired
+    ) as DecisionStatus;
 
     setDecisionTarget(app);
     setDecisionInitialStatus(initStatus);
@@ -88,7 +98,7 @@ export default function ApplicationsPage() {
   const saveDecision = async (
     target: ApplicationWithName,
     status: DecisionStatus,
-    message: string
+    message: string,
   ): Promise<void> => {
     const { data: auth } = await supabase.auth.getUser();
     const decided_by = auth?.user?.id ?? null;
@@ -113,7 +123,9 @@ export default function ApplicationsPage() {
     }
 
     // آپدیت خوش‌بینانه UI
-    setApps((prev) => prev.map((a) => (a.id === target.id ? { ...a, ...data } : a)));
+    setApps((prev) =>
+      prev.map((a) => (a.id === target.id ? { ...a, ...data } : a)),
+    );
 
     // بستن مودال
     setDecisionOpen(false);
@@ -125,7 +137,7 @@ export default function ApplicationsPage() {
     .filter((a) =>
       searchQuery.trim() === ""
         ? true
-        : (a.last_name ?? "").toLowerCase().includes(searchQuery.toLowerCase())
+        : (a.last_name ?? "").toLowerCase().includes(searchQuery.toLowerCase()),
     );
 
   return (

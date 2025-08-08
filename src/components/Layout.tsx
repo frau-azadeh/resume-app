@@ -106,13 +106,14 @@ const Layout: React.FC = () => {
                     {personalInfo?.first_name || "کاربر"}{" "}
                     {personalInfo?.last_name || ""}
                   </span>
-                  {personalInfo?.avatar_url && personalInfo.avatar_url !== "" && (
-                    <img
-                      className="w-8 h-8 rounded-full object-cover"
-                      src={personalInfo.avatar_url}
-                      alt="آواتار کاربر"
-                    />
-                  )}
+                  {personalInfo?.avatar_url &&
+                    personalInfo.avatar_url !== "" && (
+                      <img
+                        className="w-8 h-8 rounded-full object-cover"
+                        src={personalInfo.avatar_url}
+                        alt="آواتار کاربر"
+                      />
+                    )}
                   <button
                     onClick={handleLogout}
                     className="text-gray-300 hover:text-white transition"
@@ -171,7 +172,7 @@ const Layout: React.FC = () => {
           <Outlet />
         </div>
       </main>
-      <Footer/>
+      <Footer />
     </div>
   );
 };

@@ -124,7 +124,7 @@ export default function ResumeModal({
     const { data: personal } = await supabase
       .from("personal_infos")
       .select(
-        "user_id, first_name, last_name, national_code, birth_date, residence_province, residence_city, address, phone, email"
+        "user_id, first_name, last_name, national_code, birth_date, residence_province, residence_city, address, phone, email",
       )
       .eq("user_id", userId)
       .maybeSingle()
@@ -139,7 +139,7 @@ export default function ResumeModal({
     const { data: experience } = await supabase
       .from("work_infos")
       .select(
-        "user_id, company_name, position, start_date, end_date, is_working"
+        "user_id, company_name, position, start_date, end_date, is_working",
       )
       .eq("user_id", userId)
       .returns<WorkRow[]>();
@@ -198,7 +198,9 @@ export default function ResumeModal({
                     <li>
                       آدرس: {data.personal.residence_province}،{" "}
                       {data.personal.residence_city}
-                      {data.personal.address ? ` - ${data.personal.address}` : ""}
+                      {data.personal.address
+                        ? ` - ${data.personal.address}`
+                        : ""}
                     </li>
                   </ul>
                 </section>
@@ -210,8 +212,8 @@ export default function ResumeModal({
                   <ul className="list-disc list-inside text-gray-700 leading-7">
                     {data.education.map((edu, idx) => (
                       <li key={idx}>
-                        {edu.degree} در {edu.field} (
-                        {toFaDate(edu.start_date)} تا{" "}
+                        {edu.degree} در {edu.field} ({toFaDate(edu.start_date)}{" "}
+                        تا{" "}
                         {edu.is_studying
                           ? "در حال تحصیل"
                           : toFaDate(edu.end_date)}

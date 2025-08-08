@@ -34,7 +34,7 @@ const EducationList: React.FC<Props> = ({
       <div
         key={index}
         className="bg-white border border-gray-300 rounded-lg p-4 flex justify-between items-center shadow-sm hover:shadow-md transition"
-        >
+      >
         <div>
           <div>
             {item.degree} - {item.field}
@@ -48,7 +48,11 @@ const EducationList: React.FC<Props> = ({
           <Button onClick={() => onEdit(index)} variant="primary" size="md">
             ویرایش
           </Button>
-          <Button onClick={() => onDelete(index)} variant="destructive" size="md">
+          <Button
+            onClick={() => onDelete(index)}
+            variant="destructive"
+            size="md"
+          >
             حذف
           </Button>
         </div>

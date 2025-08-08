@@ -42,7 +42,6 @@ export default function LoginPage() {
 
     showSuccess("ورود موفقیت‌آمیز بود!");
 
-
     navigate("/form/personal-info");
   };
 
