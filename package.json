@@ -37,6 +37,7 @@
     "react-multi-date-picker": "^4.5.2",
     "react-redux": "^7.2.9",
     "react-router-dom": "^6.30.0",
+    "react-to-print": "^3.1.1",
     "react-toastify": "^8.1.0",
     "redux-persist": "^6.0.0",
     "tailwind-merge": "^3.2.0",
