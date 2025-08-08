@@ -1,19 +1,14 @@
 import { CheckCircle, Eye, XCircle } from "lucide-react";
 
-interface ApplicationWithName {
-  id: string;
-  user_id: string;
-  status: "pending" | "approved" | "rejected";
-  created_at: string;
-  last_name: string | null;
-}
+import type { ApplicationWithName } from "../../types/admin";
 
 interface Props {
   applications: ApplicationWithName[];
-  onApprove: (id: string) => void;
-  onReject: (id: string) => void;
-  onView: (userId: string) => void;
+  onApprove: (app: ApplicationWithName) => void;
+  onReject:  (app: ApplicationWithName) => void;
+  onView:    (userId: string) => void;
 }
+
 
 const ApplicationsTable = ({ applications, onApprove, onReject, onView }: Props) => {
   return (
@@ -48,10 +43,10 @@ const ApplicationsTable = ({ applications, onApprove, onReject, onView }: Props)
                 )}
               </td>
               <td className="px-4 py-3 text-center flex items-center justify-end gap-3">
-                <button onClick={() => onApprove(app.id)} className="text-green-600 hover:text-green-800 transition">
+                <button onClick={() => onApprove(app)} className="text-green-600 hover:text-green-800 transition">
                   <CheckCircle size={20} />
                 </button>
-                <button onClick={() => onReject(app.id)} className="text-red-600 hover:text-red-800 transition">
+                <button onClick={() => onReject(app)} className="text-red-600 hover:text-red-800 transition">
                   <XCircle size={20} />
                 </button>
                 <button onClick={() => onView(app.user_id)} className="text-blue-600 hover:text-blue-800 transition">
