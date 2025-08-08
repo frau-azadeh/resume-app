@@ -3,6 +3,7 @@ A sleek, production-ready Resume Builder & Application Tracking web app built wi
 Users can create a resume via a multi-step wizard, submit an application, track status, and download a PDF. Admins can review applications, approve/reject with a message, and manage decisions from a dedicated panel.
 
 Live Demo: https://resume-app-swart.vercel.app/
+
 Repo: https://github.com/frau-azadeh/resume-app
 
 ---
