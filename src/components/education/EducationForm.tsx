@@ -92,7 +92,8 @@ const EducationForm: React.FC<Props> = ({
                     })
               }
               onChange={(date) => field.onChange(date || null)}
-              inputClass="custom-datepicker-input"            />
+              inputClass="custom-datepicker-input"
+            />
           )}
         />
         {errors.start_date && (
@@ -103,7 +104,7 @@ const EducationForm: React.FC<Props> = ({
       </div>
 
       {/* تاریخ پایان */}
-      <div >
+      <div>
         <label className=" text-sm font-medium text-gray-700 block mb-1">
           تاریخ پایان
         </label>
@@ -129,8 +130,7 @@ const EducationForm: React.FC<Props> = ({
                     : null
               }
               onChange={(date) => field.onChange(date || null)}
-
-               inputClass="custom-datepicker-input"
+              inputClass="custom-datepicker-input"
             />
           )}
         />

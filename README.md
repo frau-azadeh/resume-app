@@ -3,6 +3,7 @@ A sleek, production-ready Resume Builder & Application Tracking web app built wi
 Users can create a resume via a multi-step wizard, submit an application, track status, and download a PDF. Admins can review applications, approve/reject with a message, and manage decisions from a dedicated panel.
 
 Live Demo: https://resume-app-swart.vercel.app/
+
 Repo: https://github.com/frau-azadeh/resume-app
 
 ---
@@ -31,7 +32,7 @@ Repo: https://github.com/frau-azadeh/resume-app
 
 - 🧩 **React Hook Form + Zod** – Form state management and schema validation
 
--  🎯 Redux Toolkit + Redux Persist – Global state with local persistence
+- 🎯 Redux Toolkit + Redux Persist – Global state with local persistence
 
 - 🧼 **Prettier** – Code formatting and consistency
 
@@ -179,7 +180,9 @@ resume-app/
 ```
 
 ---
+
 ## 🔐 Authentication & Roles
+
 Supabase Auth (email/password) is used for login/signup.
 
 Admin capability is typically controlled via a profile record (e.g., profiles.role IN ('admin','user')) or by granting the admin user ID in your database.
@@ -191,6 +194,7 @@ Tip: Create a profiles table keyed by auth.users.id and store role ('admin' | 'u
 ---
 
 ## 🗄️ Database (Supabase)
+
 Minimum required tables (simplified):
 
 applications
@@ -244,29 +248,30 @@ allow admins to read all applications & personal infos.
 
 ## 🧪 Getting Started
 
-1) Clone & Install
+1.  Clone & Install
 
-        git clone https://github.com/frau-azadeh/resume-app.git
-        cd resume-app
-        npm install
+         git clone https://github.com/frau-azadeh/resume-app.git
+         cd resume-app
+         npm install
 
-2) Environment Variables
+2.  Environment Variables
 
 Create .env.local in the root:
 
         VITE_SUPABASE_URL=https://YOUR-SUPABASE-PROJECT.supabase.co
         VITE_SUPABASE_ANON_KEY=YOUR_PUBLIC_ANON_KEY
 
-3) Run Dev
+3.  Run Dev
 
-        npm run dev
+         npm run dev
 
-4) Build & Preview
+4.  Build & Preview
 
-        npm run build
-        npm run preview
+         npm run build
+         npm run preview
 
 ---
+
 ## 🔧 Notable Implementation Details
 
 Client-side join: the Admin list fetches applications and personal_infos (for last names) and merges client-side.

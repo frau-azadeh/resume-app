@@ -7,8 +7,8 @@ export interface ApplicationRow {
   status: AppStatus;
   created_at: string;
   decision_message: string | null; // ← جدید
-  decided_at: string | null;       // ← جدید (timestamptz)
-  decided_by: string | null;       // ← جدید (uuid)
+  decided_at: string | null; // ← جدید (timestamptz)
+  decided_by: string | null; // ← جدید (uuid)
 }
 
 export interface PersonalNameRow {
@@ -19,6 +19,5 @@ export interface PersonalNameRow {
 export interface ApplicationWithName extends ApplicationRow {
   last_name: string | null;
 }
-
 
 export type DecisionStatus = Exclude<AppStatus, "pending">;

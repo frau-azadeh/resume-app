@@ -64,7 +64,7 @@ const PersonalSection: React.FC<Props> = ({ register, errors, control }) => {
                 onChange={(date) =>
                   field.onChange(date?.format?.("YYYY-MM-DD") || "")
                 }
-                 inputClass="custom-datepicker-input"
+                inputClass="custom-datepicker-input"
               />
             )}
           />

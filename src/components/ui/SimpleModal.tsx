@@ -58,6 +58,6 @@ export default function SimpleModal({
         </div>
       </div>
     </div>,
-    modalRoot
+    modalRoot,
   );
 }
