@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "../lib/supabase";
-import type { AppDispatch } from "../store/store";
-import { setEducationList } from "../store/slices/educationSlice";
-import type { EducationFormData } from "../store/slices/educationSlice";
-import type { EducationFormDataLocal } from "../validation/educationSchema";
-import EducationForm from "../components/education/EducationForm";
-import { Button } from "../components/ui";
 
 import DateObject from "react-date-object";
 import gregorian from "react-date-object/calendars/gregorian";
 import persian from "react-date-object/calendars/persian";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+import EducationForm from "../components/education/EducationForm";
+import { Button } from "../components/ui";
+import { supabase } from "../lib/supabase";
+import { setEducationList } from "../store/slices/educationSlice";
+import type { EducationFormData } from "../store/slices/educationSlice";
+import type { AppDispatch } from "../store/store";
+import type { EducationFormDataLocal } from "../validation/educationSchema";
 
 const defaultFormValues: EducationFormDataLocal = {
   degree: "",

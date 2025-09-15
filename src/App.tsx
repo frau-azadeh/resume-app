@@ -1,29 +1,31 @@
 import React from "react";
-import "./App.css";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+
 // Layouts
 import Layout from "./components/Layout";
-import AdminLayout from "./components/admin/AdminLayout";
-
-// User Pages
-import PersonalInfo from "./pages/PersonalInfo";
-import EducationHistory from "./pages/EducationHistory";
-import WorkInfo from "./pages/WorkInfo";
-import SkillForm from "./pages/SkillInfo";
-import Summary from "./pages/Summary";
-import Login from "./pages/Login";
-import SignupPage from "./pages/Signup";
-
-// Admin Pages
-import AdminLogin from "./pages/admin/AdminLogin";
-import ApplicationsPage from "./pages/admin/ApplicationsPage"; // ساخته میشه
+// ساخته میشه
 
 // Guards
 import PrivateRoute from "./components/PrivateRoute";
 import ProtectedRoute from "./components/ProtectedRoute";
+import AdminLayout from "./components/admin/AdminLayout";
+import EducationHistory from "./pages/EducationHistory";
+import Login from "./pages/Login";
+// User Pages
+import PersonalInfo from "./pages/PersonalInfo";
+import SignupPage from "./pages/Signup";
+import SkillForm from "./pages/SkillInfo";
+import Summary from "./pages/Summary";
+import WorkInfo from "./pages/WorkInfo";
+// Admin Pages
+import AdminLogin from "./pages/admin/AdminLogin";
+import ApplicationsPage from "./pages/admin/ApplicationsPage";
+
+import "./App.css";
 
 const App: React.FC = () => {
   return (

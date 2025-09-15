@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // localStorage
-import personalInfoReducer from "./slices/personalInfoSlice";
+import { persistReducer, persistStore } from "redux-persist";
+import storage from "redux-persist/lib/storage";
+
 import educationReducer from "./slices/educationSlice";
-import workReducer from "./slices/workSlice";
+// localStorage
+import personalInfoReducer from "./slices/personalInfoSlice";
 import skillReducer from "./slices/skillSlice";
 import userReducer from "./slices/userSlice";
+import workReducer from "./slices/workSlice";
 
 const rootReducer = combineReducers({
   personalInfo: personalInfoReducer,

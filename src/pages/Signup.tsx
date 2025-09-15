@@ -1,15 +1,17 @@
 "use client";
 
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signupSchema, type SignupSchema } from "../validation/authSchema";
-import Input from "../components/ui/Input";
-import Button from "../components/ui/Button";
-import { supabase } from "../lib/supabase";
-import { useNavigate, Link } from "react-router-dom";
-import { showSuccess, showError } from "../lib/toast";
+import { useForm } from "react-hook-form";
+
+import { Lock, Mail, Phone, UserRound } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+
 import PasswordStrengthMeter from "../components/PasswordStrengthMeter";
-import { Mail, Lock, UserRound, Phone } from "lucide-react";
+import Button from "../components/ui/Button";
+import Input from "../components/ui/Input";
+import { supabase } from "../lib/supabase";
+import { showError, showSuccess } from "../lib/toast";
+import { type SignupSchema, signupSchema } from "../validation/authSchema";
 
 export default function SignupPage() {
   const {

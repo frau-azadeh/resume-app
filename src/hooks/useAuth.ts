@@ -1,5 +1,6 @@
 // src/hooks/useAuth.ts
 import { useEffect, useState } from "react";
+
 import { supabase } from "../lib/supabase";
 
 export function useAuth() {

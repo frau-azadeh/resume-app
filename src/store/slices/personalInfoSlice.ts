@@ -1,9 +1,10 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import type { RootState } from "../store";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import DateObject from "react-date-object";
+
 import { supabase } from "../../lib/supabase";
 import type { PersonalInfoForm } from "../../types/types";
 import { emptyPersonalInfo } from "../../utils/emptyPersonalInfo";
-import DateObject from "react-date-object";
+import type { RootState } from "../store";
 
 interface State {
   personalInfo: Partial<PersonalInfoForm>;

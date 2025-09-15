@@ -1,17 +1,19 @@
 import React from "react";
-import { useForm, Controller } from "react-hook-form";
+
 import { zodResolver } from "@hookform/resolvers/zod";
-import Input from "../ui/Input";
-import Button from "../ui/Button";
-import DatePicker from "react-multi-date-picker";
+import { Controller, useForm } from "react-hook-form";
+
 import DateObject from "react-date-object";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
+import DatePicker from "react-multi-date-picker";
 
 import {
-  educationSchema,
   type EducationFormDataLocal,
+  educationSchema,
 } from "../../validation/educationSchema";
+import Button from "../ui/Button";
+import Input from "../ui/Input";
 
 interface Props {
   initialData: EducationFormDataLocal;

@@ -1,9 +1,11 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+
 import { zodResolver } from "@hookform/resolvers/zod";
-import { skillSchema, type SkillFormData } from "../../validation/skillSchema";
-import Button from "../ui/Button";
+import { useForm } from "react-hook-form";
+
+import { type SkillFormData, skillSchema } from "../../validation/skillSchema";
 import { Input } from "../ui";
+import Button from "../ui/Button";
 import SkillList from "./SkillList";
 
 interface Props {

@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../store/hooks";
-import { fetchPersonalInfo } from "../store/slices/personalInfoSlice";
-import PersonalInfoForm from "../components/PersonalInfo/PersonalInfoForm";
-import DateObject from "react-date-object";
 
+import DateObject from "react-date-object";
 import gregorian from "react-date-object/calendars/gregorian";
 import persian from "react-date-object/calendars/persian";
+
+import PersonalInfoForm from "../components/PersonalInfo/PersonalInfoForm";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { fetchPersonalInfo } from "../store/slices/personalInfoSlice";
 
 const PersonalInfoPage: React.FC = () => {
   const dispatch = useAppDispatch();

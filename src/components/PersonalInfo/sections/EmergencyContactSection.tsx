@@ -1,8 +1,10 @@
 // EmergencyContactSection.tsx
 import React from "react";
+
 import type { FieldErrors, UseFormRegister } from "react-hook-form";
-import type { PersonalInfoFormData } from "../PersonalInfoForm";
+
 import { Input } from "../../ui";
+import type { PersonalInfoFormData } from "../PersonalInfoForm";
 
 interface Props {
   register: UseFormRegister<PersonalInfoFormData>;

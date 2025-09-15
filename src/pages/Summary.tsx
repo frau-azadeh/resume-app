@@ -1,5 +1,6 @@
 // src/pages/user/SummaryPage.tsx
 import { useEffect, useState } from "react";
+
 import { supabase } from "../lib/supabase";
 import type { AppStatus } from "../types/admin";
 

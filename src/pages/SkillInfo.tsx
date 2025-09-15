@@ -1,31 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+
 import { toast } from "react-toastify";
 
-import { supabase } from "../lib/supabase";
-import SkillForm from "../components/skill/SkillForm";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
 import LanguageSkillForm from "../components/skill/LanguageSkillForm";
 import ManagementSkillForm from "../components/skill/ManagementSkillForm";
 import ResumeUpload from "../components/skill/ResumeUpload";
-
+import SkillForm from "../components/skill/SkillForm";
+import { Button } from "../components/ui";
+import { supabase } from "../lib/supabase";
 import {
-  addSkill,
   addLanguageSkill,
   addManagementSkill,
-  deleteSkill,
+  addSkill,
   deleteLanguageSkill,
   deleteManagementSkill,
+  deleteSkill,
 } from "../store/slices/skillSlice";
-
+import type { AppDispatch, RootState } from "../store/store";
 import type {
-  ManagementSkillData,
   LanguageSkillData,
+  ManagementSkillData,
   Proficiency,
 } from "../validation/skillSchema";
-
-import type { RootState, AppDispatch } from "../store/store";
-import { Button } from "../components/ui";
 
 // 🔧 نوع واحد برای ارسال داده‌ها به Supabase
 type SkillRow = {
