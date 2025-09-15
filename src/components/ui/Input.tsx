@@ -2,14 +2,19 @@
 "use client";
 
 import {
-  forwardRef,
   type InputHTMLAttributes,
-  useState,
   type ReactNode,
+  forwardRef,
+  useState,
 } from "react";
-import { Eye, EyeOff } from "lucide-react";
+
 import { type FieldError } from "react-hook-form";
+
+import { Eye, EyeOff } from "lucide-react";
+
 import { cn } from "../../lib/utils";
+
+// src/components/ui/Input.tsx
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;

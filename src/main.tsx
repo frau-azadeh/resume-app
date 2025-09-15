@@ -1,9 +1,12 @@
 import React from "react";
-import ReactDOM from "react-dom"; // ⬅️ اصلاح این خط
-import App from "./App";
+import ReactDOM from "react-dom";
+
 import { Provider } from "react-redux";
-import { store, persistor } from "./store/store";
 import { PersistGate } from "redux-persist/integration/react";
+
+// ⬅️ اصلاح این خط
+import App from "./App";
+import { persistor, store } from "./store/store";
 
 ReactDOM.render(
   <React.StrictMode>

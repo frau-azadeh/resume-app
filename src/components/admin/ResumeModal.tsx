@@ -1,9 +1,11 @@
 // src/components/admin/ResumeModal.tsx
 import { useEffect, useRef, useState } from "react";
-import { supabase } from "../../lib/supabase";
-import SimpleModal from "../ui/SimpleModal";
-import { printNode } from "../../utils/printNode";
+
 import type DateObject from "react-date-object";
+
+import { supabase } from "../../lib/supabase";
+import { printNode } from "../../utils/printNode";
+import SimpleModal from "../ui/SimpleModal";
 
 interface ResumeModalProps {
   userId: string;

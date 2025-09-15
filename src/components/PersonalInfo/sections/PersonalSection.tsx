@@ -1,12 +1,15 @@
 import React from "react";
+
 import { Controller } from "react-hook-form";
 import type { Control, FieldErrors, UseFormRegister } from "react-hook-form";
-import DatePicker from "react-multi-date-picker";
+
 import DateObject from "react-date-object";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import type { PersonalInfoFormData } from "../PersonalInfoForm";
+import DatePicker from "react-multi-date-picker";
+
 import Input from "../../ui/Input";
+import type { PersonalInfoFormData } from "../PersonalInfoForm";
 
 interface Props {
   register: UseFormRegister<PersonalInfoFormData>;

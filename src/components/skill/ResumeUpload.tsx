@@ -1,10 +1,13 @@
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+
 import { toast } from "react-toastify";
+
+import { useDispatch, useSelector } from "react-redux";
+
 import { setResumeFile } from "../../store/slices/skillSlice";
-import type { RootState, AppDispatch } from "../../store/store";
-import Button from "../ui/Button";
+import type { AppDispatch, RootState } from "../../store/store";
 import { Input } from "../ui";
+import Button from "../ui/Button";
 
 const ResumeUpload: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();

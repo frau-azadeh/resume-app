@@ -1,26 +1,26 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-import { personalInfoSchema } from "../../validation/personalInfoSchema";
-import Input from "../ui/Input";
-import Button from "../ui/Button";
-import PersonalSection from "../PersonalInfo/sections/PersonalSection";
-import FamilySection from "../PersonalInfo/sections/FamilySection";
-import ResidenceSection from "../PersonalInfo/sections/ResidenceSection";
-import ContactSection from "../PersonalInfo/sections/ContactSection";
-import EmergencyContactSection from "../PersonalInfo/sections/EmergencyContactSection";
-
-import { supabase } from "../../lib/supabase";
-import { showSuccess, showError } from "../../lib/toast";
 
 // تاریخ‌ها
 import DateObject from "react-date-object";
+import gregorian from "react-date-object/calendars/gregorian";
 import persian from "react-date-object/calendars/persian";
 import persian_fa from "react-date-object/locales/persian_fa";
-import gregorian from "react-date-object/calendars/gregorian";
+import { useNavigate } from "react-router-dom";
+
+import { supabase } from "../../lib/supabase";
+import { showError, showSuccess } from "../../lib/toast";
+import { personalInfoSchema } from "../../validation/personalInfoSchema";
+import ContactSection from "../PersonalInfo/sections/ContactSection";
+import EmergencyContactSection from "../PersonalInfo/sections/EmergencyContactSection";
+import FamilySection from "../PersonalInfo/sections/FamilySection";
+import PersonalSection from "../PersonalInfo/sections/PersonalSection";
+import ResidenceSection from "../PersonalInfo/sections/ResidenceSection";
+import Button from "../ui/Button";
+import Input from "../ui/Input";
 
 export type PersonalInfoFormData = z.infer<typeof personalInfoSchema>;
 

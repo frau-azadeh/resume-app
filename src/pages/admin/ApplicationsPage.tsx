@@ -1,17 +1,18 @@
 // src/pages/admin/ApplicationsPage.tsx
 import { useEffect, useState } from "react";
-import { supabase } from "../../lib/supabase";
+
+import AdminDecisionModal from "../../components/admin/AdminDecisionModal";
 import ApplicationsTable from "../../components/admin/ApplicationsTable";
-import SearchBox from "../../components/admin/SearchBox";
 import FilterStatus from "../../components/admin/FilterStatus";
 import ResumeModal from "../../components/admin/ResumeModal";
-import AdminDecisionModal from "../../components/admin/AdminDecisionModal";
+import SearchBox from "../../components/admin/SearchBox";
+import { supabase } from "../../lib/supabase";
 import type { DecisionStatus } from "../../types/admin";
 import type {
   AppStatus,
   ApplicationRow,
-  PersonalNameRow,
   ApplicationWithName,
+  PersonalNameRow,
 } from "../../types/admin";
 
 const defaultMsg = (st: DecisionStatus): string =>

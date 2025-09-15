@@ -1,6 +1,8 @@
 // src/components/admin/AdminDecisionModal.tsx
-import { Dialog } from "@headlessui/react";
 import { useEffect, useMemo, useState } from "react";
+
+import { Dialog } from "@headlessui/react";
+
 import type { DecisionStatus } from "../../types/admin";
 
 type Props = {

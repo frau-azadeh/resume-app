@@ -1,14 +1,16 @@
 "use client";
 
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema, type LoginSchema } from "../validation/authSchema";
-import Input from "../components/ui/Input";
+import { useForm } from "react-hook-form";
+
+import { Lock, Mail } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+
 import Button from "../components/ui/Button";
+import Input from "../components/ui/Input";
 import { supabase } from "../lib/supabase";
-import { Mail, Lock } from "lucide-react";
-import { useNavigate, Link } from "react-router-dom";
-import { showSuccess, showError } from "../lib/toast";
+import { showError, showSuccess } from "../lib/toast";
+import { type LoginSchema, loginSchema } from "../validation/authSchema";
 
 export default function LoginPage() {
   const {

@@ -1,14 +1,17 @@
 // src/components/Layout.tsx
+import React, { useEffect, useState } from "react";
+
 import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import React, { useEffect, useState } from "react";
-import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import "../styles/fonts.css";
-import { useSelector } from "react-redux";
-import type { RootState } from "../store/store";
-import { supabase } from "../lib/supabase";
 import { LogOut } from "lucide-react";
+import { useSelector } from "react-redux";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
+
+import { supabase } from "../lib/supabase";
 import Footer from "../pages/Footer";
+import type { RootState } from "../store/store";
+
+import "../styles/fonts.css";
 
 const baseTabs = [
   { id: "personal-info", label: "اطلاعات فردی" },

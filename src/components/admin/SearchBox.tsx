@@ -1,11 +1,12 @@
+import { Search } from "lucide-react";
+
+import { Input } from "../ui";
+
 // src/components/admin/SearchBox.tsx
 interface SearchBoxProps {
   value: string;
   onChange: (val: string) => void;
 }
-
-import { Search } from "lucide-react";
-import { Input } from "../ui";
 
 const SearchBox = ({ value, onChange }: SearchBoxProps) => {
   return (

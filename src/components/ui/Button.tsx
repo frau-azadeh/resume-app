@@ -1,6 +1,8 @@
-import clsx from "clsx";
-import { Loader } from "lucide-react";
 import React, { type ButtonHTMLAttributes, type ReactNode } from "react";
+
+import clsx from "clsx";
+
+import { Loader } from "lucide-react";
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   loading?: boolean;

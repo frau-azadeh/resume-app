@@ -1,5 +1,7 @@
-import { forwardRef, type InputHTMLAttributes } from "react";
+import { type InputHTMLAttributes, forwardRef } from "react";
+
 import type { FieldError } from "react-hook-form";
+
 import { cn } from "../../lib/utils";
 
 interface CheckboxProps

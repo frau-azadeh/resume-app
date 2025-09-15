@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
+
+import { FileText, LayoutDashboard, LogOut } from "lucide-react";
 import { NavLink } from "react-router-dom";
-import { LayoutDashboard, FileText, LogOut } from "lucide-react";
 
 type AdminLink = {
   to: string;

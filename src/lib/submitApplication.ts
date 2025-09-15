@@ -1,5 +1,5 @@
-import { supabase } from "./supabase";
 import type { PersonalInfoForm } from "../types/types";
+import { supabase } from "./supabase";
 
 export const submitApplication = async (
   userId: string,
