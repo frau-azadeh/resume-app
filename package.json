@@ -32,6 +32,7 @@
     "react": "^16.14.0",
     "react-date-object": "^2.1.9",
     "react-dom": "^16.14.0",
+    "react-error-boundary": "^6.0.0",
     "react-hook-form": "^7.56.2",
     "react-hot-toast": "^2.2.0",
     "react-modern-calendar-datepicker": "^3.1.6",
