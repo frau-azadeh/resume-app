@@ -1,5 +1,4 @@
 // src/components/ui/Input.tsx
-"use client";
 
 import {
   type InputHTMLAttributes,
@@ -14,13 +13,6 @@ import { Eye, EyeOff } from "lucide-react";
 
 import { cn } from "../../lib/utils";
 
-// src/components/ui/Input.tsx
-
-// src/components/ui/Input.tsx
-
-// src/components/ui/Input.tsx
-
-// src/components/ui/Input.tsx
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
