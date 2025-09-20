@@ -1,10 +1,10 @@
 import React from "react";
 
-import type { WorkFormData } from "../../types/types";
+import type { WorkFormDataType } from "../../types/types";
 import Button from "../ui/Button";
 
 interface WorkListProps {
-  workList: WorkFormData[];
+  workList: WorkFormDataType[];
   onEdit: (index: number) => void;
   onDelete: (index: number) => void;
 }
