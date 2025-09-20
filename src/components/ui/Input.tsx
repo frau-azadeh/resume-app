@@ -1,6 +1,4 @@
 // src/components/ui/Input.tsx
-"use client";
-
 import {
   type InputHTMLAttributes,
   type ReactNode,
@@ -13,14 +11,6 @@ import { type FieldError } from "react-hook-form";
 import { Eye, EyeOff } from "lucide-react";
 
 import { cn } from "../../lib/utils";
-
-// src/components/ui/Input.tsx
-
-// src/components/ui/Input.tsx
-
-// src/components/ui/Input.tsx
-
-// src/components/ui/Input.tsx
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
